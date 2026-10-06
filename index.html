@@ -105,11 +105,7 @@ a{color:var(--accent);text-underline-offset:3px;}
 .sb-link{display:flex;align-items:center;gap:var(--sp-8);padding:var(--sp-8) var(--sp-12);border-radius:var(--r-md);font-family:var(--font-ui);font-size:13px;font-weight:500;color:var(--ink);text-decoration:none;transition:background .14s ease;}
 .sb-link:hover{background:var(--sunk);}
 .sb-link svg{width:var(--size-icon);height:var(--size-icon);flex:none;color:var(--ink-3);}
-.sb-foot{border-top:1px solid var(--line);padding:var(--sp-16);display:flex;align-items:flex-end;gap:var(--sp-8);justify-content:space-between;}
-.sb-foot-text{display:flex;flex-direction:column;gap:var(--sp-8);min-width:0;}
-.sb-foot p{margin:0;font-family:var(--font-mono);font-size:10px;line-height:1.55;color:var(--ink-3);}
-.sb-clock{display:flex;align-items:flex-start;gap:var(--sp-8);color:var(--ink-2) !important;font-size:10.5px !important;}
-.sb-clock .dot{background:var(--accent-bright);margin-top:var(--sp-4);}
+.sb-foot{border-top:1px solid var(--line);padding:var(--sp-8) var(--sp-16);display:flex;align-items:center;justify-content:flex-end;}
 .theme-btn{padding:var(--sp-8);border-radius:var(--r-md);color:var(--ink-3);flex:none;}
 .theme-btn:hover{background:var(--sunk);color:var(--ink);}
 .theme-btn svg{width:var(--size-icon);height:var(--size-icon);display:block;}
@@ -304,9 +300,6 @@ a{color:var(--accent);text-underline-offset:3px;}
 .main:not(.zero) .composer{border-top:1px solid var(--line);background:var(--ground);padding-bottom:env(safe-area-inset-bottom,0px);}
 .composer-inner{max-width:760px;margin:0 auto;padding:var(--sp-12) var(--sp-16) var(--sp-16);}
 .main.zero .composer-inner{padding:0;max-width:none;}
-.suggest{display:flex;flex-wrap:wrap;gap:var(--sp-8);margin-bottom:var(--sp-12);}
-.suggest .chip{font-size:12.5px;padding:var(--sp-4) var(--sp-12);}
-.main.zero .suggest{display:none;}
 .field{display:flex;align-items:flex-end;gap:var(--sp-8);position:relative;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-xl);padding:var(--sp-8) var(--sp-8) var(--sp-8) var(--sp-16);transition:border-color .18s ease, box-shadow .18s ease;}
 .main.zero .field{box-shadow:var(--shadow-field);padding:var(--sp-12) var(--sp-12) var(--sp-12) var(--sp-24);}
 .field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
@@ -391,10 +384,6 @@ a{color:var(--accent);text-underline-offset:3px;}
       <div class="sb-group"><p class="sb-label">Pinned</p><ul class="sb-list" id="sbPinned"></ul></div>
     </div>
     <div class="sb-foot">
-      <div class="sb-foot-text">
-        <p class="sb-clock"><span class="dot" aria-hidden="true"></span><span id="clockSide"></span></p>
-        <p>Pre-written answers. No live model, nothing invented.</p>
-      </div>
       <button class="theme-btn" id="themeBtn" aria-label="Switch colour theme">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
       </button>
@@ -428,7 +417,6 @@ a{color:var(--accent);text-underline-offset:3px;}
 
     <div class="composer" id="composer">
       <div class="composer-inner">
-        <div class="suggest" id="suggest"></div>
         <form class="field" id="form">
           <div class="ghost" id="ghost" aria-hidden="true"></div>
           <textarea id="input" rows="1" aria-label="Ask RossLM a question"></textarea>
@@ -659,42 +647,6 @@ var ART = {
       return svgWrap(s);
     }
   },
-  triage:{
-    title:'Warranty triage, then booking',
-    caption:'Two flows, deliberately separated. Triage settles what is wrong and whether it is covered; booking only starts once the answer is known, so nobody picks a date for a repair that turns out not to be a repair.',
-    svg:function(){
-      var s='',nodes=[[40,150,'Fault reported'],[176,150,'Triage questions'],[312,150,'Cover decision']];
-      for(var i=0;i<3;i++){ s+=box(nodes[i][0],nodes[i][1],120,58,10,i===2?P.tint:P.bg)+txt(nodes[i][0]+14,nodes[i][1]+34,nodes[i][2],10.5,i===2?P.acc:P.ink,500); }
-      s+='<rect x="452" y="92" width="148" height="58" rx="10" fill="'+P.bg+'" stroke="'+P.acc+'" stroke-width="1.6"/>'+txt(466,126,'Book my repair',10.5,P.acc,500);
-      s+=box(452,206,148,58,10,P.bg)+txt(466,232,'Not covered —',10.5,P.ink2)+txt(466,248,'options shown',10.5,P.ink2);
-      [[160,176],[296,312]].forEach(function(a){
-        s+='<line x1="'+a[0]+'" y1="179" x2="'+a[1]+'" y2="179" stroke="'+P.line+'" stroke-width="1.6"/>';
-        s+='<path d="M'+(a[1]-5)+' 175 l5 4 -5 4" fill="none" stroke="'+P.line+'" stroke-width="1.6"/>';
-      });
-      s+='<path d="M432 179 L442 179 L442 121 L452 121" fill="none" stroke="'+P.line+'" stroke-width="1.6"/>';
-      s+='<path d="M432 179 L442 179 L442 235 L452 235" fill="none" stroke="'+P.line+'" stroke-width="1.6"/>';
-      s+='<path d="M447 117 l5 4 -5 4" fill="none" stroke="'+P.line+'" stroke-width="1.6"/><path d="M447 231 l5 4 -5 4" fill="none" stroke="'+P.line+'" stroke-width="1.6"/>';
-      s+=txt(40,60,'TWO FLOWS, ONE VOCABULARY',10,P.ink3,500)+txt(40,84,'Every screen and every email says “repair centre”.',11,P.ink2);
-      s+='<line x1="40" y1="104" x2="600" y2="104" stroke="'+P.faint+'" stroke-width="1.2"/>'+txt(40,330,'EMAILS IN THE CHAIN',10,P.ink3,500);
-      ['Booked','Reminder','In progress','Ready'].forEach(function(l,e){ s+=pill(40+e*104,344,92,l,false); });
-      return svgWrap(s);
-    }
-  },
-  copy:{
-    title:'Content pass — before and after',
-    caption:'Same screen, same logic. The financial language was softened and the call to action moved into the customer’s voice: it is their repair, not a service being administered to them.',
-    svg:function(){
-      var s='<line x1="320" y1="34" x2="320" y2="366" stroke="'+P.faint+'" stroke-width="1.2"/>'+txt(36,54,'BEFORE',10,P.ink3,500)+txt(356,54,'AFTER',10,P.acc,500);
-      s+=box(36,70,252,150,10,P.bg)+txt(52,100,'Liability assessment',11,P.ink,500)+bar(52,114,180,7,P.faint,4)+bar(52,128,214,7,P.faint,4)+bar(52,142,146,7,P.faint,4);
-      s+=txt(52,176,'You will be charged for any',10.5,P.ink2)+txt(52,192,'work not covered.',10.5,P.ink2)+box(36,236,252,44,10,P.panel)+txt(52,264,'SUBMIT REQUEST',10.5,P.ink2,500);
-      s+=box(356,70,252,150,10,P.bg)+txt(372,100,'What’s covered',11,P.ink,500)+bar(372,114,180,7,P.faint,4)+bar(372,128,214,7,P.faint,4)+bar(372,142,146,7,P.faint,4);
-      s+=txt(372,176,'If anything falls outside your',10.5,P.ink2)+txt(372,192,'cover, we’ll tell you first.',10.5,P.ink2);
-      s+='<rect x="356" y="236" width="252" height="44" rx="10" fill="'+P.acc+'"/>';
-      s+='<text x="382" y="264" font-family="Instrument Sans, sans-serif" font-size="13" font-weight="600" fill="var(--accent-ink)">Book my repair</text>';
-      s+=txt(36,320,'Terminology standardised: garage / workshop / service centre → repair centre',10.5,P.ink3)+txt(36,344,'Charge-first framing replaced with cover-first framing',10.5,P.ink3);
-      return svgWrap(s);
-    }
-  },
   hmcFunnel:{
     title:'Where Help Me Choose lost people',
     caption:'Retention at each step of the original wizard. Seven of the eight transitions cost almost nothing — the first one cost 28.3%. That moved the problem from “this flow is too long” to “the second question has to earn the first”.',
@@ -872,68 +824,6 @@ var ART = {
       return svgWrap(s);
     }
   },
-  metaLedger:{
-    title:'Who decided what',
-    caption:'The division of labour, written down. The machine was quicker at everything except knowing what was true.',
-    svg:function(){
-      var mine=['Teal, not the green it proposed','The 8pt spacing scale','Which case study leads','What got cut \u2014 \u201cStill up?\u201d','What stays private','Every word of every answer','What is actually true'];
-      var gen=['Every line of CSS and JavaScript','All nine diagrams','The responsive behaviour','The streamed reveal','A harness testing 76 click paths','98 off-grid values found and fixed','Micro-decisions I never saw'];
-      var s=txt(24,36,'ONE SESSION, SEVENTEEN PUBLISHED VERSIONS',9.5,P.ink3,500);
-      s+='<line x1="24" y1="46" x2="616" y2="46" stroke="'+P.faint+'" stroke-width="1.2"/>';
-      s+=box(24,60,288,252,10,P.tint);
-      s+='<rect x="24" y="60" width="3.5" height="252" rx="2" fill="'+P.acc+'"/>';
-      s+=txt(44,84,'DECIDED BY ME',9.5,P.acc,500);
-      s+=box(328,60,288,252,10,P.bg);
-      s+=txt(346,84,'GENERATED',9.5,P.ink3,500);
-      mine.forEach(function(m,i){
-        var y=110+i*28;
-        s+='<circle cx="48" cy="'+(y-4)+'" r="2.5" fill="'+P.acc+'"/>';
-        s+=txt(60,y,m,10.5,P.ink,i===6?500:400);
-      });
-      gen.forEach(function(g,i){
-        var y=110+i*28;
-        s+='<circle cx="350" cy="'+(y-4)+'" r="2.5" fill="'+P.ink3+'"/>';
-        s+=txt(362,y,g,10.5,P.ink2);
-      });
-      s+=box(24,328,592,50,10,P.bg);
-      s+=txt(320,350,'The only decisions it could not make were the ones',10.5,P.ink2,400,'middle');
-      s+='<text x="320" y="366" font-family="Instrument Sans, sans-serif" font-size="12" font-weight="600" fill="'+P.acc+'" text-anchor="middle">that required knowing what was true.</text>';
-      return svgWrap(s);
-    }
-  },
-  metaBugs:{
-    title:'Four defects a design file cannot contain',
-    caption:'None of these are visual problems, which is why none of them exist in a mockup. They are behaviour, and behaviour only appears when the thing runs.',
-    svg:function(){
-      var bugs=[
-        ['Chips wiped the conversation','Follow-up chips looked like continuation and behaved like navigation \u2014 they cleared the transcript above them.','A design file has no transcript to clear.'],
-        ['Spacing inherited from its neighbour','The gap before a chip set came from whatever block ended the answer: 16px after a card, zero after a paragraph.','Every frame is drawn once, so the accident looks like a decision.'],
-        ['A reveal too fast to read as thought','235 words a second. Technically correct, and it read as a machine dumping text rather than answering.','Static frames have no tempo.'],
-        ['A button that may never fire','The sandbox blocks page-initiated downloads, so a Download CV button would have looked right and done nothing.','A prototype\u2019s buttons always work.']
-      ];
-      var s=txt(24,34,'FOUND BY RUNNING IT, NOT BY LOOKING AT IT',9.5,P.ink3,500);
-      var W=288,H=152;
-      bugs.forEach(function(b,i){
-        var cx=24+(i%2)*(W+16), cy=52+Math.floor(i/2)*(H+16);
-        s+=box(cx,cy,W,H,10,P.bg);
-        s+='<text x="'+(cx+16)+'" y="'+(cy+26)+'" font-family="Instrument Sans, sans-serif" font-size="12" font-weight="600" fill="'+P.ink+'">'+b[0]+'</text>';
-        var words=b[1].split(' '), line='', ly=cy+48;
-        words.forEach(function(w){
-          if((line+' '+w).length>42){ s+=txt(cx+16,ly,line,9.5,P.ink2); line=w; ly+=13; }
-          else line = line ? line+' '+w : w;
-        });
-        s+=txt(cx+16,ly,line,9.5,P.ink2);
-        s+='<line x1="'+(cx+16)+'" y1="'+(cy+H-42)+'" x2="'+(cx+W-16)+'" y2="'+(cy+H-42)+'" stroke="'+P.faint+'" stroke-width="1"/>';
-        var w2=b[2].split(' '), l2='', y2=cy+H-24;
-        w2.forEach(function(w){
-          if((l2+' '+w).length>44){ s+=txt(cx+16,y2,l2,9,P.acc); l2=w; y2+=12; }
-          else l2 = l2 ? l2+' '+w : w;
-        });
-        s+=txt(cx+16,y2,l2,9,P.acc);
-      });
-      return svgWrap(s);
-    }
-  },
   recLive:{
     title:'What’s actually live',
     caption:'The recommendations page as it stands: “Based on your answers, the Land Rover Discovery Sport scored highest.” It names a winner and stops. The alternatives underneath carry a name, a fuel type and a body style — nothing about why they are there or how they differ.',
@@ -1064,7 +954,7 @@ var CASES = [
         {t:'p',v:'None of which is a verdict on the original. The wizard was the right answer for 2022 and it paid for itself several times over. It just stopped being the best answer available.'}
       ]}
     ],
-    follow:['car-finder','agentic','warranty']
+    follow:['car-finder','agentic','competitors']
   },
   {
     id:'car-finder', topic:'the car finder', nav:'Conversational car finder', navMeta:'cinch · flagship · 2026', rail:'CF',
@@ -1131,52 +1021,12 @@ var CASES = [
         {t:'p',v:'The practical version: I brought the criteria chips as a working prototype rather than a static frame, because the interaction question — what happens when you remove a constraint mid-conversation — can’t be answered in Figma.'}
       ]}
     ],
-    follow:['agentic','help-me-choose','warranty']
-  },
-  {
-    id:'warranty', topic:'the warranty work', nav:'Warranty & repair triage', navMeta:'cinch × Marshall Motor Group', rail:'WR',
-    prompt:'How did the warranty and repair work go?',
-    title:'Two flows for a customer having a bad day', kicker:'Case study 03',
-    meta:['cinch','Triage + booking','End-to-end content & UX'],
-    triad:{
-      challenge:'Someone whose car has developed a fault is already having a bad day. The journey spanned triage, booking into Marshall Motor Group repair centres and a chain of emails — each written at a different time, in a different vocabulary.',
-      solution:'Split triage from booking, standardise the vocabulary across every screen and email, and rewrite the financial language so cover is explained before charges are threatened.',
-      impact:'One vocabulary end to end and a documented content set the next team can reuse. Contact-rate and completion measures: <span class="tbd">figures to confirm</span>.'
-    },
-    intro:[
-      {t:'p',cls:'lede',v:'Most of the work here was content, and content is where the design decisions actually lived.'},
-      {t:'p',v:'Two flows — triage, then booking into Marshall Motor Group repair centres — plus the chain of emails that carries people between them.'}
-    ],
-    probes:[
-      {q:'Why split triage from booking?', a:[
-        {t:'p',v:'Because booking a slot for a repair that turns out not to be a repair costs trust twice: once when you take the day off work, and once when you find out it isn’t covered.'},
-        {t:'p',v:'Triage settles what’s wrong and whether it’s covered. Only then do dates appear. It’s slower on paper and considerably faster in practice, because the rework disappears.'},
-        {t:'cards',v:['triage']}
-      ]},
-      {q:'Why does the wording matter this much?', a:[
-        {t:'p',v:'Garage, workshop and service centre all appeared across the same journey. A customer reading “workshop” in an email and “service centre” on a screen reasonably assumes they’re two different places, and then rings you to ask which one.'},
-        {t:'p',v:'One term — <b>repair centre</b> — everywhere, including the emails. And the primary action became <b>“Book my repair”</b>: first person, because it’s the customer’s repair, not a service being administered to them.'},
-        {t:'p',v:'Unglamorous, and it moves contact rate more reliably than any layout change I could have made. Measurable effect: <span class="tbd">figures to confirm</span>.'},
-        {t:'cards',v:['copy']}
-      ]},
-      {q:'What did you change about the money language?', a:[
-        {t:'p',v:'The original copy led with liability — a version of “you will be charged for anything not covered”. Accurate, and exactly the wrong posture for someone whose car has just broken.'},
-        {t:'p',v:'It now leads with what <em>is</em> covered, and commits to telling people before anything falls outside it. Same policy, opposite posture. Nothing was softened to the point of being misleading; the sequence changed, not the facts.'}
-      ]},
-      {q:'What was hard about the partner relationship?', a:[
-        {t:'p',v:'The words had to survive being read by people who don’t work at cinch. Marshall’s counter staff see the same booking references and the same emails, so a term that only makes sense inside our product breaks at the counter.'},
-        {t:'p',v:'That meant agreeing vocabulary with an external network rather than declaring it — which is a slower, more political process than writing a content guideline and posting it in Slack.'}
-      ]},
-      {q:'What was your role here?', a:[
-        {t:'p',v:'End-to-end UX and content design across both flows and the email chain, working with the Product Owner and the partner-facing team. I wrote the copy rather than briefing it out, which is usually the right call when the copy <em>is</em> the design.'}
-      ]}
-    ],
-    follow:['car-finder','yard','contact']
+    follow:['agentic','help-me-choose','competitors']
   },
   {
     id:'competitors', topic:'the competitor landscape', nav:'Competitor landscape', navMeta:'UK used-car market · 2026', rail:'CL',
     prompt:'What was the competitor analysis about?',
-    title:'A finding that was true and useless', kicker:'Case study 04',
+    title:'A finding that was true and useless', kicker:'Case study 03',
     meta:['cinch','Strategic research','Rebuild of a prior analysis'],
     triad:{
       challenge:'The previous year’s analysis scored every UK competitor against one criteria set. It produced findings like “cinch has the most end-to-end online journey”: true, and useless, because a lead-generation marketplace was never trying to have one.',
@@ -1220,7 +1070,7 @@ var CASES = [
   {
     id:'yard', topic:'the Corby visit', nav:'Corby yard research', navMeta:'cinchPro · operational research', rail:'YR',
     prompt:'Tell me about the Corby yard research.',
-    title:'Going to where the friction actually is', kicker:'Case study 05',
+    title:'Going to where the friction actually is', kicker:'Case study 04',
     meta:['cinch','Site visit & report','Product + Design audience'],
     triad:{
       challenge:'The cinchPro yard management system was rolling out at the vehicle preparation yard in Corby. The friction it created was entirely visible on the ground and entirely invisible from a product backlog.',
@@ -1259,78 +1109,6 @@ var CASES = [
       ]}
     ],
     follow:['competitors','ai','contact']
-  },
-  {
-    id:'colophon', topic:'this build', nav:'How this was made', navMeta:'Built in one conversation \u00b7 2026', rail:'CO',
-    prompt:'How was this site made?',
-    title:'Every pixel generated, every decision human', kicker:'How this was made',
-    meta:['Personal build','September 2026','One conversation, 17 versions'],
-    triad:{
-      challenge:'I wanted a portfolio that proved judgement about AI products rather than claiming it \u2014 in a genre already filling with \u201cchat with my portfolio\u201d sites that are thin wrappers round an API and will confidently invent a job you never had.',
-      solution:'Build it as a real AI product with one deliberate constraint \u2014 no model at read time \u2014 and design the whole thing in the finished medium, in conversation, rather than in a picture of it.',
-      impact:'Seventeen published versions in a day, a set of defects a design file cannot structurally contain, and a changed view of what I should be using Figma for.'
-    },
-    intro:[
-      {t:'p',cls:'lede',v:'No Figma file. No hand-written code. Every pixel here was generated by a model and every decision was mine \u2014 and the record of which was which is the interesting part.'},
-      {t:'p',v:'I\u2019m not going to tell you this was \u201cAI designed\u201d. It wasn\u2019t, and the claim would be worse for me than the truth: if a machine designed it, the designer was optional. What actually happened is more useful to talk about.'},
-
-      {t:'h',v:'The guardrail is the design'},
-      {t:'p',v:'The obvious build is a chat box wired to an API. I didn\u2019t do that. Every answer here is written by me and served from a fixed set, so it cannot invent a project I never worked on, a number I can\u2019t evidence, or an opinion I don\u2019t hold. That costs the page its party trick and buys the only thing that matters when a stranger is deciding whether to believe you.'},
-      {t:'p',v:'It is also the decision I would defend in a critique, which is the test I put on any AI feature: if the interesting part is that a model is involved, there isn\u2019t any design in it yet.'},
-
-      {t:'h',v:'The bugs a design file cannot have'},
-      {t:'p',v:'Working in the finished medium changed which mistakes were findable. Four examples, all of them real, none of them visible in a mockup.'},
-      {t:'cards',v:['metaBugs']},
-      {t:'p',v:'Those are behaviour, not appearance. A design file draws every frame once, correctly, by definition \u2014 so an accident looks exactly like a decision and a broken control still clicks. A few hours in the real medium surfaced defects that weeks of frames would have shipped.'},
-
-      {t:'h',v:'Who decided what'},
-      {t:'cards',v:['metaLedger']},
-      {t:'p',v:'The pattern held all the way down. It was faster than me at everything except knowing what was true \u2014 it couldn\u2019t know a figure on my own CV was mislabelled, couldn\u2019t tell whether numbers in a deck were baselines or targets, and couldn\u2019t decide whether publishing unreleased work was acceptable. Those are judgement and accountability, and they don\u2019t transfer.'},
-
-      {t:'h',v:'What it cost'},
-      {t:'p',v:'One honest debit: there was no divergence. Seventeen versions are seventeen refinements of the first idea that rendered. Once a thing exists and looks finished, generating genuine alternatives gets harder, not easier \u2014 and I didn\u2019t generate any.'},
-      {t:'p',v:'Which is the actual lesson about Figma, and it isn\u2019t that it\u2019s finished. It\u2019s for divergence, and I had been using it to specify behaviour it cannot express.'}
-    ],
-    probes:[
-      {q:'Who actually designed this?', a:[
-        {t:'p',v:'I made every decision a reader would notice: the palette, the spacing scale, which case study leads, what got cut, what stays private, the voice, and every word of every answer on this site.'},
-        {t:'p',v:'The model produced every line of CSS and JavaScript, all nine diagrams, the responsive behaviour, and a test harness that walked 76 click paths to prove the conversation can\u2019t end up incoherent.'},
-        {t:'p',v:'The uncomfortable part, and I\u2019d rather say it than have it asked: it made thousands of micro-decisions I never saw \u2014 which easing curve, how to order the cascade, what to name a variable. I reviewed outcomes, not choices. That is the same relationship I have with an engineer, and I\u2019m comfortable with it for the same reasons: I can read the output, and I know what I\u2019m accountable for.'}
-      ]},
-      {q:'What did the AI get wrong?', a:[
-        {t:'p',v:'Plenty, and the corrections are the most useful record in here.'},
-        {t:'decisions',v:[
-          {k:'A centred prompt box',v:'The typed hint expanded from the middle, because the hero\u2019s centring cascaded into the field. I spotted it in about two seconds; it hadn\u2019t.'},
-          {k:'\u201cStill up?\u201d',v:'It proposed a time-of-day greeting. Charming, and it told a stranger nothing about what this is. I cut it and used the clock somewhere it did some work.'},
-          {k:'Spacing that only looked right',v:'It wrote a rule that zeroed a margin, which happened to look correct after a card and collapsed to nothing after a paragraph. Right by accident is still wrong.'},
-          {k:'A number off my own CV',v:'It took a mislabelled figure from my CV and propagated it into three places. The source deck corrected both of us \u2014 which is why I trace figures to primary sources rather than to whoever repeated them last.'}
-        ]},
-        {t:'p',v:'None of that is a failure of the tool. It is the reason the job still needs somebody accountable for the output.'}
-      ]},
-      {q:'Show me a decision that changed', a:[
-        {t:'p',v:'The progressive disclosure on the case studies, and it was my error rather than the model\u2019s.'},
-        {t:'p',v:'I had the follow-up chips carrying the <em>story</em> \u2014 six clicks to assemble one continuous narrative, each with a thinking pause in front of it. A recruiter gives a portfolio about forty seconds. I\u2019d spent their whole budget on navigation.'},
-        {t:'p',v:'The fix was to separate spine from branches: the story runs inline, start to finish, no clicks, and the chips became genuinely optional depth \u2014 role, method, tooling, reflection. Same components, opposite reading experience.'},
-        {t:'note',v:'<b>Why I\u2019d have shipped it from Figma.</b> In a design file every chip is a rectangle, and six rectangles cost nothing to look at. The cost only exists when someone has to click them and wait.'}
-      ]},
-      {q:'Why no live model?', a:[
-        {t:'p',v:'Because the failure mode is catastrophic and the upside is small. A hallucinated employer or an invented metric on a portfolio is not a quirk, it is a lie with my name on it \u2014 and I would not find out, because I am not in the room when a recruiter reads it.'},
-        {t:'p',v:'What I gave up: you can\u2019t ask it anything. What I got: it cannot be wrong about me. Anything off-script gets caught by a small intent router and redirected to what I have actually written up, and the page says plainly that there is no model behind it.'},
-        {t:'p',v:'There\u2019s a positioning argument too. In a year there will be a lot of these, and most will be wrappers that make things up. Being the one that structurally can\u2019t is a better place to stand than being early.'}
-      ]},
-      {q:'What did this cost you?', a:[
-        {t:'p',v:'Divergence, mostly. One direction, refined seventeen times. I never put two ideas next to each other, and I never saw a version of this that wasn\u2019t a chat interface.'},
-        {t:'p',v:'There\u2019s no canvas here \u2014 no twelve variants side by side, no stepping back to judge a set. Working in the final medium anchors you to whatever renders first, because the thing already looks finished and arguing with a finished thing is harder than arguing with a sketch.'},
-        {t:'p',v:'So I wouldn\u2019t run a discovery this way. Sketch and diverge somewhere cheap and throwaway, then converge here. And I\u2019d be careful about the scope of the claim: this was a web page. It would not work the same way for a native flow, or anything that needs precise visual craft iterated on directly.'}
-      ]},
-      {q:'Would you work this way at cinch?', a:[
-        {t:'p',v:'Yes, for a specific slice of the work: anything where the open question is behavioural rather than visual.'},
-        {t:'p',v:'The criteria chips on the conversational car finder are exactly that kind of problem. What happens when you remove a constraint mid-conversation \u2014 does the result set re-rank, does the brief still read as yours, does it feel like editing or like starting again \u2014 cannot be answered by a static frame, and I can have a real one in front of a colleague the same afternoon.'},
-        {t:'p',v:'Not for divergence. Not for visual craft. For settling behaviour before it gets built, it is the fastest honest answer I have found, and it moves the argument from \u201chere is what I think it should do\u201d to \u201chere, try it\u201d.'},
-        {t:'note',v:'<b>And I\u2019d say out loud that I had done it.</b> The whole point of the guardrail on this page is that hiding the machine is the wrong move \u2014 in a portfolio and in a design team.'}
-      ]}
-    ],
-    follow:['car-finder','ai','philosophy']
   }
 ];
 
@@ -1378,8 +1156,7 @@ var TOPICS = {
           {k:'It explains itself whether or not there was a reason',v:'Asked to record why the site is teal, it supplied a rationale. There wasn’t one. I like teal. An agent’s account of why it did something is generated like everything else, so I treat it as output to check and not as evidence.'},
           {k:'Its mistakes arrive already distributed',v:'One wrong figure turned up in three places before anyone noticed. A person makes an error once; an agent makes it everywhere it was asked to be consistent.'}
         ]},
-        {t:'p',v:'The thing that did most for my trust was a test it wrote that walked 76 click paths through this conversation. Proof I could run beat reassurance I had to believe.'},
-        {t:'note',v:'<b>The full record</b> of who decided what on this build is in <b>How this was made</b>.'}
+        {t:'p',v:'The thing that did most for my trust was a test it wrote that walked 76 click paths through this conversation. Proof I could run beat reassurance I had to believe.'}
       ]},
       {q:'Where do agents break on real work?', a:[
         {t:'p',v:'Where the documented process and the actual one part company.'},
@@ -1392,7 +1169,7 @@ var TOPICS = {
         {t:'p',v:'What I haven’t done is watch one of those designs meet real use at scale. That is the experience I am looking for next.'}
       ]}
     ],
-    follow:['car-finder','colophon','contact']
+    follow:['car-finder','ai','contact']
   },
   philosophy:{
     topic:'how I think about design', nav:'Design philosophy', navMeta:'Direct, faff-free', rail:'PH',
@@ -1457,14 +1234,14 @@ var TOPICS = {
         {t:'p',v:'The decisions are mine: the progressive disclosure you’re using right now, the guardrail that stops it inventing answers, the choice to show a compromise rather than a confidence score. Those are the things I’d defend in a critique, and they’re the things worth judging me on.'}
       ]}
     ],
-    follow:['agentic','colophon','contact']
+    follow:['agentic','philosophy','contact']
   },
   gallery:{
     topic:'the visual work', nav:'Visual samples', navMeta:'Wireframes & flows', rail:'VS',
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
       {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['recLive','recDesktop','recMobile','hmcPrompt','hmcGenerated','hmcFunnel','hmcContent','criteria','compromise','triage','copy','categories','metaBugs','metaLedger']},
+      {t:'cards',cls:'gallery',v:['recLive','recDesktop','recMobile','hmcPrompt','hmcGenerated','hmcFunnel','hmcContent','criteria','compromise','categories']},
       {t:'note',v:'<b>Two of these are real design files</b> — the Help Me Choose results page, desktop and mobile. The rest are schematic redraws, because the production screens sit behind cinch’s login. Happy to walk through the actual files in a call.'}
     ],
     probes:[
@@ -1476,7 +1253,7 @@ var TOPICS = {
         {t:'p',v:'They’re all here — pick one from the sidebar and then ask it whatever a portfolio review would ask. Role, hardest decision, what I’d change, how I handled the stakeholder.'}
       ]}
     ],
-    follow:['car-finder','warranty','contact']
+    follow:['car-finder','help-me-choose','contact']
   },
   contact:{
     topic:'getting in touch', nav:'Get in touch', navMeta: CAL_URL ? 'Call · email · CV' : 'Email · CV', rail:'✉',
@@ -1527,13 +1304,11 @@ var INTENTS = [
   {key:'agentic',words:['agent','agents','agentic','autonomy','autonomous','human in the loop','oversight','tool use','multi step']},
   {key:'car-finder',words:['car finder','conversational','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','proud','proudest','best work','the old tool','predecessor','drop off','drop-off','funnel','axure','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
-  {key:'warranty',words:['warranty','repair','triage','marshall','booking','book','fault','garage','service','aftercare','content design','copy','words']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy']},
   {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report']},
-  {key:'ai',words:['ai','artificial intelligence','claude','copilot','gpt','llm','prompt','automate','automation','tooling','guardrail','workflow']},
+  {key:'ai',words:['ai','artificial intelligence','claude','copilot','gpt','llm','prompt','automate','automation','tooling','guardrail','workflow','this site','this page','built this','how was this made','ai generated','generated']},
   {key:'philosophy',words:['philosophy','principle','believe','approach','process','method','values','opinion','style','overruled','disagree']},
   {key:'gallery',words:['visual','image','picture','screenshot','portfolio','sample','wireframe','mockup','flows','designed','show me']},
-  {key:'colophon',words:['this site','this page','how was this made','how did you make','how you built','built this','meta','colophon','figma or','vibe','prompted','generated','rosslm itself','behind this']},
   {key:'about',words:['who are you','about you','experience','background','years','career','cinch','yourself','seniority','skills','stack','code','react','figma','next']}
 ];
 function route(text){
@@ -1555,7 +1330,7 @@ var ABOUT = {
   intro:[
     {t:'p',cls:'lede',v:'Senior UX &amp; Product Designer at cinch, the UK used-car marketplace. Two decades of design and front-end engineering behind it.'},
     {t:'list',v:[
-      'Squadless by design — I work across product areas rather than inside one team, which is how the conversational car finder, warranty and repair, and the competitor landscape all ended up on the same desk.',
+      'Squadless by design — I work across product areas rather than inside one team, which is how the conversational car finder and the competitor landscape ended up on the same desk.',
       'Comfortable with senior stakeholders: most of the job is holding a user-centred line while taking the commercial pressure seriously.',
       'Came up through front-end engineering. Not shipping production code these days, but close enough to it to read cinch’s Next.js and React Native codebase, build prototypes with real state and validation rather than click-throughs, and know what an idea will cost before I propose it.'
     ]}
@@ -1570,7 +1345,7 @@ var FALLBACK = {
     {t:'p',v:'Here’s what I can actually talk about:'}
   ],
   probes:[],
-  follow:['car-finder','agentic','philosophy','colophon','contact']
+  follow:['car-finder','agentic','philosophy','contact']
 };
 
 /* =========================================================
@@ -1583,7 +1358,7 @@ Object.keys(TOPICS).forEach(function(k){ byId[k]=TOPICS[k]; });
 var main=document.getElementById('main'), stage=document.getElementById('stage'),
     hero=document.getElementById('hero'), heroSlot=document.getElementById('heroSlot'),
     heroChips=document.getElementById('heroChips'), inner=document.getElementById('chatInner'),
-    composer=document.getElementById('composer'), suggest=document.getElementById('suggest'),
+    composer=document.getElementById('composer'),
     threadTitle=document.getElementById('threadTitle');
 
 function esc(s){ return String(s).replace(/&(?![a-z#0-9]+;)/g,'&amp;').replace(/</g,'&lt;'); }
@@ -1860,16 +1635,6 @@ function enterZero(){
   ghostDead=false;
   startGhost();
 }
-function setSuggest(keys){
-  suggest.innerHTML='';
-  (keys||[]).forEach(function(k){
-    var e=byId[k];
-    if(!e) return;
-    var b=document.createElement('button');
-    b.type='button'; b.className='chip'; b.dataset.thread=k; b.textContent=e.nav||e.title;
-    suggest.appendChild(b);
-  });
-}
 function markActive(key){
   var items=document.querySelectorAll('[data-nav]');
   for(var i=0;i<items.length;i++) items[i].setAttribute('aria-current', items[i].dataset.nav===key?'true':'false');
@@ -1897,7 +1662,6 @@ function tailFor(key, entry, firstLabel){
 function deliver(key, entry, firstLabel, kind){
   threadTitle.textContent = entry.nav || entry.title;
   markActive(key || '');
-  setSuggest(entry.follow);
   var body=newAssistant();
   var t=think(body, kind || 'open', entry.topic);
   setTimeout(function(){
@@ -2003,29 +1767,17 @@ function ukNow(){
     return {h:parseInt(o.hour,10), min:o.minute, day:o.weekday};
   }catch(err){ return null; }
 }
-/* One clock, two placements: compact in the header, in full in the sidebar footer. */
-function clockParts(){
+/* UK time, compact, in the header chip. */
+function clockShort(){
   var uk=ukNow();
-  if(!uk) return {short:'UK time', full:'Ross is based in the UK — he reads everything that arrives.'};
+  if(!uk) return 'UK time';
   var suffix=uk.h>=12?'pm':'am';
   var h12=uk.h%12===0?12:uk.h%12;
-  var stamp=h12+':'+uk.min+suffix;
-  var weekend=(uk.day==='Sat'||uk.day==='Sun');
-  var line;
-  if(weekend) line='it’s the weekend, so expect a reply on Monday';
-  else if(uk.h>=9&&uk.h<18) line='Ross is at his desk — a reply today is likely';
-  else if(uk.h>=18&&uk.h<23) line='he’ll pick this up in the morning';
-  else line='everyone’s asleep, but he reads everything';
-  return {short:stamp+' UK', full:stamp+' in the UK · '+line};
+  return h12+':'+uk.min+suffix+' UK';
 }
 function paintClock(){
-  var c=clockParts();
   var top=document.getElementById('clockTop');
-  var side=document.getElementById('clockSide');
-  var chip=document.getElementById('statusChip');
-  if(top) top.textContent=c.short;
-  if(side) side.textContent=c.full;
-  if(chip) chip.setAttribute('title',c.full);
+  if(top) top.textContent=clockShort();
 }
 paintClock();
 setInterval(paintClock,30000);
@@ -2217,7 +1969,6 @@ form.addEventListener('submit', function(e){
 heroSlot.appendChild(composer);
 main.classList.add('aurora-on');
 Aurora.wake(true);
-setSuggest(['car-finder','warranty','competitors','contact']);
 autosize();
 startGhost();
 })();
