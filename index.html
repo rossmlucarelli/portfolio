@@ -105,7 +105,18 @@ a{color:var(--accent);text-underline-offset:3px;}
 .sb-link{display:flex;align-items:center;gap:var(--sp-8);padding:var(--sp-8) var(--sp-12);border-radius:var(--r-md);font-family:var(--font-ui);font-size:13px;font-weight:500;color:var(--ink);text-decoration:none;transition:background .14s ease;}
 .sb-link:hover{background:var(--sunk);}
 .sb-link svg{width:var(--size-icon);height:var(--size-icon);flex:none;color:var(--ink-3);}
-.sb-foot{border-top:1px solid var(--line);padding:var(--sp-8) var(--sp-16);display:flex;align-items:center;justify-content:flex-end;}
+.sb-foot{border-top:1px solid var(--line);padding:var(--sp-8);display:flex;align-items:center;gap:var(--sp-8);}
+/* The account row every LLM sidebar keeps in this corner — here it is the
+   person the answers are about, and it opens the contact thread. */
+.sb-me{flex:1;min-width:0;display:flex;align-items:center;gap:var(--sp-12);padding:var(--sp-8);border-radius:var(--r-md);text-align:left;transition:background .14s ease;}
+.sb-me:hover{background:var(--sunk);}
+.sb-me img{width:var(--size-avatar);height:var(--size-avatar);flex:none;border-radius:50%;object-fit:cover;display:block;}
+.sb-me-text{min-width:0;display:flex;flex-direction:column;}
+.sb-me .n{font-family:var(--font-ui);font-size:13.5px;font-weight:600;letter-spacing:-.005em;line-height:20px;}
+.sb-me .s,.sb-me .w{font-family:var(--font-mono);font-size:10.5px;line-height:16px;}
+.sb-me .s{display:flex;align-items:center;gap:var(--sp-8);color:var(--ink-2);}
+.sb-me .s .dot{background:var(--accent-bright);}
+.sb-me .w{color:var(--ink-3);}
 .theme-btn{padding:var(--sp-8);border-radius:var(--r-md);color:var(--ink-3);flex:none;}
 .theme-btn:hover{background:var(--sunk);color:var(--ink);}
 .theme-btn svg{width:var(--size-icon);height:var(--size-icon);display:block;}
@@ -314,7 +325,6 @@ a{color:var(--accent);text-underline-offset:3px;}
 .send:hover{background:var(--accent-hover);transform:translateY(-1px);}
 .send svg{width:var(--size-icon);height:var(--size-icon);display:block;}
 .fineprint{margin:var(--sp-8) 0 0;font-family:var(--font-mono);font-size:10px;color:var(--ink-3);text-align:center;}
-.main.zero .fineprint{display:none;}
 
 /* --- lightbox --- */
 .lb{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:var(--sp-24);background:rgba(9,24,22,.66);backdrop-filter:blur(4px);}
@@ -384,6 +394,14 @@ a{color:var(--accent);text-underline-offset:3px;}
       <div class="sb-group"><p class="sb-label">Pinned</p><ul class="sb-list" id="sbPinned"></ul></div>
     </div>
     <div class="sb-foot">
+      <button class="sb-me" type="button" data-go="contact" aria-label="Ross Lucarelli — open to new roles, remote or Manchester hybrid. Get in touch">
+        <img id="sbPortrait" alt="">
+        <span class="sb-me-text">
+          <span class="n">Ross Lucarelli</span>
+          <span class="s"><span class="dot" aria-hidden="true"></span>Open to new roles</span>
+          <span class="w">Remote or Manchester hybrid</span>
+        </span>
+      </button>
       <button class="theme-btn" id="themeBtn" aria-label="Switch colour theme">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
       </button>
@@ -1833,6 +1851,7 @@ function navItem(entry,key){
   return '<li><button class="sb-item" type="button" data-go="'+key+'" data-nav="'+key+'" aria-current="false">'+
     '<span class="t">'+esc(entry.nav)+'</span><span class="m">'+esc(entry.navMeta||'')+'</span></button></li>';
 }
+document.getElementById('sbPortrait').src=IMG_PORTRAIT;
 document.getElementById('sbCases').innerHTML=CASES.map(function(c){ return navItem(c,c.id); }).join('');
 document.getElementById('sbTopics').innerHTML=['agentic','philosophy','ai','gallery'].map(function(k){ return navItem(TOPICS[k],k); }).join('');
 document.getElementById('sbPinned').innerHTML=
