@@ -114,9 +114,9 @@ a{color:var(--accent);text-underline-offset:3px;}
 .sb-me-text{min-width:0;display:flex;flex-direction:column;}
 .sb-me .n{font-family:var(--font-ui);font-size:13.5px;font-weight:600;letter-spacing:-.005em;line-height:20px;}
 .sb-me .s,.sb-me .w{font-family:var(--font-mono);font-size:10.5px;line-height:16px;}
-.sb-me .s{display:flex;align-items:center;gap:var(--sp-8);color:var(--ink-2);}
+.sb-me .s,.sb-me .w{color:var(--ink-2);}
+.sb-me .s{display:flex;align-items:center;gap:var(--sp-8);}
 .sb-me .s .dot{background:var(--accent-bright);}
-.sb-me .w{color:var(--ink-3);}
 .theme-btn{padding:var(--sp-8);border-radius:var(--r-md);color:var(--ink-3);flex:none;}
 .theme-btn:hover{background:var(--sunk);color:var(--ink);}
 .theme-btn svg{width:var(--size-icon);height:var(--size-icon);display:block;}
@@ -1860,8 +1860,7 @@ document.getElementById('sbPinned').innerHTML=
     (CV_URL
       ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M9 13h6M9 17h4"/></svg>Read my CV'
       : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M9 13h6M9 17h4"/></svg>Request CV')+
-    '</a></li>'+
-  '<li><button class="sb-link" type="button" data-go="contact" data-nav="contact" aria-current="false" style="width:100%;text-align:left;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15a2 2 0 0 1-2 2H8l-4 3V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/></svg>Let’s chat</button></li>';
+    '</a></li>';
 
 var railHTML='<div class="tile" aria-hidden="true">'+TILE_MARK+'</div>';
 CASES.forEach(function(c){
