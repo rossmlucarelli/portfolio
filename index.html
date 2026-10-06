@@ -1,4 +1,4 @@
-<!doctype html><html lang="en-GB"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Ross Lucarelli · RossLM portfolio</title><meta name="description" content="An interactive look at the product thinking, case studies, and design systems of Ross Lucarelli, Senior UX Designer."><meta name="robots" content="noindex"><link rel="canonical" href="https://rosslucarelli.com/"><meta property="og:type" content="website"><meta property="og:title" content="Ross Lucarelli · RossLM portfolio"><meta property="og:description" content="An interactive look at the product thinking, case studies, and design systems of Ross Lucarelli, Senior UX Designer."><meta property="og:url" content="https://rosslucarelli.com/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body>
+<!doctype html><html lang="en-GB"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Ross Lucarelli · RossLM portfolio</title><meta name="description" content="An interactive look at the AI product design, product thinking and case studies of Ross Lucarelli, Senior UX Designer."><meta name="robots" content="noindex"><link rel="canonical" href="https://rosslucarelli.com/"><meta property="og:type" content="website"><meta property="og:title" content="Ross Lucarelli · RossLM portfolio"><meta property="og:description" content="An interactive look at the AI product design, product thinking and case studies of Ross Lucarelli, Senior UX Designer."><meta property="og:url" content="https://rosslucarelli.com/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Instrument+Sans:wght@400;500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -418,7 +418,7 @@ a{color:var(--accent);text-underline-offset:3px;}
         <div class="hero-head">
           <div class="hero-mark" id="heroMark" aria-hidden="true"></div>
           <h2 id="greeting">You’ve reached RossLM</h2>
-          <p class="sub">An interactive look at the product thinking, case studies, and design systems of Ross Lucarelli, Senior UX Designer.</p>
+          <p class="sub">An interactive look at the AI product design, product thinking and case studies of Ross Lucarelli, Senior UX Designer.</p>
         </div>
         <div class="hero-slot" id="heroSlot"></div>
         <div class="hero-chips" id="heroChips"></div>
@@ -982,15 +982,16 @@ var CASES = [
   {
     id:'help-me-choose', topic:'Help Me Choose', nav:'Help Me Choose', navMeta:'cinch · 2022–2026 · four years', rail:'HM',
     prompt:'What are you most proud of?',
-    title:'A tool that worked, that almost nobody used', kicker:'Case study 01 · 2022 → 2026',
-    meta:['cinch','Four years, one tool','Redesign → pitch → replacement'],
+    title:'A design that waited three years for a model', kicker:'Case study 01 · 2022 → 2026',
+    meta:['cinch','Four years, one tool','Redesign → LLM pitch → replacement'],
     triad:{
       challenge:'Help Me Choose converted more than twice as well as the rest of the site — 0.47% against 0.20% — and it was dying. Usage had fallen from 4.45% of visitors to 1.5% in nine months, and of the people who did start it, 42% never reached a recommendation.',
       solution:'A content-first rebuild. Establish what each question was <em>for</em>, write the options in the words people actually use about cars, and test the whole flow as bare wires before anyone drew a screen.',
-      impact:'<b>+6.9%</b> completing, <b>+8.8%</b> adding a recommended car to basket, <b>+4.5%</b> going on to buy. The half we couldn’t build became the case for replacing the wizard altogether.'
+      impact:'<b>+6.9%</b> completing, <b>+8.8%</b> adding a recommended car to basket, <b>+4.5%</b> going on to buy. The half we couldn’t build had to wait for an LLM, and my 2025 pitch to generate it became the case for replacing the wizard with a conversation.'
     },
     intro:[
       {t:'p',cls:'lede',v:'This is the one I’d pick. Four years on a single tool, and you can watch the judgement change across it.'},
+      {t:'p',v:'It is also where my AI work starts. In 2022 I designed a results page that explained every recommendation in the customer’s own terms. It couldn’t be built until a model could write it, and three years later I went back with the prompt.'},
       {t:'p',v:'In 2022 the data said two contradictory things at once. For the people who finished Help Me Choose it was the most valuable thing on the site — they converted at 0.47% against 0.20% for everyone else, and looked at 1.92 cars a visit against 1.32. And almost nobody was finishing it. Usage had collapsed from 4.45% of visitors to 1.54% in nine months, and of those who started, 42% never reached a recommendation.'},
 
       {t:'h',v:'The loss wasn’t where anyone expected'},
@@ -1063,7 +1064,7 @@ var CASES = [
         {t:'p',v:'None of which is a verdict on the original. The wizard was the right answer for 2022 and it paid for itself several times over. It just stopped being the best answer available.'}
       ]}
     ],
-    follow:['car-finder','warranty','philosophy']
+    follow:['car-finder','agentic','warranty']
   },
   {
     id:'car-finder', topic:'the car finder', nav:'Conversational car finder', navMeta:'cinch · flagship · 2026', rail:'CF',
@@ -1077,7 +1078,17 @@ var CASES = [
     },
     intro:[
       {t:'p',cls:'lede',v:'I built the wizard this replaces, which made it easier to be honest about what it was bad at. It collected answers well, it never explained itself, and it couldn’t tell you when your requirements didn’t fit together.'},
-      {t:'p',v:'The interesting part wasn’t adding a model. It was deciding how much of the model to show.'}
+      {t:'p',v:'The interesting part wasn’t adding a model. It was deciding how much of the model to show, and what it is allowed to do without asking.'},
+
+      {t:'h',v:'The brief stays on screen'},
+      {t:'p',v:'You describe what you need in your own words, and the system turns that into criteria. Those criteria stay visible as editable chips for the whole conversation, so what it thinks you asked for is always there to check and to change.'},
+      {t:'p',v:'Each result carries one line on why it is there, and no confidence score. Getting to that was the hardest decision on the project.'},
+      {t:'cards',v:['criteria']},
+
+      {t:'h',v:'When nothing fits, it says so and asks'},
+      {t:'p',v:'If no car clears every criterion, the system names the constraint that has to give and offers to re-run without it, with the consequence attached: drop the panoramic roof and nine cars appear. What it never does is quietly relax a requirement and hand back near-misses.'},
+      {t:'p',v:'That is the human-in-the-loop decision in this product. The system searches and ranks on its own. Changing what you asked for is yours to approve.'},
+      {t:'cards',v:['compromise']}
     ],
     probes:[
       {q:'What was your role, exactly?', a:[
@@ -1093,8 +1104,7 @@ var CASES = [
       {q:'What was the hardest decision?', a:[
         {t:'p',v:'How much reasoning to show. Too little and it’s a black box people don’t trust with an £18,000 purchase. Too much and you’re publishing the model’s homework, which is impressive to nobody and slows the decision down.'},
         {t:'p',v:'The test I landed on: <em>one line, and only if it could change what you click</em>. “Boot fits the pram and the dog” passes. “Matched on 7 of 9 weighted attributes” does not.'},
-        {t:'p',v:'The related call was confidence scores. We discussed showing a percentage next to each match. I argued against it — a number like that implies a precision the system doesn’t have, and once it’s on screen people treat it as fact.'},
-        {t:'cards',cls:'two',v:['criteria','compromise']}
+        {t:'p',v:'The related call was confidence scores. We discussed showing a percentage next to each match. I argued against it — a number like that implies a precision the system doesn’t have, and once it’s on screen people treat it as fact.'}
       ]},
       {q:'How did you handle SLT pushback?', a:[
         {t:'p',v:'The commercial pull was toward a system that always recommends, confidently. A model that says “nothing matches” looks like a model that isn’t selling cars.'},
@@ -1121,7 +1131,7 @@ var CASES = [
         {t:'p',v:'The practical version: I brought the criteria chips as a working prototype rather than a static frame, because the interaction question — what happens when you remove a constraint mid-conversation — can’t be answered in Figma.'}
       ]}
     ],
-    follow:['help-me-choose','warranty','philosophy']
+    follow:['agentic','help-me-choose','warranty']
   },
   {
     id:'warranty', topic:'the warranty work', nav:'Warranty & repair triage', navMeta:'cinch × Marshall Motor Group', rail:'WR',
@@ -1325,6 +1335,65 @@ var CASES = [
 ];
 
 var TOPICS = {
+  agentic:{
+    topic:'designing for agents', nav:'Designing for agents', navMeta:'Trust, control, failure', rail:'AG',
+    prompt:'How do you design for AI agents?', title:'Designing for agents',
+    intro:[
+      {t:'p',cls:'lede',v:'An agent is worth as much as the amount of it you can leave alone. The design work is deciding what it does unasked, what it checks first, and what it looks like when it is wrong.'},
+      {t:'p',v:'These are the positions I hold. Each one came out of a decision on the conversational car finder, which is designed and not yet live, rather than out of a framework.'},
+      {t:'decisions',v:[
+        {k:'Keep the brief on screen',v:'What the system thinks you asked for stays visible and editable throughout. If people can’t see its understanding of the job they can’t correct it, and they stop trusting everything downstream.'},
+        {k:'Act inside the brief, ask before changing it',v:'Searching and ranking need no permission. Dropping one of your requirements does. The system can propose that; it doesn’t get to do it quietly.'},
+        {k:'One line of reasoning, if it changes a decision',v:'“Boot fits the pram and the dog” earns its place. “Matched on 7 of 9 weighted attributes” is the model’s homework.'},
+        {k:'No confidence it can’t back up',v:'A percentage implies a precision the system doesn’t have, and once it is on screen people treat it as fact.'},
+        {k:'Design the failure first',v:'What it does when nothing fits decides whether anyone believes it when something does.'}
+      ]}
+    ],
+    probes:[
+      {q:'When should it act, and when should it ask?', a:[
+        {t:'p',v:'The line I use is reversibility, measured in the person’s terms rather than the system’s.'},
+        {t:'p',v:'Re-running a search costs the person nothing, so it just happens. Relaxing a requirement changes what they asked for, so it is offered as a choice with the consequence attached: drop the panoramic roof and nine cars appear, allow 30,000 miles and four do.'},
+        {t:'p',v:'Both ends of that scale fail the same way. An agent that asks about everything has handed the work back. One that asks about nothing has taken a decision that wasn’t its to take.'},
+        {t:'cards',v:['compromise']}
+      ]},
+      {q:'How much of its working should people see?', a:[
+        {t:'p',v:'I separate two things that both get called transparency.'},
+        {t:'p',v:'What it thinks the job is should be visible all the time, because that is the part a person can act on. On the car finder that is the row of criteria chips: the brief, in the person’s words, editable.'},
+        {t:'p',v:'Why it did something is rationed. The test is one line, and only if it could change what you click. Showing all of it feels like openness and works like noise, and it slows down the decision the person came to make.'},
+        {t:'cards',v:['criteria']}
+      ]},
+      {q:'What happens when it gets it wrong?', a:[
+        {t:'p',v:'Three different failures, and they need three different designs.'},
+        {t:'decisions',v:[
+          {k:'It can’t do what was asked',v:'It says so, names what has to give, and offers the nearest thing with the trade-off shown. I designed this state second on the car finder and should have designed it first.'},
+          {k:'It did something slightly different',v:'The visible brief is how you catch it. If the system’s version of the request is on screen, drift shows up as a chip you didn’t add.'},
+          {k:'It is confidently wrong about a fact',v:'The dangerous one, because nothing about it looks wrong. Anything factual needs a route back to a source a person can check.'}
+        ]},
+        {t:'p',v:'I have been on the receiving end of the third. Building this site, the model took a mislabelled figure from my CV and repeated it in three places. The source deck corrected both of us.'}
+      ]},
+      {q:'What did supervising one teach you?', a:[
+        {t:'p',v:'This site was built by directing a model through the whole build, so I have done a long stretch in the seat an agent’s user sits in. Three things I would now design for.'},
+        {t:'decisions',v:[
+          {k:'People review outcomes, not steps',v:'It made thousands of small choices I never saw. That was fine because I could read what came out and I knew what I was accountable for. So the interface has to make outcomes easy to inspect, because nobody will inspect the steps.'},
+          {k:'It explains itself whether or not there was a reason',v:'Asked to record why the site is teal, it supplied a rationale. There wasn’t one. I like teal. An agent’s account of why it did something is generated like everything else, so I treat it as output to check and not as evidence.'},
+          {k:'Its mistakes arrive already distributed',v:'One wrong figure turned up in three places before anyone noticed. A person makes an error once; an agent makes it everywhere it was asked to be consistent.'}
+        ]},
+        {t:'p',v:'The thing that did most for my trust was a test it wrote that walked 76 click paths through this conversation. Proof I could run beat reassurance I had to believe.'},
+        {t:'note',v:'<b>The full record</b> of who decided what on this build is in <b>How this was made</b>.'}
+      ]},
+      {q:'Where do agents break on real work?', a:[
+        {t:'p',v:'Where the documented process and the actual one part company.'},
+        {t:'p',v:'At the vehicle preparation yard in Corby, the software modelled the work as a clean linear pipeline. The yard doesn’t run that way: cars move out of order, get pulled for a viewing and come back. None of that was visible from a backlog.'},
+        {t:'p',v:'An agent built on the documented process inherits the same blind spot and adds confidence to it. So before automating a workflow I would go and stand next to the people doing it, for the same reason I went to the yard.'}
+      ]},
+      {q:'Have you shipped an agent?', a:[
+        {t:'p',v:'Not one that completes multi-step work on someone’s behalf, and I would rather say so here than have it come up in an interview.'},
+        {t:'p',v:'What I have done is the design problem from both sides. I designed a model-driven product from the argument for it through to its failure states. I wrote the prompt for its predecessor and ran it against real briefs. And I built this site by supervising a model through all of it, with a record of where it went wrong.'},
+        {t:'p',v:'What I haven’t done is watch one of those designs meet real use at scale. That is the experience I am looking for next.'}
+      ]}
+    ],
+    follow:['car-finder','colophon','contact']
+  },
   philosophy:{
     topic:'how I think about design', nav:'Design philosophy', navMeta:'Direct, faff-free', rail:'PH',
     prompt:'What is your design philosophy?', title:'Design philosophy',
@@ -1388,7 +1457,7 @@ var TOPICS = {
         {t:'p',v:'The decisions are mine: the progressive disclosure you’re using right now, the guardrail that stops it inventing answers, the choice to show a compromise rather than a confidence score. Those are the things I’d defend in a critique, and they’re the things worth judging me on.'}
       ]}
     ],
-    follow:['colophon','car-finder','contact']
+    follow:['agentic','colophon','contact']
   },
   gallery:{
     topic:'the visual work', nav:'Visual samples', navMeta:'Wireframes & flows', rail:'VS',
@@ -1455,6 +1524,7 @@ var CV = CV_URL
 
 var INTENTS = [
   {key:'contact',words:['contact','email','hire','hiring','recruit','available','availability','talk','call','chat','reach','cv','resume','linkedin','role','job','vacancy','opportunity','rate','freelance','notice','salary']},
+  {key:'agentic',words:['agent','agents','agentic','autonomy','autonomous','human in the loop','oversight','tool use','multi step']},
   {key:'car-finder',words:['car finder','conversational','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','proud','proudest','best work','the old tool','predecessor','drop off','drop-off','funnel','axure','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
   {key:'warranty',words:['warranty','repair','triage','marshall','booking','book','fault','garage','service','aftercare','content design','copy','words']},
@@ -1500,7 +1570,7 @@ var FALLBACK = {
     {t:'p',v:'Here’s what I can actually talk about:'}
   ],
   probes:[],
-  follow:['car-finder','philosophy','ai','colophon','contact']
+  follow:['car-finder','agentic','philosophy','colophon','contact']
 };
 
 /* =========================================================
@@ -1963,6 +2033,7 @@ setInterval(paintClock,30000);
 var ghost=document.getElementById('ghost'), input=document.getElementById('input');
 var HINTS=[
   'What are you most proud of?',
+  'How do you design for AI agents?',
   'Show me something you’ve designed.',
   'How do you use AI in your process?',
   'What happened at the yard in Corby?',
@@ -2011,7 +2082,7 @@ function navItem(entry,key){
     '<span class="t">'+esc(entry.nav)+'</span><span class="m">'+esc(entry.navMeta||'')+'</span></button></li>';
 }
 document.getElementById('sbCases').innerHTML=CASES.map(function(c){ return navItem(c,c.id); }).join('');
-document.getElementById('sbTopics').innerHTML=['philosophy','ai','gallery'].map(function(k){ return navItem(TOPICS[k],k); }).join('');
+document.getElementById('sbTopics').innerHTML=['agentic','philosophy','ai','gallery'].map(function(k){ return navItem(TOPICS[k],k); }).join('');
 document.getElementById('sbPinned').innerHTML=
   '<li><a class="sb-link" href="'+MAIL+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>Email Ross</a></li>'+
   '<li><a class="sb-link" href="'+CV.href+'"'+CV.attrs+'>'+
@@ -2026,7 +2097,7 @@ CASES.forEach(function(c){
   railHTML+='<button class="rail-btn" type="button" data-go="'+c.id+'" data-nav="'+c.id+'" aria-current="false" title="'+c.nav+'" aria-label="'+c.nav+'">'+c.rail+'</button>';
 });
 railHTML+='<div class="rail-sep"></div>';
-['philosophy','ai','gallery'].forEach(function(k){
+['agentic','philosophy','ai','gallery'].forEach(function(k){
   railHTML+='<button class="rail-btn" type="button" data-go="'+k+'" data-nav="'+k+'" aria-current="false" title="'+TOPICS[k].nav+'" aria-label="'+TOPICS[k].nav+'">'+TOPICS[k].rail+'</button>';
 });
 railHTML+='<div class="rail-spacer"></div>'+
@@ -2036,9 +2107,9 @@ document.getElementById('rail').innerHTML=railHTML;
 
 heroChips.innerHTML=[
   {label:'The work I’m proudest of',go:'help-me-choose',lead:true},
+  {label:'Designing for agents',go:'agentic'},
   {label:'Visual samples',go:'gallery'},
   {label:'Design philosophy',go:'philosophy'},
-  {label:'How I use AI',go:'ai'},
   {label:'Get in touch',go:'contact'}
 ].map(function(c){
   return '<button class="chip'+(c.lead?' lead':'')+'" type="button" data-go="'+c.go+'">'+c.label+'</button>';
