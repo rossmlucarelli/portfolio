@@ -112,11 +112,11 @@ a{color:var(--accent);text-underline-offset:3px;}
 .sb-me:hover{background:var(--sunk);}
 .sb-me img{width:var(--size-avatar);height:var(--size-avatar);flex:none;border-radius:50%;object-fit:cover;display:block;}
 .sb-me-text{min-width:0;display:flex;flex-direction:column;}
-.sb-me .n{font-family:var(--font-ui);font-size:13.5px;font-weight:600;letter-spacing:-.005em;line-height:20px;}
-.sb-me .s,.sb-me .w{font-family:var(--font-mono);font-size:10.5px;line-height:16px;}
-.sb-me .s,.sb-me .w{color:var(--ink-2);}
-.sb-me .s{display:flex;align-items:center;gap:var(--sp-8);}
-.sb-me .s .dot{background:var(--accent-bright);}
+.sb-me-name{font-family:var(--font-ui);font-size:13.5px;font-weight:600;letter-spacing:-.005em;line-height:20px;}
+.sb-me-status,.sb-me-where{font-family:var(--font-mono);font-size:10.5px;line-height:16px;}
+.sb-me-status,.sb-me-where{color:var(--ink-2);}
+.sb-me-status{display:flex;align-items:center;gap:var(--sp-8);}
+.sb-me-status .dot{background:var(--accent-bright);}
 .theme-btn{padding:var(--sp-8);border-radius:var(--r-md);color:var(--ink-3);flex:none;}
 .theme-btn:hover{background:var(--sunk);color:var(--ink);}
 .theme-btn svg{width:var(--size-icon);height:var(--size-icon);display:block;}
@@ -397,9 +397,9 @@ a{color:var(--accent);text-underline-offset:3px;}
       <button class="sb-me" type="button" data-go="contact" aria-label="Ross Lucarelli — open to new roles, remote or Manchester hybrid. Get in touch">
         <img id="sbPortrait" alt="">
         <span class="sb-me-text">
-          <span class="n">Ross Lucarelli</span>
-          <span class="s"><span class="dot" aria-hidden="true"></span>Open to new roles</span>
-          <span class="w">Remote or Manchester hybrid</span>
+          <span class="sb-me-name">Ross Lucarelli</span>
+          <span class="sb-me-status"><span class="dot" aria-hidden="true"></span>Open to new roles</span>
+          <span class="sb-me-where">Remote or Manchester hybrid</span>
         </span>
       </button>
       <button class="theme-btn" id="themeBtn" aria-label="Switch colour theme">
