@@ -1243,7 +1243,7 @@ var TOPICS = {
   },
   ai:{
     topic:'how I use AI', nav:'How I use AI', navMeta:'Guardrails & workflow', rail:'AI',
-    prompt:'How do you use AI in your own design work?', title:'How I use AI',
+    prompt:'How do you use AI in your work?', title:'How I use AI',
     intro:[
       {t:'p',cls:'lede',v:'I’ve really enjoyed designing with AI as a sounding board. It’s a bit like design tennis, but with someone always there.'},
       {t:'p',v:'I use it as an extension of my own ideas. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way. I also like the efficiency of using connectors to let disparate apps talk to each other.'},
@@ -1348,6 +1348,18 @@ var QA = [
     follow:['agentic','car-finder','ai']
   },
   {
+    /* Repeats the opener of the "How I use AI" thread on purpose: asked as a
+       question it gets a short answer like the others, not a titled thread. */
+    id:'ai-use', topic:'how I use AI',
+    q:'How do you use AI in your own design work?', hint:'How do you use AI in your work?',
+    terms:{'use ai':3,'using ai':3,'used ai':3,'ai in your':3,'ai tools':3,'ai tool':3,'work with ai':3,'design with ai':3,
+      'designing with ai':3,'ai workflow':3,'ai in design':3},
+    a:[
+      {t:'p',v:'I’ve really enjoyed designing with AI as a sounding board. It’s a bit like design tennis, but with someone always there. I use it as an extension of my own ideas. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way. I also like the efficiency of using connectors to let disparate apps talk to each other.'}
+    ],
+    follow:['ai','agentic']
+  },
+  {
     id:'lead', topic:'leading other designers',
     q:'Have you led or managed other designers?', hint:'Have you managed other designers?',
     terms:{'managed':2,'manage':2,'manager':2,'managing':2,'management':2,'line manage':3,'line managed':3,'line management':3,
@@ -1406,12 +1418,13 @@ var QA = [
 var qaById={};
 QA.forEach(function(x){ qaById[x.id]=x; });
 
-/* What the prompt box offers, in order. Seven direct questions first — one of
-   them is answered by a whole thread — then the threads themselves, so typing
-   narrows across everything that has a written answer. */
+/* What the prompt box offers, in order. Seven direct questions first, then
+   the threads, so typing narrows across everything that has a written answer.
+   "How I use AI" is left out of the threads here: its question is the third
+   direct one, and two near-identical rows in the list would be noise. */
 var ASKABLE = [
   {id:'work'}, {id:'ai-product'},
-  {id:'ai', thread:true, hint:'How do you use AI in your work?', keys:'tooling tools workflow process claude copilot gemini'},
+  {id:'ai-use'},
   {id:'lead'}, {id:'code'}, {id:'titles'}, {id:'location'},
   {id:'help-me-choose', thread:true, extra:true, keys:'best work proudest wizard'},
   {id:'car-finder', thread:true, extra:true, keys:'chatbot assistant llm flagship current project'},
