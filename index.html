@@ -738,15 +738,21 @@ var ART = {
   },
   hmcGrouping:{
     title:'The grouping exercise',
-    caption:'Five of the six statements from the exercise, with what people put under each. The vocabulary is theirs: “a banger”, “city runner”, “Iso Fix anchor points”, “Dogs!”.',
+    caption:'Five of the statements from the exercise, with what people put under each. The vocabulary is theirs: “a banger”, “city runner”, “Iso Fix anchor points”, “Dogs!”.',
     alt:'A Miro board titled “How would you describe the cars under these groups?”. Five columns, each headed by a statement such as “I want a car big and safe enough for my family”, filled with sticky notes in people’s own words.',
     img:'img/hmc-grouping.webp', w:1390, h:944, shot:true
   },
   hmcAxure:{
     title:'The Axure prototype, with its logic showing',
-    caption:'The option counts itself. Selecting adds one to StatementCount and stops at StatementMax; deselecting takes one away. “Choose between 1 and 3 options” is a rule the prototype enforces. The options follow the statements from the grouping exercise, in the same order.',
-    alt:'An Axure wireframe of the question “What’s most important to you for your next car?” with six options, beside the interactions panel showing the conditional logic that counts selections.',
+    caption:'The option counts itself. Selecting adds one to StatementCount and stops at StatementMax; deselecting takes one away. “Choose between 1 and 3 options” is a rule the prototype enforces. The options shown follow the statements from the grouping exercise.',
+    alt:'An Axure wireframe of the question “What’s most important to you for your next car?” with the first six of its options, beside the interactions panel showing the conditional logic that counts selections.',
     img:'img/hmc-axure.webp', w:641, h:819, shot:true
+  },
+  hmcQuestion:{
+    title:'The same question in the live journey',
+    caption:'Nine options, and “Choose up to 3 options”. The wording moved on from the prototype: “Good for long distances” became “Good for long drives”.',
+    alt:'The live question “What’s most important to you for your next car?” with nine options in two columns. Three are selected: Compact and easy to park, Fast and sporty, Snazzy technology.',
+    img:'img/hmc-question.webp', w:808, h:497, shot:true
   },
   hmcBodyTypes:{
     title:'The body types question',
@@ -801,44 +807,44 @@ var ART = {
     }
   },
   hmcGenerated:{
-    title:'Three briefs, three generated answers',
-    caption:'Run against real briefs rather than described in the abstract. The pitch showed the output, because an idea about generated language is only as good as the language it generates.',
+    title:'Example briefs, run through an LLM',
+    caption:'Two of the example briefs from the pitch, run through an LLM as a basic test of the idea. Each generated line sits under the option it answers.',
     svg:function(){
       var cols=[
-        ['Space','6–8 passengers · Estate/SUV/MPV · £25k–£40k','Volkswagen Touareg',
-         ['A massive boot and spacious cabin for all your gear.','A 5-star safety rating and a full suite of driver-assist systems.','An incredibly comfortable ride that makes every long journey a pleasure.']],
-        ['Compact','2–4 passengers · Coupe/Convertible · £30k–£50k','MINI Hatchback',
-         ['Its legendary small size and tight turning circle make parking effortless.','Agile handling and a responsive engine give it a thrilling “go-kart” feel.','The striking circular OLED display keeps you connected and in control.']],
-        ['Eco-friendly','3–5 passengers · Hatch/Estate/SUV · £30k–£40k','Audi Q7 (Hybrid)',
-         ['Plug-in hybrid technology offers great electric-only range and low emissions.','Standard adaptive air suspension delivers a smooth, comfortable ride.','The multi-screen MMI system creates a genuinely high-tech cabin.']]
+        ['Compact','2–4 passengers · Coupe/Convertible · £30k–£50k','MINI Hatchback',[
+          ['Compact and easy to park','Its legendary small size and tight turning circle make parking effortless.'],
+          ['Fast and sporty','Agile handling and a responsive engine give it a thrilling “go-kart” feel.'],
+          ['Snazzy technology','The striking circular OLED display and modern infotainment system keep you connected and in control.']]],
+        ['Eco-friendly','3–5 passengers · Hatchback/Estate/SUV/Saloon · £30k–£40k','Audi Q7 (Hybrid)',[
+          ['Better for the planet','Plug-in hybrid technology offers a great electric-only range and low emissions.'],
+          ['Good for long drives','Standard adaptive air suspension delivers a wonderfully smooth and comfortable ride.'],
+          ['Snazzy technology','The impressive multi-screen MMI system and Audi Virtual Cockpit create a high-tech cabin.']]]
       ];
-      var s=txt(24,34,'SAME PROMPT, THREE REAL BRIEFS',9.5,P.ink3,500);
+      var s=txt(24,34,'A BASIC TEST: EXAMPLE BRIEFS THROUGH AN LLM',9.5,P.ink3,500);
       s+='<line x1="24" y1="44" x2="616" y2="44" stroke="'+P.faint+'" stroke-width="1.2"/>';
-      var x=24, w=190;
+      var w=290;
       cols.forEach(function(c,i){
-        var cx=x+i*(w+11);
-        s+=box(cx,58,w,306,10,P.bg);
-        s+=pill(cx+14,72,Math.min(w-28,c[0].length*8+26),c[0],true);
-        var meta=c[1].split(' · ');
-        meta.forEach(function(m,mi){ s+=txt(cx+14,118+mi*14,m,8.5,P.ink3); });
-        s+='<line x1="'+(cx+14)+'" y1="164" x2="'+(cx+w-14)+'" y2="164" stroke="'+P.faint+'" stroke-width="1"/>';
-        s+=txt(cx+14,182,'SUGGESTED',8.5,P.ink3,500);
-        s+='<text x="'+(cx+14)+'" y="200" font-family="Instrument Sans, sans-serif" font-size="12" font-weight="600" fill="'+P.ink+'">'+c[2]+'</text>';
-        s+=txt(cx+14,224,'GENERATED',8.5,P.acc,500);
-        var by=238;
-        c[3].forEach(function(b){
+        var cx=24+i*(w+12);
+        s+=box(cx,56,w,328,10,P.bg);
+        s+=pill(cx+14,68,c[0].length*7+28,c[0],true);
+        c[1].split(' · ').forEach(function(m,mi){ s+=txt(cx+14,110+mi*14,m,8.5,P.ink3); });
+        s+='<line x1="'+(cx+14)+'" y1="150" x2="'+(cx+w-14)+'" y2="150" stroke="'+P.faint+'" stroke-width="1"/>';
+        s+=txt(cx+14,167,'SUGGESTED',8.5,P.ink3,500);
+        s+='<text x="'+(cx+14)+'" y="185" font-family="Instrument Sans, sans-serif" font-size="12.5" font-weight="600" fill="'+P.ink+'">'+c[2]+'</text>';
+        s+=txt(cx+14,208,'OPTION PICKED, AND THE LINE GENERATED FOR IT',8,P.ink3,500);
+        var by=228;
+        c[3].forEach(function(pair){
           s+='<path d="M'+(cx+14)+' '+(by-3)+' l3.5 3.5 6-7" fill="none" stroke="'+P.acc+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
-          var words=b.split(' '), line='', ly=by;
+          s+=txt(cx+30,by,pair[0],8.5,P.acc,500);
+          var words=pair[1].split(' '), line='', ly=by+13;
           words.forEach(function(wd){
-            if((line+' '+wd).length>28){ s+=txt(cx+30,ly,line,8.5,P.ink2); line=wd; ly+=12; }
+            if((line+' '+wd).length>46){ s+=txt(cx+30,ly,line,8.5,P.ink2); line=wd; ly+=12; }
             else line = line ? line+' '+wd : wd;
           });
           s+=txt(cx+30,ly,line,8.5,P.ink2);
-          by=ly+24;
+          by=ly+20;
         });
-        x=x;
       });
-      s+=txt(24,388,'Tone, length and benefit-framing are set by the prompt, not by whoever is writing copy that week.',9.5,P.ink3);
       return svgWrap(s);
     }
   },
@@ -937,7 +943,9 @@ var CASES = [
         {t:'p',v:'Content first, and I mean before any visual design at all. Three things had to be true of a question before it earned a place: a stated purpose, data behind the answer for it to filter on, and wording a person would actually use.'},
         {t:'p',v:'That last one came from a grouping exercise. Take the statements someone might genuinely make — “I want a car big and safe enough for my family” — and ask real people which cars and which attributes belong under each. What came back was their vocabulary rather than ours: boot space, Isofix points, a banger, a city runner, running costs. Someone thinking “something for the school run” shouldn’t have to translate it into “MPV” before the tool can help.'},
         {t:'cards',v:['hmcGrouping']},
-        {t:'p',v:'Those statements became the options in the question itself: “Safe for my family”, “Space for all my stuff”. Then we built the whole flow as bare wires and tested that — deliberately plain, deliberately early, so the flow problems surfaced while they were still cheap to fix.'}
+        {t:'p',v:'Those statements became the options in the question itself: “Safe for my family”, “Space for all my stuff”.'},
+        {t:'cards',v:['hmcQuestion']},
+        {t:'p',v:'Before any screen was drawn, we built the whole flow as bare wires and tested that — deliberately plain, deliberately early, so the flow problems surfaced while they were still cheap to fix.'}
       ]},
       {q:'Why Axure rather than Figma?', a:[
         {t:'p',v:'Because everything we were worried about was stateful, and a Figma prototype is a sequence of linked pictures.'},
@@ -952,7 +960,7 @@ var CASES = [
       {q:'Show me the prompt you wrote', a:[
         {t:'p',v:'The idea wasn’t the hard part of the 2025 proposal. Anyone can suggest using an LLM. The work was specifying what it should say and how — content design with an unusual reader.'},
         {t:'p',v:'I wrote the spec: the role it plays, what it gets handed, what to produce, how long. Then the rule that carries the whole thing — <em>instead of “the car has a large boot”, write “the large boot gives you plenty of space for your stuff.”</em> Benefit, not specification. It is the same rule I would give a human writer; the difference is that a model needs it stated every time rather than absorbed once.'},
-        {t:'p',v:'And I ran it against three real briefs rather than describing what it might produce. A proposal about generated language is worth exactly as much as the language it generates.'},
+        {t:'p',v:'And I ran example briefs through an LLM to test the basic function, rather than only describing what it might produce. A proposal about generated language is worth exactly as much as the language it generates.'},
         {t:'cards',cls:'two',v:['hmcPrompt','hmcGenerated']}
       ]},
       {q:'What shipped after the test?', a:[
@@ -1185,7 +1193,7 @@ var TOPICS = {
       ]},
       {q:'Have you shipped an agent?', a:[
         {t:'p',v:'Not one that completes multi-step work on someone’s behalf, and I would rather say so here than have it come up in an interview.'},
-        {t:'p',v:'What I have done is the design problem from both sides. I designed a model-driven product from the argument for it through to its failure states. I wrote the prompt for its predecessor and ran it against real briefs. And I built this site by supervising a model through all of it, with a record of where it went wrong.'},
+        {t:'p',v:'What I have done is the design problem from both sides. I designed a model-driven product from the argument for it through to its failure states. I wrote the prompt for its predecessor and tested the idea by running example briefs through an LLM. And I built this site by supervising a model through all of it, with a record of where it went wrong.'},
         {t:'p',v:'What I haven’t done is watch one of those designs meet real use at scale. That is the experience I am looking for next.'}
       ]}
     ],
@@ -1262,8 +1270,8 @@ var TOPICS = {
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
       {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['recLive','recDesktop','recMobile','hmcBodyTypes','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','criteria','compromise','categories']},
-      {t:'note',v:'<b>Six of these are real files</b> — the Help Me Choose results page as designed and as it is live, the body types question, the grouping exercise and the Axure prototype. The rest are schematic redraws, because the production screens sit behind cinch’s login. Happy to walk through the actual files in a call.'}
+      {t:'cards',cls:'gallery',v:['recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','criteria','compromise','categories']},
+      {t:'note',v:'<b>Seven of these are real files</b> — the Help Me Choose results page as designed and as it is live, two of its questions, the grouping exercise and the Axure prototype. The rest are schematic redraws, because the production screens sit behind cinch’s login. Happy to walk through the actual files in a call.'}
     ],
     probes:[
       {q:'Why not show the real screens?', a:[
