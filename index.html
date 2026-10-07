@@ -326,6 +326,23 @@ a{color:var(--accent);text-underline-offset:3px;}
 .send svg{width:var(--size-icon);height:var(--size-icon);display:block;}
 .fineprint{margin:var(--sp-8) 0 0;font-family:var(--font-mono);font-size:10px;color:var(--ink-3);text-align:center;}
 
+/* --- suggested questions ---
+   The box is a lookup over written answers, so on focus it shows what is
+   in the set and narrows as you type. It opens below the field on the zero
+   state and above it once the composer is docked; script picks the side
+   with room. The slot is lifted so the panel sits over the hero chips.
+   Offsets carry the field's 1px border, so the gap is 8 from its edge. */
+.hero-slot{position:relative;z-index:2;}
+.suggest{position:absolute;left:-1px;right:-1px;z-index:5;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-lg);box-shadow:var(--shadow-pop);padding:var(--sp-8);max-height:352px;overflow-y:auto;text-align:left;animation:rise .2s cubic-bezier(.32,.72,0,1) both;}
+.suggest.below{top:calc(100% + var(--sp-8) + 1px);}
+.suggest.above{bottom:calc(100% + var(--sp-8) + 1px);}
+.suggest .sb-label{padding:var(--sp-8) var(--sp-12) var(--sp-4);margin:0;}
+.suggest-item{display:flex;align-items:center;gap:var(--sp-12);width:100%;min-height:var(--size-control);text-align:left;padding:var(--sp-8) var(--sp-12);border-radius:var(--r-md);font-family:var(--font-ui);font-size:14px;font-weight:500;letter-spacing:-.005em;line-height:1.35;color:var(--ink);transition:background .14s ease;}
+.suggest-item::before{content:"";width:var(--sp-4);height:var(--sp-4);border-radius:50%;flex:none;background:var(--accent-bright);opacity:.7;}
+.suggest-item:hover,.suggest-item:focus-visible{background:var(--sunk);}
+.suggest-item:focus-visible{outline-offset:calc(var(--sp-2) * -1);}
+a.chip{text-decoration:none;}
+
 /* --- lightbox --- */
 .lb{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:var(--sp-24);background:rgba(9,24,22,.66);backdrop-filter:blur(4px);}
 .lb.on{display:flex;}
@@ -441,6 +458,7 @@ a{color:var(--accent);text-underline-offset:3px;}
           <button class="send" type="submit" aria-label="Send">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
           </button>
+          <div class="suggest below" id="suggest" role="group" aria-label="Questions with written answers" hidden></div>
         </form>
         <p class="fineprint">Answers are written by Ross and served from a fixed set.</p>
       </div>
@@ -1225,9 +1243,10 @@ var TOPICS = {
   },
   ai:{
     topic:'how I use AI', nav:'How I use AI', navMeta:'Guardrails & workflow', rail:'AI',
-    prompt:'How do you use AI in your work?', title:'How I use AI',
+    prompt:'How do you use AI in your own design work?', title:'How I use AI',
     intro:[
-      {t:'p',cls:'lede',v:'As a way to widen exploration and compress the boring middle. Not as a way to make the decision.'},
+      {t:'p',cls:'lede',v:'I’ve really enjoyed designing with AI as a sounding board. It’s a bit like design tennis, but with someone always there.'},
+      {t:'p',v:'I use it as an extension of my own ideas. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way. I also like the efficiency of using connectors to let disparate apps talk to each other.'},
       {t:'p',v:'This page is the worked example: a conversational surface with a deliberate guardrail, no live model at read time, and therefore no capacity to invent a claim about my work.'}
     ],
     probes:[
@@ -1297,6 +1316,114 @@ var TOPICS = {
 };
 
 /* =========================================================
+   2a. Direct questions — the ones a recruiter or hiring manager asks
+   before they have read anything. Short answers in my own words, each
+   pointing at the thread that carries the longer version.
+   `terms` are whole-word phrases with a weight; a question is only
+   answered from here when it outscores every thread in the router.
+   ========================================================= */
+var QA = [
+  {
+    id:'work', topic:'the work I’d choose',
+    q:'What kind of work interests you most?', hint:'What work interests you most?',
+    terms:{'kind of work':3,'type of work':3,'sort of work':3,'interests you':3,'interest you':3,'what are you interested in':5,
+      'enjoy':2,'excites':2,'excite':2,'passionate':2,'favourite':2,'favorite':2,'want to work on':3,'like to work on':3,
+      'kind of problems':3,'kind of projects':3,'ideal project':3},
+    a:[
+      {t:'p',v:'Products with AI in them, where the hard part is trust. The conversational car finder is the example: I found it fascinating to consider things like trust and user psychology. I’ve enjoyed establishing guardrails for it too, and those have become design tenets for cinch’s future AI features.'}
+    ],
+    follow:['car-finder','agentic']
+  },
+  {
+    id:'ai-product', topic:'designing AI products',
+    q:'What’s different about designing an AI product?', hint:'How is designing for AI different?',
+    terms:{'ai product':3,'ai products':3,'ai feature':3,'ai features':3,'designing for ai':3,'design for ai':3,'designing an ai':3,
+      'designing ai':3,'designing with a model':3,'different about':3,'different':2,'difference':2,'probabilistic':3,'probabilistically':3,
+      'deterministic':3,'trust in ai':4,'trust ai':3,'blank input':3,'hallucinate':2,'hallucination':2,'hallucinations':2},
+    a:[
+      {t:'p',v:'The biggest difference is that you have to design probabilistically, not deterministically. The UI must handle responses that range from brilliant (traditionally the happy path) to partially or entirely wrong, all without breaking the experience.'},
+      {t:'p',v:'Another is the blank input. Prompt suggestions, contextual action chips and progressive disclosure mean the user never faces an empty box wondering what the model can do.'},
+      {t:'p',v:'And there’s trust. People resist and distrust answers from AI. Trust is built slowly through use, like building a wall brick by brick, and one wrong answer can shatter it completely.'}
+    ],
+    follow:['agentic','car-finder','ai']
+  },
+  {
+    id:'lead', topic:'leading other designers',
+    q:'Have you led or managed other designers?', hint:'Have you managed other designers?',
+    terms:{'managed':2,'manage':2,'manager':2,'managing':2,'management':2,'line manage':3,'line managed':3,'line management':3,
+      'led':2,'have you led':4,'lead':1,'are you a lead':4,'leadership':2,'mentor':2,'mentored':2,'mentoring':2,'coached':2,
+      'coaching':2,'direct reports':3,'managed a team':3,'led a team':3,'people management':3},
+    a:[
+      {t:'p',v:'Not as a line manager in any sustained way. When cinch restructured and removed its Design Lead roles, seniors were asked to step into them, and I went through the management training. My formal line management was very short: my one report resigned almost immediately, and I helped guide him through that process. Before that, at JD Sports, I coached and mentored more junior designers, though it wasn’t official line management.'},
+      {t:'p',v:'Where I have led is direction. The guardrails I established for the conversational car finder have become design tenets for cinch’s future AI features, and I made the internal case for the design team’s AI tooling.'}
+    ],
+    follow:['car-finder','ai']
+  },
+  {
+    id:'code', topic:'code',
+    q:'Do you still code?', hint:'Do you still code?',
+    terms:{'code':2,'coding':2,'coder':2,'still code':3,'can you code':3,'write code':3,'developer':2,'programming':2,
+      'front end':3,'frontend':2,'technical':2,'html':2,'css':2,'javascript':2},
+    a:[
+      {t:'p',v:'I came up through front-end engineering, but I’m not shipping production code now and I’d have a lot to brush up on. I’m still close enough to read a codebase and to judge what an idea will cost to build before I propose it.'}
+    ],
+    follow:['car-finder']
+  },
+  {
+    id:'titles', topic:'job titles',
+    q:'Your titles say UX Designer. Are you a product designer?', hint:'UX designer or product designer?',
+    terms:{'titles':2,'title':2,'job title':3,'ux or product':4,'ux vs product':4,'ux versus product':4,'are you a product designer':5,
+      'are you a ux designer':5,'ux designer or':2,'ux designer':1,'product designer':1,'difference between ux':4},
+    a:[
+      {t:'p',v:'I’ve always considered them the same job, and there are enough arguments about that online already. At cinch most of us are called UX Designers and the more recent hires are called Product Designers. We do the same role.'}
+    ],
+    follow:['car-finder','philosophy']
+  },
+  {
+    id:'location', topic:'where I work',
+    q:'Where are you based, and do you work remotely?', hint:'Where are you based?',
+    terms:{'based':2,'where are you':3,'where do you live':4,'location':2,'located':2,'remote':2,'remotely':2,'hybrid':2,'office':2,
+      'relocate':2,'relocation':2,'commute':2,'manchester':2,'london':2,'wfh':2,'work from home':3,'onsite':2,'on site':3,'in person':3},
+    a:[
+      {t:'p',v:'I’m based in Bury, Greater Manchester, and work remotely. I’m happy to spend some days in an office in or around Manchester.'}
+    ],
+    follow:['contact']
+  },
+  {
+    /* Not listed anywhere: these are asked, but they are answered on a call. */
+    id:'call', topic:'that', nav:'Get in touch',
+    q:'',
+    terms:{'salary':3,'salary expectations':3,'compensation':2,'day rate':3,'how much':3,'notice period':3,'notice':2,'start date':3,
+      'when could you start':5,'when can you start':5,'how soon':3,'leaving':2,'leave cinch':4,'leaving cinch':4,
+      'why are you leaving':5,'why are you looking':5,'why do you want to leave':5,'why leave':3},
+    a:[
+      {t:'p',v:'That’s better answered in a conversation than on a web page. Email me and I’ll reply.'},
+      {t:'contact'}
+    ],
+    follow:[]
+  }
+];
+var qaById={};
+QA.forEach(function(x){ qaById[x.id]=x; });
+
+/* What the prompt box offers, in order. Seven direct questions first — one of
+   them is answered by a whole thread — then the threads themselves, so typing
+   narrows across everything that has a written answer. */
+var ASKABLE = [
+  {id:'work'}, {id:'ai-product'},
+  {id:'ai', thread:true, hint:'How do you use AI in your work?', keys:'tooling tools workflow process claude copilot gemini'},
+  {id:'lead'}, {id:'code'}, {id:'titles'}, {id:'location'},
+  {id:'help-me-choose', thread:true, extra:true, keys:'best work proudest wizard'},
+  {id:'car-finder', thread:true, extra:true, keys:'chatbot assistant llm flagship current project'},
+  {id:'agentic', thread:true, extra:true, keys:'agent autonomy oversight'},
+  {id:'competitors', thread:true, extra:true, keys:'market landscape strategy research'},
+  {id:'yard', thread:true, extra:true, keys:'site visit field operations'},
+  {id:'philosophy', thread:true, extra:true, keys:'principles approach values process'},
+  {id:'gallery', thread:true, extra:true, keys:'images screenshots wireframes designs examples'},
+  {id:'contact', thread:true, extra:true, keys:'email hire cv resume available role'}
+];
+
+/* =========================================================
    3. Intent routing
    ========================================================= */
 var MAIL = 'mailto:rossmlucarelli@gmail.com?subject=' + encodeURIComponent('Inquiry regarding UX role - via RossLM');
@@ -1329,8 +1456,9 @@ var INTENTS = [
   {key:'gallery',words:['visual','image','picture','screenshot','portfolio','sample','wireframe','mockup','flows','designed','show me']},
   {key:'about',words:['who are you','about you','experience','background','years','career','cinch','yourself','seniority','skills','stack','code','react','figma','next']}
 ];
+function norm(text){ return ' '+String(text).toLowerCase().replace(/[^a-z0-9\s']/g,' ').replace(/\s+/g,' ')+' '; }
 function route(text){
-  var q=' '+text.toLowerCase().replace(/[^a-z0-9\s']/g,' ').replace(/\s+/g,' ')+' ';
+  var q=norm(text);
   var best=null,bestScore=0;
   for(var i=0;i<INTENTS.length;i++){
     var score=0;
@@ -1340,7 +1468,46 @@ function route(text){
     }
     if(score>bestScore){ bestScore=score; best=INTENTS[i].key; }
   }
-  return bestScore>=2?best:null;
+  return {key:bestScore>=2?best:null, score:bestScore};
+}
+/* Direct questions match on whole words only, and have to beat the thread
+   router outright — a tie goes to the thread, which is the fuller answer. */
+function routeQA(text){
+  var q=norm(text);
+  var best=null,bestScore=0;
+  QA.forEach(function(x){
+    var score=0;
+    for(var term in x.terms){ if(q.indexOf(' '+term+' ')>-1) score += x.terms[term]; }
+    if(score>bestScore){ bestScore=score; best=x; }
+  });
+  return {qa:bestScore>=2?best:null, score:bestScore};
+}
+
+/* Everything the box can offer, with the text typing is matched against. */
+function askableList(){
+  return ASKABLE.map(function(s){
+    var src = s.thread ? byId[s.id] : qaById[s.id];
+    var q = s.thread ? src.prompt : src.q;
+    var keys = s.keys || '';
+    if(!s.thread){ for(var term in src.terms) keys += ' '+term; }
+    return {id:s.id, thread:!!s.thread, extra:!!s.extra, q:q, hint:s.hint||src.hint||q, hay:norm(q+' '+keys)};
+  });
+}
+var STOP=' what when where which that this with have your you are the and for about does from they them would could should there their been being were will into than then tell show give some any more most much very just like want know think really ross rosslm ';
+function tokens(text, min){
+  return norm(text).trim().split(' ').filter(function(t){ return t.length>=min && STOP.indexOf(' '+t+' ')<0; });
+}
+/* Nearest written answers to something the router could not place. */
+function nearest(text, max){
+  var toks=tokens(text,4);
+  var scored=[];
+  askableList().forEach(function(c,i){
+    var s=0;
+    toks.forEach(function(t){ if(c.hay.indexOf(' '+t)>-1) s++; });
+    if(s) scored.push({c:c,s:s,i:i});
+  });
+  scored.sort(function(a,b){ return b.s-a.s || a.i-b.i; });
+  return scored.slice(0,max).map(function(x){ return x.c; });
 }
 
 var ABOUT = {
@@ -1359,8 +1526,8 @@ var ABOUT = {
 var FALLBACK = {
   title:'Off-script',
   intro:[
-    {t:'p',v:'That one’s outside what I’ve written up. There’s no live model behind this page — every answer is one I wrote, which is why I can promise none of it is invented.'},
-    {t:'p',v:'Here’s what I can actually talk about:'}
+    {t:'p',v:'I haven’t written an answer to that one. There’s no live model behind this page — every answer is one I wrote, which is why I can promise none of it is invented.'},
+    {t:'p',v:'These are the closest things I have written up. Or send me the question and I’ll answer it myself.'}
   ],
   probes:[],
   follow:['car-finder','agentic','philosophy','contact']
@@ -1620,7 +1787,7 @@ function think(bodyEl, kind, topic){
 /* =========================================================
    5. Conversation
    ========================================================= */
-var currentKey=null, answered={}, introShown={};
+var currentKey=null, answered={}, introShown={}, askedQA={};
 
 function enterChat(){
   if(!main.classList.contains('zero')) return;
@@ -1644,6 +1811,7 @@ function enterZero(){
   inner.innerHTML='';
   answered={};
   introShown={};
+  askedQA={};
   hero.hidden=false;
   heroSlot.appendChild(composer);
   threadTitle.textContent='New conversation';
@@ -1717,6 +1885,7 @@ function openEntry(key){
   inner.innerHTML='';
   answered={};
   introShown={};
+  askedQA={};
   currentKey=key;
   addUser(e.prompt||e.title);
   stage.scrollTop=0;
@@ -1762,13 +1931,95 @@ function runProbe(key, idx){
   }, t.totalMs);
 }
 
+/* --- direct questions --- */
+function isAsked(c){ return c.thread ? !!introShown[c.id] : !!askedQA[c.id]; }
+function askChip(c){ return '<button class="chip probe" type="button" data-ask="'+c.id+'">'+esc(c.q)+'</button>'; }
+/* The direct questions not yet asked in this transcript. */
+function otherQuestionsHTML(label){
+  var left=askableList().filter(function(c){ return !c.extra && !isAsked(c); });
+  if(!left.length) return '';
+  return '<div class="chips-block qa-block"><p class="sb-label">'+label+'</p><div class="chips">'+left.map(askChip).join('')+'</div></div>';
+}
+function retireQABlocks(){
+  var old=inner.querySelectorAll('.qa-block');
+  for(var i=0;i<old.length;i++){
+    var chunk=old[i].parentNode;
+    old[i].remove();
+    if(chunk && chunk.classList.contains('chunk') && !chunk.children.length) chunk.remove();
+  }
+}
+function appendChunk(body, html){
+  if(!html) return;
+  var box=document.createElement('div');
+  box.className='chunk done';
+  box.innerHTML=html;
+  body.appendChild(box);
+}
+
+function deliverQA(x, kind){
+  retireQABlocks();
+  askedQA[x.id]=true;
+  threadTitle.textContent = x.nav || x.q;
+  markActive('');
+  var body=newAssistant();
+  var t=think(body, kind || 'probe', x.topic);
+  setTimeout(function(){
+    t.stop(); t.remove();
+    streamInto(body, blocksHTML(x.a), function(){
+      appendChunk(body, followHTML(x.follow, 'More on this'));
+      appendChunk(body, otherQuestionsHTML('Other questions'));
+      if(nearBottom()) stage.scrollTop=stage.scrollHeight;
+    });
+  }, t.totalMs);
+}
+
+/* Nothing matched. Say so, offer the nearest written answers, and give the
+   question a way to reach me — the one thing a fixed set can't do itself. */
+function deliverFallback(text){
+  retireQABlocks();
+  threadTitle.textContent = FALLBACK.title;
+  markActive('');
+  var body=newAssistant();
+  var t=think(body, 'typed');
+  setTimeout(function(){
+    t.stop(); t.remove();
+    streamInto(body, blocksHTML(FALLBACK.intro), function(){
+      var near=nearest(text,3);
+      var have={};
+      near.forEach(function(c){ have[c.id]=true; });
+      askableList().forEach(function(c){
+        if(near.length<4 && !c.extra && !have[c.id] && !isAsked(c)){ near.push(c); have[c.id]=true; }
+      });
+      var mail='mailto:rossmlucarelli@gmail.com?subject='+encodeURIComponent('A question RossLM couldn’t answer');
+      /* a typed question can end mid-emoji once trimmed; don't let that break the link */
+      try{ mail += '&body='+encodeURIComponent('Hi Ross — I asked RossLM:\n\n“'+text.slice(0,600)+'”\n\n'); }catch(err){}
+      appendChunk(body, '<div class="chips-block qa-block"><p class="sb-label">Closest answers I have</p><div class="chips">'+
+        near.map(askChip).join('')+
+        '<a class="chip" href="'+mail+'">Email me this question</a></div></div>');
+      appendChunk(body, followHTML(FALLBACK.follow.filter(function(k){ return !have[k]; }), 'Or pick a thread'));
+      if(nearBottom()) stage.scrollTop=stage.scrollHeight;
+    });
+  }, t.totalMs);
+}
+
+/* A suggested question or an "other questions" chip. Same as typing it. */
+function askById(id){
+  var x=qaById[id];
+  if(x){ enterChat(); closeDrawer(); addUser(x.q); deliverQA(x, 'probe'); return; }
+  if(byId[id]){ retireQABlocks(); continueTo(id); }
+}
+
 /* free text */
 function ask(text){
   enterChat();
   addUser(text);
-  var key=route(text);
-  var entry = key==='about' ? ABOUT : (key&&byId[key] ? byId[key] : FALLBACK);
-  var entryKey = (key&&byId[key]) ? key : null;
+  var hit=route(text), direct=routeQA(text);
+  if(direct.qa && direct.score>hit.score){ deliverQA(direct.qa, 'typed'); return; }
+  var key=hit.key;
+  if(!key){ deliverFallback(text); return; }
+  retireQABlocks();
+  var entry = key==='about' ? ABOUT : byId[key];
+  var entryKey = byId[key] ? key : null;
   if(entryKey){ currentKey=entryKey; answered[entryKey]=answered[entryKey]||{}; }
   deliver(entryKey, entry, 'What would you like to know?', 'typed');
 }
@@ -1801,14 +2052,9 @@ paintClock();
 setInterval(paintClock,30000);
 
 var ghost=document.getElementById('ghost'), input=document.getElementById('input');
-var HINTS=[
-  'What are you most proud of?',
-  'How do you design for AI agents?',
-  'Show me something you’ve designed.',
-  'How do you use AI in your process?',
-  'What happened at the yard in Corby?',
-  'Are you available for a senior role?'
-];
+/* The hint cycles the questions people actually arrive with. Each one has a
+   written answer, and the same list opens under the box on focus. */
+var HINTS=askableList().filter(function(c){ return !c.extra; }).map(function(c){ return c.hint; });
 var ghostTimer=null, ghostDead=false, hintIndex=0;
 function startGhost(){
   if(ghostDead) return;
@@ -1837,12 +2083,98 @@ input.addEventListener('focus', function(){
   if(!ghostDead){ stopGhost(); ghost.textContent='Ask me something…'; }
   syncGhost();
   Aurora.speed(1.8);
+  if(!suggestMuted) openSuggest();
 });
 input.addEventListener('blur', function(){ Aurora.speed(1); });
 input.addEventListener('input', function(){
   syncGhost(); autosize();
   Aurora.speed(input.value.length ? 2.3 : 1.8);
+  suggestMuted=false;
+  openSuggest();
 });
+
+/* --- suggested questions -----------------------------------------
+   Empty box: the direct questions not yet asked. Typing: whatever in the
+   set contains every word typed. Nothing matching closes the panel rather
+   than saying "no results", because the router may still place the
+   question from its keywords. */
+var suggest=document.getElementById('suggest'), form=document.getElementById('form');
+var SUGGEST_MAX=5, suggestMuted=false;
+function suggestItems(){
+  var all=askableList(), toks=tokens(input.value,2);
+  if(!toks.length){
+    var fresh=all.filter(function(c){ return !c.extra && !isAsked(c); });
+    if(fresh.length<SUGGEST_MAX) fresh=fresh.concat(all.filter(function(c){ return c.extra && !isAsked(c); }));
+    return fresh.slice(0,SUGGEST_MAX);
+  }
+  return all.filter(function(c){
+    for(var i=0;i<toks.length;i++) if(c.hay.indexOf(' '+toks[i])<0) return false;
+    return true;
+  }).slice(0,SUGGEST_MAX);
+}
+function placeSuggest(){
+  var vv=window.visualViewport;
+  var top = vv ? vv.offsetTop : 0;
+  var bottom = vv ? vv.offsetTop + vv.height : window.innerHeight;
+  var zero = main.classList.contains('zero');
+  if(zero){
+    var sr=stage.getBoundingClientRect();
+    top=Math.max(top, sr.top); bottom=Math.min(bottom, sr.bottom);
+  }
+  var r=form.getBoundingClientRect();
+  var below=bottom - r.bottom - 16, above=r.top - top - 16;
+  suggest.style.maxHeight='';
+  var need=Math.min(suggest.scrollHeight, 352);
+  var down = zero ? (below>=need || below>=above) : false;
+  suggest.className='suggest '+(down?'below':'above');
+  suggest.style.maxHeight=Math.max(96, Math.min(352, down?below:above))+'px';
+}
+function openSuggest(){
+  var items=suggestItems();
+  if(!items.length){ closeSuggest(); return; }
+  var typed=tokens(input.value,2).length>0;
+  suggest.innerHTML='<p class="sb-label">'+(typed?'Matching answers':'Questions I’ve written answers to')+'</p>'+
+    items.map(function(c){ return '<button class="suggest-item" type="button" data-suggest="'+c.id+'">'+esc(c.q)+'</button>'; }).join('');
+  var was=suggest.hidden;
+  suggest.hidden=false;
+  if(!was) suggest.style.animation='none'; else suggest.style.animation='';
+  placeSuggest();
+}
+function closeSuggest(){ suggest.hidden=true; }
+/* Keep focus in the textarea on press, so the panel is still there on click
+   (a button doesn't take focus on click in every browser). */
+suggest.addEventListener('mousedown', function(e){ e.preventDefault(); });
+suggest.addEventListener('click', function(e){
+  var it=e.target.closest('[data-suggest]');
+  if(!it) return;
+  input.value=''; autosize(); syncGhost();
+  closeSuggest(); input.blur();
+  askById(it.dataset.suggest);
+});
+form.addEventListener('focusout', function(e){
+  if(!e.relatedTarget || !form.contains(e.relatedTarget)){ closeSuggest(); suggestMuted=false; }
+});
+/* Arrow keys walk from the box into the list and back; Escape closes it. */
+form.addEventListener('keydown', function(e){
+  if(suggest.hidden) return;
+  var items=suggest.querySelectorAll('.suggest-item');
+  var at=Array.prototype.indexOf.call(items, document.activeElement);
+  var up=suggest.classList.contains('above');
+  if(e.key==='Escape'){ suggestMuted=true; closeSuggest(); input.focus(); e.stopPropagation(); return; }
+  if(e.key!=='ArrowDown' && e.key!=='ArrowUp') return;
+  var dir=e.key==='ArrowDown'?1:-1;
+  if(at<0){
+    if(document.activeElement!==input || input.value.indexOf('\n')>-1) return;
+    if(up ? dir===-1 : dir===1){ e.preventDefault(); items[up?items.length-1:0].focus(); }
+    return;
+  }
+  e.preventDefault();
+  var next=at+dir;
+  if(next<0 || next>=items.length){ input.focus(); return; }
+  items[next].focus();
+});
+window.addEventListener('resize', function(){ if(!suggest.hidden) placeSuggest(); });
+if(window.visualViewport) window.visualViewport.addEventListener('resize', function(){ if(!suggest.hidden) placeSuggest(); });
 
 /* =========================================================
    7. Sidebar + rail
@@ -1948,6 +2280,8 @@ document.addEventListener('click', function(e){
     block.parentNode.replaceChild(holder.firstChild, block);
     return;
   }
+  var asked=e.target.closest('[data-ask]');
+  if(asked){ askById(asked.dataset.ask); return; }
   var thread=e.target.closest('[data-thread]');
   if(thread){ continueTo(thread.dataset.thread); return; }
   var probe=e.target.closest('[data-probe]');
@@ -1968,7 +2302,6 @@ document.getElementById('sbBrand').addEventListener('click', function(){
   closeDrawer();
 });
 
-var form=document.getElementById('form');
 function autosize(){
   input.style.height='auto';
   input.style.height=Math.min(input.scrollHeight,132)+'px';
@@ -1981,6 +2314,7 @@ form.addEventListener('submit', function(e){
   var v=input.value.trim();
   if(!v) return;
   input.value=''; autosize(); syncGhost();
+  closeSuggest();
   ask(v);
 });
 
