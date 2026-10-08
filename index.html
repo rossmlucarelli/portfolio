@@ -23,6 +23,9 @@
   --accent:#0A6E66; --accent-hover:#085650; --accent-bright:#12A093;
   --accent-tint:#DFF0ED; --accent-ink:#FAFFFE; --focus:#0A6E66;
   --aurora-1:rgba(18,160,147,.20); --aurora-2:rgba(10,110,102,.13);
+  /* the wash's six hues at line strength, in wheel order from the accent */
+  --edge-1:#12A093; --edge-2:#5E8FD0; --edge-3:#9A78C6; --edge-4:#D97A80; --edge-5:#DCA046; --edge-6:#62B274;
+  --edge-glow:.55; --edge-glow-focus:.75; --edge-glow-busy:.9;
   --shadow-card:0 1px 2px rgba(16,40,36,.05), 0 8px 24px -14px rgba(16,40,36,.22);
   --shadow-field:0 1px 2px rgba(16,40,36,.05), 0 10px 30px -18px rgba(16,40,36,.40);
   --shadow-pop:0 24px 60px -18px rgba(12,32,29,.38);
@@ -41,6 +44,8 @@
     --accent:#58CFC0; --accent-hover:#7FDFD2; --accent-bright:#58CFC0;
     --accent-tint:#17302C; --accent-ink:#06201D; --focus:#7FDFD2;
     --aurora-1:rgba(88,207,192,.14); --aurora-2:rgba(88,207,192,.07);
+    --edge-1:#58CFC0; --edge-2:#78A5DC; --edge-3:#AA91D7; --edge-4:#E48C91; --edge-5:#E6B46E; --edge-6:#82C88C;
+    --edge-glow:.5; --edge-glow-focus:.7; --edge-glow-busy:.85;
     --shadow-card:0 1px 2px rgba(0,0,0,.45), 0 10px 26px -16px rgba(0,0,0,.75);
     --shadow-field:0 1px 2px rgba(0,0,0,.45), 0 12px 34px -20px rgba(0,0,0,.85);
     --shadow-pop:0 28px 70px -20px rgba(0,0,0,.85);
@@ -53,6 +58,8 @@
   --accent:#58CFC0; --accent-hover:#7FDFD2; --accent-bright:#58CFC0;
   --accent-tint:#17302C; --accent-ink:#06201D; --focus:#7FDFD2;
   --aurora-1:rgba(88,207,192,.14); --aurora-2:rgba(88,207,192,.07);
+  --edge-1:#58CFC0; --edge-2:#78A5DC; --edge-3:#AA91D7; --edge-4:#E48C91; --edge-5:#E6B46E; --edge-6:#82C88C;
+  --edge-glow:.5; --edge-glow-focus:.7; --edge-glow-busy:.85;
   --shadow-card:0 1px 2px rgba(0,0,0,.45), 0 10px 26px -16px rgba(0,0,0,.75);
   --shadow-field:0 1px 2px rgba(0,0,0,.45), 0 12px 34px -20px rgba(0,0,0,.85);
   --shadow-pop:0 28px 70px -20px rgba(0,0,0,.85);
@@ -316,12 +323,41 @@ a{color:var(--accent);text-underline-offset:3px;}
 .main:not(.zero) .composer{border-top:1px solid var(--line);background:var(--ground);padding-bottom:env(safe-area-inset-bottom,0px);}
 .composer-inner{max-width:760px;margin:0 auto;padding:var(--sp-12) var(--sp-16) var(--sp-16);}
 .main.zero .composer-inner{padding:0;max-width:none;}
-.field{display:flex;align-items:flex-end;gap:var(--sp-8);position:relative;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-xl);padding:var(--sp-8) var(--sp-8) var(--sp-8) var(--sp-16);transition:border-color .18s ease, box-shadow .18s ease;}
+.field{display:flex;align-items:flex-end;gap:var(--sp-8);position:relative;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-xl);padding:var(--sp-8) var(--sp-8) var(--sp-8) var(--sp-16);}
 .main.zero .field{box-shadow:var(--shadow-field);padding:var(--sp-12) var(--sp-12) var(--sp-12) var(--sp-24);}
-.field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
-.field textarea{flex:1;min-width:0;border:0;background:none;resize:none;font-family:var(--font-body);font-size:15.5px;line-height:1.5;color:var(--ink);padding:var(--sp-8) 0;max-height:136px;position:relative;z-index:1;text-align:left;}
+/* One line is 24px. The box grows a line at a time to five (5 x 24, plus
+   8 of padding top and bottom, is 136) and only then scrolls; script
+   keeps the scrollbar away until there is something to scroll. */
+.field textarea{flex:1;min-width:0;border:0;background:none;resize:none;font-family:var(--font-body);font-size:15.5px;line-height:24px;color:var(--ink);height:40px;max-height:136px;padding:var(--sp-8) var(--sp-8) var(--sp-8) 0;overflow-y:hidden;position:relative;z-index:1;text-align:left;}
 .field textarea:focus{outline:none;}
-.ghost{position:absolute;left:var(--sp-16);right:72px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink-3);font-size:15.5px;line-height:1.5;white-space:nowrap;overflow:hidden;text-align:left;z-index:0;}
+.field textarea::-webkit-scrollbar{width:8px;}
+.field textarea::-webkit-scrollbar-track{background:var(--accent-tint);border-radius:8px;}
+.field textarea::-webkit-scrollbar-thumb{background:var(--accent-bright);border-radius:8px;}
+@supports not selector(::-webkit-scrollbar){.field textarea{scrollbar-width:thin;scrollbar-color:var(--accent-bright) var(--accent-tint);}}
+
+/* --- the edge ---
+   The field's border is a band of the wash's own spectrum, turning slowly
+   round the box. Script owns the clock: it writes --et (0 to 1) and eases
+   the pace up while an answer is being found and back down afterwards, so
+   the colours carry on from wherever they were and nothing ever restarts —
+   including when the composer is lifted out of the hero and docked.
+   .edge sits on the field's border box. ::before is the line, cut out of
+   a full paint with a mask; ::after is the same paint blurred, reaching
+   8px past the field and tucked behind it as a glow. The glow has three
+   strengths: at rest, focused, and while an answer is on its way. */
+.edge{position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;--et:0;
+  --edge-paint:conic-gradient(from calc(var(--et) * 1turn),var(--edge-1),var(--edge-2) 17%,var(--edge-3) 34%,var(--edge-4) 50%,var(--edge-5) 66%,var(--edge-6) 83%,var(--edge-1));}
+.edge::before,.edge::after{content:"";position:absolute;border-radius:inherit;background:var(--edge-paint);}
+.edge::before{inset:0;padding:2px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);}
+.edge::after{inset:calc(var(--sp-8) * -1);border-radius:var(--sp-32);z-index:-1;filter:blur(24px);opacity:var(--edge-glow);transition:opacity .6s ease;}
+/* Focus used to turn the border teal and add a pale ring. The border is
+   spoken for now, and a ring between the line and its glow reads as a
+   second border, so focus thickens the line by a pixel and brings the
+   glow up instead. */
+.field:focus-within .edge::before{padding:3px;}
+.field:focus-within .edge::after{opacity:var(--edge-glow-focus);}
+.main.busy .edge::after{opacity:var(--edge-glow-busy);}
+.ghost{position:absolute;left:var(--sp-16);right:72px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink-3);font-size:15.5px;line-height:24px;white-space:nowrap;overflow:hidden;text-align:left;z-index:0;}
 .main.zero .ghost{left:var(--sp-24);}
 .ghost.hide{display:none;}
 .caret{display:inline-block;width:1.5px;height:1.05em;vertical-align:-.18em;background:var(--accent-bright);margin-left:var(--sp-2);animation:blink 1.05s steps(1) infinite;}
@@ -462,6 +498,7 @@ a.chip{text-decoration:none;}
     <div class="composer" id="composer">
       <div class="composer-inner">
         <form class="field" id="form">
+          <span class="edge" id="edge" aria-hidden="true"></span>
           <div class="ghost" id="ghost" aria-hidden="true"></div>
           <textarea id="input" rows="1" aria-label="Ask RossLM a question"></textarea>
           <button class="send" type="submit" aria-label="Send">
@@ -626,6 +663,40 @@ var Aurora = (function(){
     wake:function(on){ on ? start() : stop(); },
     speed:function(v){ target = v; },
     retheme:function(){ if(running){ build(); } else if(REDUCED && size()){ build(); draw(); } }
+  };
+})();
+
+/* =========================================================
+   0b. Edge — the prompt box's moving border.
+   One clock, never reset. pace() sets where the speed is heading and
+   every frame closes part of the gap, so quickening for an answer and
+   settling afterwards are the same movement at a different rate. The
+   clock is kept here rather than in a CSS animation because the composer
+   is moved between the hero and the dock, and a CSS animation starts
+   again from zero when its element is re-inserted.
+   ========================================================= */
+var Edge = (function(){
+  var el = document.getElementById('edge');
+  if(!el) return {pace:function(){}};
+  var TURN = 11000;                       /* ms per turn at rest */
+  var phase = 0, rate = 1, goal = 1, last = 0;
+
+  function frame(now){
+    var dt = last ? Math.min(now-last, 50) : 16;
+    last = now;
+    rate += (goal - rate) * (1 - Math.exp(-dt/380));       /* ease toward, never snap */
+    phase = (phase + dt / TURN * rate) % 1;
+    el.style.setProperty('--et', phase.toFixed(4));
+    requestAnimationFrame(frame);
+  }
+  if(!REDUCED) requestAnimationFrame(frame);              /* reduced motion: it holds still */
+
+  return {
+    pace:function(v){
+      goal = v;
+      var m = document.getElementById('main');
+      if(m) m.classList.toggle('busy', v > 1);
+    }
   };
 })();
 
@@ -1678,6 +1749,9 @@ function avState(bodyEl, state){
   if(!msg || !msg.classList) return;
   msg.classList.remove('working','answering');
   if(state) msg.classList.add(state);
+  /* the prompt box keeps the same time: quick while it looks, easing as
+     words land, back to rest when it's done */
+  Edge.pace(state==='working' ? 3.5 : state==='answering' ? 1.8 : 1);
 }
 
 function streamInto(bodyEl, html, done){
@@ -1810,6 +1884,7 @@ function enterChat(){
 }
 function enterZero(){
   main.classList.add('zero');
+  Edge.pace(1);
   main.classList.add('aurora-on');
   Aurora.wake(true); Aurora.speed(1);
   inner.hidden=true;
@@ -2307,9 +2382,14 @@ document.getElementById('sbBrand').addEventListener('click', function(){
   closeDrawer();
 });
 
+/* One line is 40px tall (24 of text, 8 above and below). Measure from
+   there, grow to five lines, and only then let the box scroll. */
+var LINE_1=40, LINE_5=136;
 function autosize(){
-  input.style.height='auto';
-  input.style.height=Math.min(input.scrollHeight,132)+'px';
+  input.style.height=LINE_1+'px';
+  var full=input.scrollHeight;
+  input.style.height=Math.max(LINE_1, Math.min(full, LINE_5))+'px';
+  input.style.overflowY = full>LINE_5 ? 'auto' : 'hidden';
 }
 input.addEventListener('keydown', function(e){
   if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); form.requestSubmit(); }
