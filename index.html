@@ -151,11 +151,12 @@ a{color:var(--accent);text-underline-offset:3px;}
   mask-image:linear-gradient(to top,#000 0%,#000 26%,rgba(0,0,0,.55) 62%,transparent 100%);
 }
 .main.aurora-on .aurora{opacity:1;}
-/* A field of small icons behind the zero state. Faint at rest; the ones
-   near the pointer take a colour and lean away from it. It comes and goes
-   with the wash. */
+/* A field of small icons behind every screen. On the first screen the
+   ones near the pointer take a colour and lean away from it. Behind a
+   conversation the same icons stay, in the margins either side of the
+   text, and hold still. */
 .motes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0;transition:opacity .9s ease;}
-.main.aurora-on .motes{opacity:1;}
+.main.aurora-on .motes,.main:not(.zero) .motes{opacity:1;}
 /* Drawn at a fraction of the display size and scaled up — the browser's own
    smoothing does the blurring for free, and nothing has a crisp edge. */
 .aurora canvas{width:100%;height:100%;display:block;}
@@ -334,7 +335,14 @@ a{color:var(--accent);text-underline-offset:3px;}
 
 /* --- composer --- */
 .composer{flex:none;position:relative;z-index:2;text-align:left;}
+/* Docked, the bar is frosted like the sidebar. A solid bar was a pale slab
+   laid across the wash while the wash was still on its way out; this one
+   lets the colour through during the handover and settles to the page
+   colour once it has gone. */
 .main:not(.zero) .composer{border-top:1px solid var(--line);background:var(--ground);padding-bottom:env(safe-area-inset-bottom,0px);}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .main:not(.zero) .composer{background:color-mix(in srgb,var(--ground) 30%,transparent);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);}
+}
 .composer-inner{max-width:760px;margin:0 auto;padding:var(--sp-12) var(--sp-16) var(--sp-16);}
 .main.zero .composer-inner{padding:0;max-width:none;}
 .field{display:flex;align-items:flex-end;gap:var(--sp-8);position:relative;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-xl);padding:var(--sp-8) var(--sp-8) var(--sp-8) var(--sp-16);}
@@ -765,7 +773,9 @@ var Edge = (function(){
    pushed a few pixels away, then drifts back more slowly than it left,
    so the pointer leaves a short trail. Colour is by position, in the
    wash's own left-to-right order. Nothing is drawn behind the hero's
-   text. Touch screens get the still field.
+   text. Touch screens get the still field. In a conversation the grid
+   stays where it is, clears the text column instead, and ignores the
+   pointer.
    ========================================================= */
 var Motes = (function(){
   var cv = document.getElementById('motes');
@@ -856,7 +866,7 @@ var Motes = (function(){
     "M8 5.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6zM8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1",
     "M3 13C3 7 7 3 13.500 2.500 13 9 9 13 3 13zM3 13l6-6"
   ].map(function(d){ return new Path2D(d); });
-  var items = [], W = 0, H = 0, dpr = 1;
+  var items = [], W = 0, H = 0, dpr = 1, laid = '';
   var mx = -1e4, my = -1e4, raf = null;
   var ink = [138,151,146], hues = [];
 
@@ -884,22 +894,45 @@ var Motes = (function(){
     var t = Math.min(1, Math.sqrt(dx*dx+dy*dy)/fade);
     return t*t*(3-2*t);
   }
+  /* The boxes to keep clear. First screen: each thing in the hero.
+     Conversation: the whole text column, top to bottom. */
+  function zones(hr){
+    var boxes = [];
+    if(host.classList.contains('zero')){
+      var hero = document.getElementById('hero');
+      if(hero && !hero.hidden) [].forEach.call(hero.querySelectorAll('.hero-mark, h2, .sub, .hero-slot, .chip'), function(c){
+        var r = c.getBoundingClientRect();
+        if(r.width) boxes.push({left:r.left-hr.left, right:r.right-hr.left, top:r.top-hr.top, bottom:r.bottom-hr.top, pad:16, fade:56});
+      });
+    }else{
+      var col = document.getElementById('chatInner'), r = col && col.getBoundingClientRect();
+      if(r && r.width) boxes.push({left:r.left-hr.left, right:r.right-hr.left, top:-1e5, bottom:1e5, pad:0, fade:40});
+    }
+    return boxes;
+  }
   function layout(){
     var hr = host.getBoundingClientRect();
     if(!hr.width || !hr.height) return;
+    var bar = host.querySelector('.topbar');
+    var top = bar ? Math.round(bar.getBoundingClientRect().bottom - hr.top) : 0;
+    var boxes = zones(hr), key = hr.width+'x'+hr.height+'x'+top;
+    function target(it){
+      var m = 1;
+      for(var b=0;b<boxes.length;b++) m = Math.min(m, clear(it.x, it.y, boxes[b], boxes[b].pad, boxes[b].fade));
+      return m;
+    }
+    /* Same size as last time: the icons stay exactly where they are and
+       only fade towards their new strength, so going from the first screen
+       into a conversation is one grid changing, not two swapping. */
+    if(key === laid && items.length){
+      items.forEach(function(it){ it.mt = target(it); if(REDUCED) it.m = it.mt; });
+      if(REDUCED) draw(); else kick();
+      return;
+    }
+    laid = key;
     W = hr.width; H = hr.height;
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
-    /* keep clear of each thing in the hero, and of the top bar */
-    var hero = document.getElementById('hero'), bar = host.querySelector('.topbar');
-    var boxes = [];
-    if(hero && !hero.hidden){
-      [].forEach.call(hero.querySelectorAll('.hero-mark, h2, .sub, .hero-slot, .chip'), function(c){
-        var r = c.getBoundingClientRect();
-        if(r.width) boxes.push({left:r.left-hr.left, right:r.right-hr.left, top:r.top-hr.top, bottom:r.bottom-hr.top});
-      });
-    }
-    var top = bar ? bar.getBoundingClientRect().bottom - hr.top : 0;
     var cols = Math.ceil(W/PITCH)+1, rows = Math.ceil(H/PITCH)+1;
     var x0 = (W - (cols-1)*PITCH)/2, seed = 7, deck = [];
     function shuffled(){
@@ -910,7 +943,7 @@ var Motes = (function(){
       }
       return a;
     }
-    var old = items; items = [];
+    items = [];
     var grid = [];
     for(var r=0;r<rows;r++){
       grid[r] = [];
@@ -928,13 +961,11 @@ var Motes = (function(){
         }
         grid[r][c] = n;
         if(y > H + SIZE) continue;
-        var m = 1;
-        for(var b=0;b<boxes.length;b++) m = Math.min(m, clear(x, y, boxes[b], 16, 56));
-        if(m < 0.02) continue;
-        items.push({x:x, y:y, p:PATHS[n], m:m, c:hueAt(x/W), s:0, ox:0, oy:0});
+        var it = {x:x, y:y, p:PATHS[n], m:0, mt:0, c:hueAt(x/W), s:0, ox:0, oy:0};
+        it.m = it.mt = target(it);
+        items.push(it);
       }
     }
-    old = null;
     draw();
   }
   function draw(){
@@ -943,6 +974,7 @@ var Motes = (function(){
     ctx.lineWidth = 1.3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     for(var i=0;i<items.length;i++){
       var it = items[i], s = it.s;
+      if(it.m < 0.01) continue;
       var k = (SIZE/16) * (1 + 0.14*s) * dpr;
       ctx.setTransform(k,0,0,k, (it.x+it.ox)*dpr - 8*k, (it.y+it.oy)*dpr - 8*k);
       var c = it.c;
@@ -963,6 +995,7 @@ var Motes = (function(){
         it.ox += (dx*push - it.ox)*e; it.oy += (dy*push - it.oy)*e;
       }
       if(it.s < 0.004 && t === 0){ it.s = 0; it.ox = 0; it.oy = 0; } else live = true;
+      if(Math.abs(it.mt-it.m) > 0.004){ it.m += (it.mt-it.m)*0.07; live = true; } else it.m = it.mt;
     }
     draw();
     raf = live ? requestAnimationFrame(frame) : null;
@@ -2168,6 +2201,7 @@ function enterChat(){
   hero.hidden=true;
   inner.hidden=false;
   main.appendChild(composer);
+  Motes.layout();
   stopGhost();
   ghost.textContent='Ask me something…';
 }
