@@ -357,6 +357,9 @@ a{color:var(--accent);text-underline-offset:3px;}
 .field:focus-within .edge::before{padding:3px;}
 .field:focus-within .edge::after{opacity:var(--edge-glow-focus);}
 .main.busy .edge::after{opacity:var(--edge-glow-busy);}
+/* Docked, the field sits 12 to 16px under the divider. The glow is pulled
+   in to a close halo there, tight enough that none of it reaches the line. */
+.main:not(.zero) .edge::after{inset:var(--sp-4);border-radius:inherit;filter:blur(6px);}
 .ghost{position:absolute;left:var(--sp-16);right:72px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink-3);font-size:15.5px;line-height:24px;white-space:nowrap;overflow:hidden;text-align:left;z-index:0;}
 .main.zero .ghost{left:var(--sp-24);}
 .ghost.hide{display:none;}
