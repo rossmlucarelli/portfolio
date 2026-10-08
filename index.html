@@ -436,6 +436,39 @@ a.chip{text-decoration:none;}
   .hero{padding:var(--sp-32) var(--sp-24) var(--sp-48);}
 }
 
+/* --- the sidebar as glass ---
+   Plain white, it looked unfinished beside a first screen that had gained
+   a wash, a glowing border and a field of icons. Now it is frosted and
+   see-through, with a faint tint of its own at the edges. From 1024px it
+   is a rounded pane floating 16px in from the edges and lying OVER the
+   main area, which is padded to make room, so the wash and the icons run
+   behind it and show through. Inside a conversation there is nothing
+   behind it but the ground, and the tint is what keeps it from going flat.
+   As a drawer on smaller screens it sits over a dimmed page, so it stays
+   nearly solid there. */
+.app{position:relative;}
+.sidebar{--glass-fill:88%;--glass-line:color-mix(in srgb,var(--ink) 9%,transparent);background:
+  radial-gradient(130% 42% at 0% 100%,color-mix(in srgb,var(--edge-5) 12%,transparent),transparent 72%),
+  radial-gradient(130% 46% at 100% 100%,color-mix(in srgb,var(--edge-3) 11%,transparent),transparent 72%),
+  radial-gradient(110% 30% at 30% 0%,color-mix(in srgb,var(--edge-1) 10%,transparent),transparent 72%),
+  color-mix(in srgb,var(--surface) var(--glass-fill),transparent);
+  -webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);
+  border-right:1px solid color-mix(in srgb,var(--surface) 75%,transparent);}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.sidebar{background-color:var(--surface);}}
+.sb-head{border-bottom-color:var(--glass-line);}
+.sb-foot{border-top-color:var(--glass-line);}
+.sb-label{color:var(--accent);}
+.sb-item,.sb-link{position:relative;}
+.sb-item:hover,.sb-link:hover,.sb-me:hover,.sb-brand-hit:hover,.theme-btn:hover{background:color-mix(in srgb,var(--surface) 55%,transparent);}
+/* the current thread is a card with a short bar of the border's colours */
+.sb-item[aria-current="true"]{background:color-mix(in srgb,var(--surface) 80%,transparent);box-shadow:var(--shadow-card);}
+.sb-item[aria-current="true"]::before{content:"";position:absolute;left:0;top:var(--sp-8);bottom:var(--sp-8);width:var(--sp-4);border-radius:var(--r-pill);background:linear-gradient(var(--edge-1),var(--edge-2),var(--edge-3));}
+@media (min-width:1024px){
+  .sidebar{--glass-fill:56%;position:absolute;z-index:4;top:var(--sp-16);bottom:var(--sp-16);left:var(--sp-16);border-radius:var(--r-xl);overflow:hidden;
+    border:1px solid color-mix(in srgb,var(--surface) 85%,transparent);box-shadow:var(--shadow-card),0 24px 48px -32px rgba(16,40,36,.45);}
+  .main{padding-left:calc(var(--sidebar-w) + var(--sp-16));}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
   .caret,.stream-caret{display:none;}
