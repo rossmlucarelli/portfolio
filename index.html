@@ -151,6 +151,11 @@ a{color:var(--accent);text-underline-offset:3px;}
   mask-image:linear-gradient(to top,#000 0%,#000 26%,rgba(0,0,0,.55) 62%,transparent 100%);
 }
 .main.aurora-on .aurora{opacity:1;}
+/* A field of small icons behind the zero state. Faint at rest; the ones
+   near the pointer take a colour and lean away from it. It comes and goes
+   with the wash. */
+.motes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0;transition:opacity .9s ease;}
+.main.aurora-on .motes{opacity:1;}
 /* Drawn at a fraction of the display size and scaled up — the browser's own
    smoothing does the blurring for free, and nothing has a crisp edge. */
 .aurora canvas{width:100%;height:100%;display:block;}
@@ -477,6 +482,7 @@ a.chip{text-decoration:none;}
 
   <div class="main zero" id="main">
     <div class="aurora" aria-hidden="true"><canvas id="auroraCanvas"></canvas></div>
+    <canvas class="motes" id="motes" aria-hidden="true"></canvas>
     <header class="topbar">
       <button class="icon-btn menu" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -700,6 +706,191 @@ var Edge = (function(){
       var m = document.getElementById('main');
       if(m) m.classList.toggle('busy', v > 1);
     }
+  };
+})();
+
+/* =========================================================
+   0c. Motes — the icon field behind the zero state.
+   A brick-laid grid of 16px line icons: the tools of the job, the
+   subjects of the case studies, and the mark. At rest they are barely
+   there. Within reach of the pointer each one takes its colour and is
+   pushed a few pixels away, then drifts back more slowly than it left,
+   so the pointer leaves a short trail. Colour is by position, in the
+   wash's own left-to-right order. Nothing is drawn behind the hero's
+   text. Touch screens get the still field.
+   ========================================================= */
+var Motes = (function(){
+  var cv = document.getElementById('motes');
+  var nil = {retheme:function(){}, layout:function(){}};
+  if(!cv || !cv.getContext || !window.Path2D) return nil;
+  var ctx = cv.getContext('2d');
+  var host = cv.parentNode;
+  var PITCH = 48, SIZE = 16, REACH = 128, PUSH = 6, REST = 0.13;
+  var PATHS = [
+    "M4 2.5v10l2.8-2.5 1.8 3.8 1.6-.8-1.8-3.7H12z",
+    "M3 3.5h10a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H7.5L4.5 14v-2.5H3a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1z",
+    "M8 2c.4 3.2 2.8 5.6 6 6-3.2.4-5.6 2.8-6 6-.4-3.2-2.8-5.6-6-6 3.2-.4 5.6-2.8 6-6z",
+    "M5 2v12M11 2v12M2 5h12M2 11h12",
+    "M8 2l2 2-2 2-2-2zM4 6l2 2-2 2-2-2zM12 6l2 2-2 2-2-2zM8 10l2 2-2 2-2-2z",
+    "M8 2l6 3-6 3-6-3zM2 8.2l6 3 6-3M2 11l6 3 6-3",
+    "M3.5 5V3.5h9V5M8 3.5v9M6.2 12.5h3.6",
+    "M8 2l3.5 5-2 6.5h-3l-2-6.5zM8 2v6.3M8 8.3a1 1 0 1 0 0 2 1 1 0 0 0 0-2z",
+    "M2.5 12.5C2.5 6 13.5 10 13.5 3.5M2.5 12.5h4M13.5 3.5h-4",
+    "M2.5 10.5l8-8 3 3-8 8zM5 8l1.2 1.2M7 6l1.2 1.2M9 4l1.2 1.2",
+    "M2.5 5h6M11.5 5h2M2.5 11h2M7.5 11h6M10 3.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM6 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z",
+    "M5.5 4.5h5a3.5 3.5 0 0 1 0 7h-5a3.5 3.5 0 0 1 0-7zM10.5 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z",
+    "M5.5 4.5L2 8l3.5 3.5M10.5 4.5L14 8l-3.5 3.5",
+    "M2.5 3h11a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM4.5 6.5l2 1.5-2 1.5M8 10h3",
+    "M4 2.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM12 2.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM8 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM5.5 4h5M4.7 5.3l2.6 5.4M11.3 5.3l-2.6 5.4",
+    "M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8s-2.4 4.5-6.5 4.5S1.5 8 1.5 8zM8 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z",
+    "M7 2.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zM10.3 10.3l3.2 3.2",
+    "M5.8 10.5a4 4 0 1 1 4.4 0V12H5.8zM6.3 14h3.4",
+    "M3.5 14V2.5M3.5 3h8L9.7 5.8l1.8 2.7h-8",
+    "M3 2.5h10v7L9.5 13H3zM13 9.5H9.5V13",
+    "M8 13.5S2.5 10 2.5 6.2A2.9 2.9 0 0 1 8 5a2.9 2.9 0 0 1 5.5 1.2C13.5 10 8 13.5 8 13.5z",
+    "M8 2l1.8 3.9 4.2.5-3.1 2.9.8 4.2L8 11.4l-3.7 2.1.8-4.2L2 6.4l4.2-.5z",
+    "M5.5 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM7.6 7.9L13 2.5M11 4.5l1.8 1.8M9.3 6.2l1.2 1.2",
+    "M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM8 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.2 7h4.4M9.4 7h4.4M8 9.5V14",
+    "M2 11V8.5l1.5-.7L5 4.5h6l1.5 3.3 1.5.7V11zM3.5 11v1.5M12.5 11v1.5M4.3 7.8h7.4",
+    "M8 14.5S3.5 10 3.5 6.5a4.5 4.5 0 0 1 9 0C12.5 10 8 14.5 8 14.5zM8 5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z",
+    "M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM8 4.5V8l2.3 1.5",
+    "M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM5.3 8.2l1.9 1.9 3.6-3.9",
+    "M9 1.8L3.5 9H8l-1 5.2L12.5 7H8z",
+    "M8 5.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6zM8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1",
+    "M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z",
+    "M8 7a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM5.2 5.2a4 4 0 0 0 0 5.6M10.8 5.2a4 4 0 0 1 0 5.6M3.1 3.1a7 7 0 0 0 0 9.8M12.9 3.1a7 7 0 0 1 0 9.8",
+    "M2.5 2.5H7V7H2.5zM9 2.5h4.5V7H9zM2.5 9H7v4.5H2.5zM9 9h4.5v4.5H9z",
+    "M2.5 3h11v10h-11zM2.5 10.5l3-3L8 10l2-2 3.5 3.5M10.5 5.2a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8z",
+    "M6.8 9.2a3 3 0 0 0 4.2 0l2-2a3 3 0 0 0-4.2-4.2l-.9.9M9.2 6.8a3 3 0 0 0-4.2 0l-2 2a3 3 0 0 0 4.2 4.2l.9-.9",
+    "M8 3v10M3 8h10",
+    "M6 2.5l-1 11M11 2.5l-1 11M2.8 6h10.7M2.5 10h10.7",
+    "M4 12l8-8M6 4h6v6",
+    "M5.5 5.5h5v5h-5zM5.5 5.5H4A1.5 1.5 0 1 1 5.5 4zM10.5 5.5V4A1.5 1.5 0 1 1 12 5.5zM10.5 10.5H12a1.5 1.5 0 1 1-1.5 1.5zM5.5 10.5V12A1.5 1.5 0 1 1 4 10.5z",
+    "M8 2S3.5 7 3.5 10a4.5 4.5 0 0 0 9 0C12.5 7 8 2 8 2z",
+    "M4.5 2.5h7v11L8 11l-3.5 2.5z",
+    "M4 11V7.5a4 4 0 0 1 8 0V11l1.2 1.5H2.8zM6.7 14h2.6",
+    "M8 2a2 2 0 0 0-2 2v4a2 2 0 0 0 4 0V4a2 2 0 0 0-2-2zM3.8 7.5a4.2 4.2 0 0 0 8.4 0M8 11.7V14",
+    "M8 2.5a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4zM2.8 13.8a5.2 5.2 0 0 1 10.4 0",
+    "M8 2l5.5 3v6L8 14l-5.5-3V5zM2.5 5L8 8l5.5-3M8 8v6",
+    "M2.5 13.5l.8-3.3 7.5-7.5 2.5 2.5-7.5 7.5zM9.3 4.2l2.5 2.5",
+    "M14 2L2 7l4.5 2L8 14zM14 2L6.5 9"
+    ].map(function(d){ return new Path2D(d); });
+  var items = [], W = 0, H = 0, dpr = 1;
+  var mx = -1e4, my = -1e4, raf = null;
+  var ink = [138,151,146], hues = [];
+
+  function hex(v){
+    v = (v||'').trim().replace('#','');
+    if(v.length===3) v = v[0]+v[0]+v[1]+v[1]+v[2]+v[2];
+    var n = parseInt(v,16);
+    return isNaN(n) ? null : [(n>>16)&255,(n>>8)&255,n&255];
+  }
+  function readTheme(){
+    var cs = getComputedStyle(document.documentElement);
+    ink = hex(cs.getPropertyValue('--ink-2')) || ink;
+    /* amber, rose, violet, blue, teal, green: the wash, left to right */
+    hues = [5,4,3,2,1,6].map(function(n){ return hex(cs.getPropertyValue('--edge-'+n)) || ink; });
+  }
+  function hueAt(u){
+    var f = Math.max(0, Math.min(0.9999, u)) * (hues.length-1), i = Math.floor(f), k = f-i;
+    var a = hues[i], b = hues[i+1];
+    return [a[0]+(b[0]-a[0])*k, a[1]+(b[1]-a[1])*k, a[2]+(b[2]-a[2])*k];
+  }
+  /* 0 inside the box, rising to 1 over `fade` px outside it */
+  function clear(x, y, r, pad, fade){
+    var dx = Math.max(r.left-pad-x, 0, x-(r.right+pad));
+    var dy = Math.max(r.top-pad-y, 0, y-(r.bottom+pad));
+    var t = Math.min(1, Math.sqrt(dx*dx+dy*dy)/fade);
+    return t*t*(3-2*t);
+  }
+  function layout(){
+    var hr = host.getBoundingClientRect();
+    if(!hr.width || !hr.height) return;
+    W = hr.width; H = hr.height;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+    /* keep clear of each thing in the hero, and of the top bar */
+    var hero = document.getElementById('hero'), bar = host.querySelector('.topbar');
+    var boxes = [];
+    if(hero && !hero.hidden){
+      [].forEach.call(hero.querySelectorAll('.hero-mark, h2, .sub, .hero-slot, .chip'), function(c){
+        var r = c.getBoundingClientRect();
+        if(r.width) boxes.push({left:r.left-hr.left, right:r.right-hr.left, top:r.top-hr.top, bottom:r.bottom-hr.top});
+      });
+    }
+    var top = bar ? bar.getBoundingClientRect().bottom - hr.top : 0;
+    var cols = Math.ceil(W/PITCH)+1, rows = Math.ceil(H/PITCH)+1;
+    var x0 = (W - (cols-1)*PITCH)/2, seed = 7;
+    var old = items; items = [];
+    var grid = [];
+    for(var r=0;r<rows;r++){
+      grid[r] = [];
+      for(var c=0;c<cols;c++){
+        var x = x0 + c*PITCH + (r%2 ? PITCH/2 : 0), y = top + PITCH/2 + r*PITCH;
+        /* a different icon from the ones beside and above it */
+        var n;
+        do{ seed = (seed*1103515245 + 12345) & 0x7fffffff; n = seed % PATHS.length; }
+        while((c && grid[r][c-1]===n) || (r && (grid[r-1][c]===n || grid[r-1][c+1]===n || (c && grid[r-1][c-1]===n))));
+        grid[r][c] = n;
+        if(y > H + SIZE) continue;
+        var m = 1;
+        for(var b=0;b<boxes.length;b++) m = Math.min(m, clear(x, y, boxes[b], 16, 56));
+        if(m < 0.02) continue;
+        items.push({x:x, y:y, p:PATHS[n], m:m, c:hueAt(x/W), s:0, ox:0, oy:0});
+      }
+    }
+    old = null;
+    draw();
+  }
+  function draw(){
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ctx.lineWidth = 1.3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for(var i=0;i<items.length;i++){
+      var it = items[i], s = it.s;
+      var k = (SIZE/16) * (1 + 0.14*s) * dpr;
+      ctx.setTransform(k,0,0,k, (it.x+it.ox)*dpr - 8*k, (it.y+it.oy)*dpr - 8*k);
+      var c = it.c;
+      ctx.strokeStyle = 'rgba('+Math.round(ink[0]+(c[0]-ink[0])*s)+','+Math.round(ink[1]+(c[1]-ink[1])*s)+','+Math.round(ink[2]+(c[2]-ink[2])*s)+','+(it.m*(REST+(1-REST)*s)).toFixed(3)+')';
+      ctx.stroke(it.p);
+    }
+  }
+  function frame(){
+    var live = false;
+    for(var i=0;i<items.length;i++){
+      var it = items[i];
+      var dx = it.x-mx, dy = it.y-my, d = Math.sqrt(dx*dx+dy*dy);
+      var t = Math.max(0, 1 - d/REACH); t = t*t*(3-2*t);
+      var e = t > it.s ? 0.24 : 0.055;                 /* quick to light, slow to fade */
+      it.s += (t-it.s)*e;
+      if(!REDUCED){
+        var push = d > 0.5 ? PUSH*t/d : 0;
+        it.ox += (dx*push - it.ox)*e; it.oy += (dy*push - it.oy)*e;
+      }
+      if(it.s < 0.004 && t === 0){ it.s = 0; it.ox = 0; it.oy = 0; } else live = true;
+    }
+    draw();
+    raf = live ? requestAnimationFrame(frame) : null;
+  }
+  function kick(){ if(!raf) raf = requestAnimationFrame(frame); }
+
+  /* mouse and pen only: a finger has no hover, and a drag there is a scroll */
+  host.addEventListener('pointermove', function(e){
+    if(e.pointerType === 'touch' || !host.classList.contains('zero')) return;
+    var r = host.getBoundingClientRect();
+    mx = e.clientX - r.left; my = e.clientY - r.top;
+    kick();
+  });
+  host.addEventListener('pointerleave', function(){ mx = my = -1e4; kick(); });
+
+  if(window.ResizeObserver) new ResizeObserver(layout).observe(host);
+  else window.addEventListener('resize', layout);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+
+  readTheme();
+  return {
+    retheme:function(){ readTheme(); items.forEach(function(it){ it.c = hueAt(it.x/W); }); draw(); },
+    layout:function(){ mx = my = -1e4; layout(); }
   };
 })();
 
@@ -1903,6 +2094,7 @@ function enterZero(){
   stage.scrollTop=0;
   ghostDead=false;
   startGhost();
+  Motes.layout();
 }
 function markActive(key){
   var items=document.querySelectorAll('[data-nav]');
@@ -2350,6 +2542,7 @@ themeBtn.addEventListener('click', function(){
   document.documentElement.setAttribute('data-theme',next);
   try{ localStorage.setItem('rosslm-theme',next); }catch(err){}
   Aurora.retheme();
+  Motes.retheme();
 });
 
 document.addEventListener('click', function(e){
@@ -2409,6 +2602,7 @@ form.addEventListener('submit', function(e){
 heroSlot.appendChild(composer);
 main.classList.add('aurora-on');
 Aurora.wake(true);
+Motes.layout();
 autosize();
 startGhost();
 })();
