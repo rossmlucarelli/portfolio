@@ -1685,7 +1685,7 @@ var CASES = [
         {t:'p',v:'In 2025 cinch was asking for ideas on where AI could help. Mine was smarter recommendations for Help Me Choose: an LLM writing the explanations on its results page, a design we’d drawn in 2022 and couldn’t build then.'},
         {t:'p',v:'It went into a deck alongside a bigger idea, a conversational car finder. I thought the conversation would take a while to build, and that smarter recommendations would be useful in the meantime.'},
         {t:'p',v:'Then I designed the conversation.'},
-        {t:'note',v:'<b>The full story</b> — the original wizard, the design that was three years early and the prompt I wrote for it — is in the <b>Help Me Choose</b> case study.'}
+        {t:'next',key:'help-me-choose',label:'Read the Help Me Choose case study',v:'<b>The full story</b> — the original wizard, the design that was three years early and the prompt I wrote for it — is in the <b>Help Me Choose</b> case study.'}
       ]},
       {q:'What was the hardest decision?', a:[
         {t:'p',v:'How much reasoning to show. Too little and it’s a black box people don’t trust with an £18,000 purchase. Too much and you’re publishing the model’s homework, which is impressive to nobody and slows the decision down.'},
@@ -2264,9 +2264,10 @@ function blocksHTML(blocks){
       out+='</ul>';
     }
     else if(b.t==='note') out += '<div class="note">'+b.v+'</div>';
-    /* the way on to the case study that follows this one: a line saying why,
-       and a chip that continues the transcript into it */
-    else if(b.t==='next' && byId[b.key]) out += '<div class="note next"><p>'+b.v+'</p><button class="chip" type="button" data-thread="'+b.key+'">'+esc(b.label)+'</button></div>';
+    /* a link between two case studies that belong together: a line saying
+       why, and a chip. The chip navigates, like the sidebar: the other case
+       study opens as a conversation of its own, not underneath this one. */
+    else if(b.t==='next' && byId[b.key]) out += '<div class="note next"><p>'+b.v+'</p><button class="chip" type="button" data-go="'+b.key+'">'+esc(b.label)+'</button></div>';
     else if(b.t==='cards'){ out+='<div class="cards '+(b.cls||'')+'">'; b.v.forEach(function(k){ out+=cardHTML(k); }); out+='</div>'; }
     else if(b.t==='contact') out += contactHTML();
   });
