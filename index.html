@@ -29,7 +29,7 @@
   --shadow-card:0 1px 2px rgba(16,40,36,.05), 0 8px 24px -14px rgba(16,40,36,.22);
   --shadow-field:0 1px 2px rgba(16,40,36,.05), 0 10px 30px -18px rgba(16,40,36,.40);
   --shadow-pop:0 24px 60px -18px rgba(12,32,29,.38);
-  --r-sm:4px; --r-md:8px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --r-sm:4px; --r-md:8px; --r-lg:16px; --r-xl:24px; --r-2xl:32px; --r-pill:999px;
   --font-display:'Newsreader',Georgia,'Times New Roman',serif;
   --font-ui:'Instrument Sans','Segoe UI',system-ui,sans-serif;
   --font-body:'Public Sans','Segoe UI',system-ui,sans-serif;
@@ -345,7 +345,13 @@ a{color:var(--accent);text-underline-offset:3px;}
 }
 .composer-inner{max-width:760px;margin:0 auto;padding:var(--sp-12) var(--sp-16) var(--sp-16);}
 .main.zero .composer-inner{padding:0;max-width:none;}
-.field{display:flex;align-items:flex-end;gap:var(--sp-8);position:relative;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-xl);padding:var(--sp-8) var(--sp-8) var(--sp-8) var(--sp-16);}
+/* The field's corner is as round as the send button plus the space round
+   it, so the button sits concentric with the end of the field and the gap
+   between the two is the same all the way round. At 24px the corner was
+   tighter than that and the gap opened out on the diagonals. On one line
+   this makes the field a pill; as it grows it keeps the 32px corner, and
+   the button stays in the bottom one. */
+.field{display:flex;align-items:flex-end;gap:var(--sp-8);position:relative;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-2xl);padding:var(--sp-8) var(--sp-8) var(--sp-8) var(--sp-16);}
 .main.zero .field{box-shadow:var(--shadow-field);padding:var(--sp-12) var(--sp-12) var(--sp-12) var(--sp-24);}
 /* One line is 24px. The box grows a line at a time to five (5 x 24, plus
    8 of padding top and bottom, is 136) and only then scrolls; script
@@ -371,7 +377,7 @@ a{color:var(--accent);text-underline-offset:3px;}
   --edge-paint:conic-gradient(from calc(var(--et) * 1turn),var(--edge-1),var(--edge-2) 17%,var(--edge-3) 34%,var(--edge-4) 50%,var(--edge-5) 66%,var(--edge-6) 83%,var(--edge-1));}
 .edge::before,.edge::after{content:"";position:absolute;border-radius:inherit;background:var(--edge-paint);}
 .edge::before{inset:0;padding:2px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);}
-.edge::after{inset:calc(var(--sp-8) * -1);border-radius:var(--sp-32);z-index:-1;filter:blur(24px);opacity:var(--edge-glow);transition:opacity .6s ease;}
+.edge::after{inset:calc(var(--sp-8) * -1);border-radius:var(--sp-40);z-index:-1;filter:blur(24px);opacity:var(--edge-glow);transition:opacity .6s ease;}
 /* Focus used to turn the border teal and add a pale ring. The border is
    spoken for now, and a ring between the line and its glow reads as a
    second border, so focus thickens the line by a pixel and brings the
@@ -399,7 +405,7 @@ a{color:var(--accent);text-underline-offset:3px;}
    with room. The slot is lifted so the panel sits over the hero chips.
    Offsets carry the field's 1px border, so the gap is 8 from its edge. */
 .hero-slot{position:relative;z-index:2;}
-.suggest{position:absolute;left:-1px;right:-1px;z-index:5;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-lg);box-shadow:var(--shadow-pop);padding:var(--sp-8);max-height:352px;overflow-y:auto;text-align:left;animation:rise .2s cubic-bezier(.32,.72,0,1) both;}
+.suggest{position:absolute;left:-1px;right:-1px;z-index:5;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-xl);box-shadow:var(--shadow-pop);padding:var(--sp-8);max-height:352px;overflow-y:auto;text-align:left;animation:rise .2s cubic-bezier(.32,.72,0,1) both;}
 .suggest.below{top:calc(100% + var(--sp-8) + 1px);}
 .suggest.above{bottom:calc(100% + var(--sp-8) + 1px);}
 .suggest .sb-label{padding:var(--sp-8) var(--sp-12) var(--sp-4);margin:0;}
