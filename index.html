@@ -26,6 +26,8 @@
   /* the wash's six hues at line strength, in wheel order from the accent */
   --edge-1:#12A093; --edge-2:#5E8FD0; --edge-3:#9A78C6; --edge-4:#D97A80; --edge-5:#DCA046; --edge-6:#62B274;
   --edge-glow:.55; --edge-glow-focus:.75; --edge-glow-busy:.9;
+  /* the mark's mirrored ball: highlight, body, limb, etched line, lit line */
+  --orb-hi:#FFFFFF; --orb-mid:#E2F1EE; --orb-lo:#0E6159; --orb-line:#0A3F3B; --orb-lit:#FFFFFF; --orb-tint:78%;
   --shadow-card:0 1px 2px rgba(16,40,36,.05), 0 8px 24px -14px rgba(16,40,36,.22);
   --shadow-field:0 1px 2px rgba(16,40,36,.05), 0 10px 30px -18px rgba(16,40,36,.40);
   --shadow-pop:0 24px 60px -18px rgba(12,32,29,.38);
@@ -46,6 +48,7 @@
     --aurora-1:rgba(88,207,192,.14); --aurora-2:rgba(88,207,192,.07);
     --edge-1:#58CFC0; --edge-2:#78A5DC; --edge-3:#AA91D7; --edge-4:#E48C91; --edge-5:#E6B46E; --edge-6:#82C88C;
     --edge-glow:.5; --edge-glow-focus:.7; --edge-glow-busy:.85;
+    --orb-mid:#B9E4DD; --orb-lo:#072A27; --orb-line:#062522; --orb-tint:100%;
     --shadow-card:0 1px 2px rgba(0,0,0,.45), 0 10px 26px -16px rgba(0,0,0,.75);
     --shadow-field:0 1px 2px rgba(0,0,0,.45), 0 12px 34px -20px rgba(0,0,0,.85);
     --shadow-pop:0 28px 70px -20px rgba(0,0,0,.85);
@@ -60,6 +63,7 @@
   --aurora-1:rgba(88,207,192,.14); --aurora-2:rgba(88,207,192,.07);
   --edge-1:#58CFC0; --edge-2:#78A5DC; --edge-3:#AA91D7; --edge-4:#E48C91; --edge-5:#E6B46E; --edge-6:#82C88C;
   --edge-glow:.5; --edge-glow-focus:.7; --edge-glow-busy:.85;
+  --orb-mid:#B9E4DD; --orb-lo:#072A27; --orb-line:#062522; --orb-tint:100%;
   --shadow-card:0 1px 2px rgba(0,0,0,.45), 0 10px 26px -16px rgba(0,0,0,.75);
   --shadow-field:0 1px 2px rgba(0,0,0,.45), 0 12px 34px -20px rgba(0,0,0,.85);
   --shadow-pop:0 28px 70px -20px rgba(0,0,0,.85);
@@ -95,7 +99,7 @@ a{color:var(--accent);text-underline-offset:3px;}
 .sb-brand-hit:hover{background:var(--sunk);}
 .sb-brand-hit:focus-visible{outline:2px solid var(--focus);outline-offset:0;}
 .tile{width:var(--size-avatar);height:var(--size-avatar);flex:none;border-radius:var(--r-md);background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;}
-.tile svg{width:var(--size-icon-lg);height:var(--size-icon-lg);display:block;}
+.tile svg{width:var(--sp-24);height:var(--sp-24);display:block;}
 .sb-head h1{font-family:var(--font-ui);font-size:17px;font-weight:600;letter-spacing:-.015em;margin:0;line-height:1.2;}
 .sb-head p{margin:var(--sp-4) 0 0;font-size:12.5px;color:var(--ink-2);line-height:1.35;}
 .sb-close{margin-left:auto;padding:var(--sp-4);color:var(--ink-3);border-radius:var(--r-sm);}
@@ -208,7 +212,7 @@ a{color:var(--accent);text-underline-offset:3px;}
 .msg{display:flex;gap:var(--sp-12);align-items:flex-start;}
 .msg.user{justify-content:flex-end;}
 .av{width:var(--size-avatar);height:var(--size-avatar);flex:none;border-radius:var(--r-md);background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;}
-.av svg{width:var(--size-icon-lg);height:var(--size-icon-lg);display:block;}
+.av svg{width:var(--sp-24);height:var(--sp-24);display:block;}
 .body{min-width:0;flex:1;}
 .who{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:var(--sp-8);}
 .bubble{background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-lg);border-bottom-right-radius:var(--r-sm);padding:var(--sp-8) var(--sp-16);max-width:min(78%,440px);font-size:14.5px;}
@@ -322,6 +326,40 @@ a{color:var(--accent);text-underline-offset:3px;}
   0%,100%{transform:scale(1);opacity:calc(var(--peak,1) * .5);}
   50%{transform:scale(1.05);opacity:var(--peak,1);}
 }
+/* --- the ball at the centre of the mark ---
+   The dot is a small mirrored ball. What it reflects is the wash: six soft
+   patches of the same six hues, in wheel order, turning on the prompt
+   box's clock (script writes --et), so the ball, the border and the lead
+   chip keep one time. Fine lines are etched into it. At rest they are a
+   faint dark trace; they light, with a glow in the same hues, while the
+   box has your attention on the first screen and while an answer is being
+   found, and stay half-lit as the words land. The gradients live once, in
+   a zero-size svg at the top of the body, and every copy of the mark
+   points at them. */
+.orb-defs{position:absolute;width:0;height:0;overflow:hidden;}
+.orb-s-hi{stop-color:var(--orb-hi);} .orb-s-mid{stop-color:var(--orb-mid);} .orb-s-lo{stop-color:var(--orb-lo);}
+/* in the light theme the border's hues are let down with white: a mirror
+   in a pale room reflects pale colours */
+.orb-s-h1{stop-color:var(--edge-1);stop-color:color-mix(in srgb,var(--edge-1) var(--orb-tint),#fff);}
+.orb-s-h2{stop-color:var(--edge-2);stop-color:color-mix(in srgb,var(--edge-2) var(--orb-tint),#fff);}
+.orb-s-h3{stop-color:var(--edge-3);stop-color:color-mix(in srgb,var(--edge-3) var(--orb-tint),#fff);}
+.orb-s-h4{stop-color:var(--edge-4);stop-color:color-mix(in srgb,var(--edge-4) var(--orb-tint),#fff);}
+.orb-s-h5{stop-color:var(--edge-5);stop-color:color-mix(in srgb,var(--edge-5) var(--orb-tint),#fff);}
+.orb-s-h6{stop-color:var(--edge-6);stop-color:color-mix(in srgb,var(--edge-6) var(--orb-tint),#fff);}
+.orb-hues,.orb-halo{transform-box:view-box;transform-origin:24px 24px;}
+.orb-hues{transform:rotate(calc(var(--et,0) * 1turn));}
+.orb-halo{transform:rotate(calc(var(--et,0) * 1turn)) scale(1.7);opacity:0;transition:opacity .5s ease;}
+.orb-etch{fill:none;stroke:var(--orb-line);stroke-width:.55;opacity:.5;transition:opacity .5s ease,stroke .5s ease;}
+.orb-etch circle{fill:var(--orb-line);stroke:none;transition:fill .5s ease;}
+.orb-pulse{fill:none;stroke:var(--orb-lit);stroke-width:.9;stroke-dasharray:1.6 8.4;opacity:0;transition:opacity .5s ease;}
+.main.attend .hero-mark .orb-halo{opacity:.7;}
+.msg.working .av .orb-halo{opacity:.9;}
+.msg.answering .av .orb-halo{opacity:.45;}
+.main.attend .hero-mark .orb-etch,.msg.working .av .orb-etch{stroke:var(--orb-lit);opacity:.85;}
+.msg.answering .av .orb-etch{stroke:var(--orb-lit);opacity:.6;}
+.main.attend .hero-mark .orb-etch circle,.msg.working .av .orb-etch circle,.msg.answering .av .orb-etch circle{fill:var(--orb-lit);}
+.main.attend .hero-mark .orb-pulse,.msg.working .av .orb-pulse{opacity:1;animation:orbpulse 1.4s linear infinite;}
+@keyframes orbpulse{from{stroke-dashoffset:10;}to{stroke-dashoffset:0;}}
 .reveal{animation:rise .3s cubic-bezier(.32,.72,0,1) both;}
 @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
@@ -484,6 +522,7 @@ a.chip{text-decoration:none;}
   /* the blanket rule above would freeze the arcs on their last keyframe,
      which is invisible — the mark must stay a mark */
   .av svg .arc,.av svg .core{animation:none !important;}
+  .orb-pulse{display:none;}
   /* The hero's entrance starts each piece at opacity 0. Squeezed to .001ms
      it sometimes never painted its end state, leaving the greeting blank,
      so with reduced motion the hero has no entrance at all. */
@@ -736,9 +775,10 @@ var Aurora = (function(){
    ========================================================= */
 var Edge = (function(){
   var el = document.getElementById('edge');
-  if(!el) return {pace:function(){}};
+  if(!el) return {pace:function(){}, follow:function(){}};
   var TURN = 11000;                       /* ms per turn at rest */
   var phase = 0, rate = 1, goal = 1, last = 0, lead = null;
+  var heroMark = document.getElementById('heroMark'), live = null;
 
   function frame(now){
     var dt = last ? Math.min(now-last, 50) : 16;
@@ -751,6 +791,11 @@ var Edge = (function(){
        first screen comes back, so look it up again if it has gone */
     if(!lead || !lead.isConnected) lead = document.querySelector('.hero-chips .chip.lead');
     if(lead) lead.style.setProperty('--et', v);
+    /* and so do the reflections in the mark's ball: the one on the first
+       screen, and the avatar of whichever answer is on its way. An avatar
+       that is let go keeps the angle it stopped at. */
+    if(heroMark && heroMark.offsetParent) heroMark.style.setProperty('--et', v);
+    if(live && live.isConnected) live.style.setProperty('--et', v);
     requestAnimationFrame(frame);
   }
   if(!REDUCED) requestAnimationFrame(frame);              /* reduced motion: it holds still */
@@ -760,7 +805,8 @@ var Edge = (function(){
       goal = v;
       var m = document.getElementById('main');
       if(m) m.classList.toggle('busy', v > 1);
-    }
+    },
+    follow:function(node){ live = node || null; }
   };
 })();
 
@@ -1025,14 +1071,66 @@ var Motes = (function(){
 /* =========================================================
    0. Mark
    ========================================================= */
+var ORB_R = 8.5;                     /* the ball, in the mark's 48-unit box */
+function orbNum(v){ return (+v).toFixed(2); }
+/* The ball's paint, defined once. Every stop takes its colour from a theme
+   token, so the ball changes with the theme without being redrawn. */
+(function(){
+  var R = ORB_R, i, a, d, s = '<svg class="orb-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>';
+  /* the body: a bright point up and to the left, falling to deep teal at the limb */
+  s += '<radialGradient id="orbBase" gradientUnits="userSpaceOnUse" cx="24" cy="24" r="'+R+'" fx="'+orbNum(24-R*0.34)+'" fy="'+orbNum(24-R*0.40)+'">'
+     + '<stop offset="0" class="orb-s-hi"/><stop offset=".5" class="orb-s-mid"/><stop offset="1" class="orb-s-lo"/></radialGradient>';
+  /* six reflections, one per hue of the wash, in wheel order round the ball */
+  for(i=0;i<6;i++){
+    a = (i*60-90) * Math.PI/180; d = R*0.64;
+    s += '<radialGradient id="orbHue'+(i+1)+'" gradientUnits="userSpaceOnUse" cx="'+orbNum(24+d*Math.cos(a))+'" cy="'+orbNum(24+d*Math.sin(a))+'" r="'+orbNum(R*0.58)+'">'
+       + '<stop offset="0" stop-opacity="1" class="orb-s-h'+(i+1)+'"/><stop offset="1" stop-opacity="0" class="orb-s-h'+(i+1)+'"/></radialGradient>';
+  }
+  /* the dark half of a mirrored ball: what is below the horizon */
+  s += '<linearGradient id="orbGround" gradientUnits="userSpaceOnUse" x1="24" y1="'+orbNum(24+R*0.1)+'" x2="24" y2="'+(24+R)+'">'
+     + '<stop offset="0" stop-opacity=".78" class="orb-s-lo"/><stop offset=".55" stop-opacity=".38" class="orb-s-lo"/><stop offset="1" stop-opacity=".05" class="orb-s-lo"/></linearGradient>';
+  /* reflections bunch and darken toward the edge */
+  s += '<radialGradient id="orbLimb" gradientUnits="userSpaceOnUse" cx="24" cy="24" r="'+R+'">'
+     + '<stop offset=".62" stop-opacity="0" class="orb-s-lo"/><stop offset=".9" stop-opacity=".5" class="orb-s-lo"/><stop offset="1" stop-opacity=".85" class="orb-s-lo"/></radialGradient>';
+  s += '<radialGradient id="orbSpec" gradientUnits="userSpaceOnUse" cx="'+orbNum(24-R*0.38)+'" cy="'+orbNum(24-R*0.44)+'" r="'+orbNum(R*0.3)+'">'
+     + '<stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset=".6" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>';
+  s += '<linearGradient id="orbRim" gradientUnits="userSpaceOnUse" x1="'+(24-R)+'" y1="'+(24-R)+'" x2="'+(24+R)+'" y2="'+(24+R)+'">'
+     + '<stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".75"/></linearGradient>';
+  s += '</defs></svg>';
+  document.body.insertAdjacentHTML('afterbegin', s);
+})();
+/* three etched traces, each ending in a pad: [path, pad x, pad y] */
+var ORB_ETCH = [
+  ['M17.6 22.4H20.6L22.2 24H25.6', 26.4, 24],
+  ['M30.6 26.8H27.8L26.4 28.2H22.6', 21.8, 28.2],
+  ['M24.4 16.6V18.8L25.8 20.2H28.6', 29.4, 20.2]
+];
 function markSVG(){
+  var R = ORB_R, i, hx = R*0.9887, hy = 24+R*0.15;
   var s = '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">';
-  s += '<circle class="ring core" cx="24" cy="24" r="3.2" fill="currentColor"/>';
-  [9,14.5,20].forEach(function(r,i){
+  var hues = '';
+  for(i=1;i<=6;i++) hues += '<circle cx="24" cy="24" r="'+R+'" fill="url(#orbHue'+i+')"/>';
+  s += '<g class="ring core orb">';
+  s += '<g class="orb-halo">'+hues+'</g>';
+  s += '<circle cx="24" cy="24" r="'+R+'" fill="url(#orbBase)"/>';
+  s += '<g class="orb-hues">'+hues+'</g>';
+  s += '<path opacity=".4" d="M'+orbNum(24-hx)+' '+orbNum(hy)+' Q24 '+orbNum(24+R*0.62)+' '+orbNum(24+hx)+' '+orbNum(hy)+' A'+R+' '+R+' 0 0 1 '+orbNum(24-hx)+' '+orbNum(hy)+'Z" fill="url(#orbGround)"/>';
+  s += '<circle cx="24" cy="24" r="'+R+'" fill="url(#orbLimb)"/>';
+  s += '<g class="orb-etch" stroke-linecap="round" stroke-linejoin="round">';
+  ORB_ETCH.forEach(function(e){ s += '<path d="'+e[0]+'"/><circle cx="'+e[1]+'" cy="'+e[2]+'" r=".8"/>'; });
+  s += '<path d="M20.2 30.4V28.4"/><path d="M27.6 31.2V30"/></g>';
+  s += '<g class="orb-pulse" stroke-linecap="round" stroke-linejoin="round">';
+  ORB_ETCH.forEach(function(e){ s += '<path pathLength="10" d="'+e[0]+'"/>'; });
+  s += '</g>';
+  s += '<circle cx="24" cy="24" r="'+R+'" fill="url(#orbSpec)"/>';
+  s += '<circle cx="24" cy="24" r="'+(R-0.3)+'" stroke="url(#orbRim)" stroke-width=".6"/>';
+  s += '</g>';
+  /* the arcs sit further out than they did round the dot, to clear the ball */
+  [13,17.5,22].forEach(function(r,i){
     var o=(1-i*0.22).toFixed(2);
     var c='ring arc arc-'+(i+1);
-    s += '<path class="'+c+'" d="M'+(24+r*0.5)+' '+(24-r*0.866)+' A '+r+' '+r+' 0 0 1 '+(24+r*0.5)+' '+(24+r*0.866)+'" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="'+o+'"/>';
-    s += '<path class="'+c+'" d="M'+(24-r*0.5)+' '+(24-r*0.866)+' A '+r+' '+r+' 0 0 0 '+(24-r*0.5)+' '+(24+r*0.866)+'" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="'+o+'"/>';
+    s += '<path class="'+c+'" d="M'+(24+r*0.5)+' '+orbNum(24-r*0.866)+' A '+r+' '+r+' 0 0 1 '+(24+r*0.5)+' '+orbNum(24+r*0.866)+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="'+o+'"/>';
+    s += '<path class="'+c+'" d="M'+(24-r*0.5)+' '+orbNum(24-r*0.866)+' A '+r+' '+r+' 0 0 0 '+(24-r*0.5)+' '+orbNum(24+r*0.866)+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="'+o+'"/>';
   });
   return s+'</svg>';
 }
@@ -2074,6 +2172,7 @@ function avState(bodyEl, state){
   /* the prompt box keeps the same time: quick while it looks, easing as
      words land, back to rest when it's done */
   Edge.pace(state==='working' ? 3.5 : state==='answering' ? 1.8 : 1);
+  Edge.follow(state ? msg.querySelector('.av') : null);
 }
 
 function streamInto(bodyEl, html, done){
@@ -2487,9 +2586,10 @@ input.addEventListener('focus', function(){
   if(!ghostDead){ stopGhost(); ghost.textContent='Ask me something…'; }
   syncGhost();
   Aurora.speed(1.8);
+  main.classList.add('attend');
   if(!suggestMuted) openSuggest();
 });
-input.addEventListener('blur', function(){ Aurora.speed(1); });
+input.addEventListener('blur', function(){ Aurora.speed(1); main.classList.remove('attend'); });
 input.addEventListener('input', function(){
   syncGhost(); autosize();
   Aurora.speed(input.value.length ? 2.3 : 1.8);
