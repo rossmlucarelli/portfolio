@@ -191,12 +191,6 @@ a{color:var(--accent);text-underline-offset:3px;}
    larger and hangs over the edges, which leaves the surface room to swell
    without being clipped. */
 .hero-mark{position:relative;width:96px;height:96px;animation:bloom .9s cubic-bezier(.22,.9,.28,1) both;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;touch-action:manipulation;}
-/* what the Sophon says when it is poked: a small tag up and to its right */
-.sophon-say{position:absolute;left:calc(100% + var(--sp-4));top:var(--sp-8);white-space:nowrap;pointer-events:none;
-  font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-2);
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-pill);padding:var(--sp-4) var(--sp-12);box-shadow:var(--shadow-card);
-  opacity:0;transform:translateY(var(--sp-4)) scale(.96);transform-origin:0 100%;transition:opacity .25s ease,transform .25s ease;}
-.sophon-say.on{opacity:1;transform:none;transition:opacity .12s ease,transform .22s cubic-bezier(.3,1.5,.5,1);}
 @media (max-width:599px){.hero-mark{width:80px;height:80px;}}
 canvas.sophon{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;display:block;pointer-events:none;}
 @keyframes bloom{from{opacity:0;transform:scale(.5);}to{opacity:1;transform:scale(1);}}
@@ -1099,7 +1093,7 @@ var Sophon = (function(){
   var FRAG = [
     'precision highp float;',
     'uniform vec2 uRes;uniform float uSpin;uniform float uT;uniform float uAmp;uniform float uFine;',
-    'uniform vec3 uPoke;uniform float uDent;uniform float uRip;uniform float uRipT;uniform float uSq;',
+    'uniform vec3 uPoke;uniform float uDent;uniform float uRip;uniform float uRipT;',
     'uniform vec3 uHue[6];uniform vec3 uSky;uniform vec3 uDeep;uniform vec3 uRim;',
     'uniform float uRimK;uniform float uHueK;',
     'const float R=0.8;',
@@ -1121,13 +1115,12 @@ var Sophon = (function(){
     '  float c=sin(7.7*q.z-uT*1.25+1.5*sin(5.9*q.y+uT*1.30));',
     '  return a*0.40+b*0.34+c*0.30;',
     '}',
-    /* a poke: the whole Sophon squashes and springs back (uSq), the surface
-       dents where it was touched (uDent), and a ripple runs out from that
-       point round the ball (uRip). uPoke is the touched point, as a direction
-       from the centre; it is not turned with the surface, so the dent stays
-       under the finger. All three are zero unless it has just been poked. */
+    /* a poke: the surface dents where it was touched (uDent), and a ripple
+       runs out from that point round the ball (uRip). uPoke is the touched
+       point, as a direction from the centre; it is not turned with the
+       surface, so the dent stays under the finger. Both are zero unless it
+       has just been poked. */
     'float map(vec3 p){',
-    '  p.y/=(1.0+uSq);p.x/=(1.0-0.5*uSq);',
     '  float l=length(p);vec3 v=p/max(l,1e-4),q=v,f=v;',
     '  q.xz=rot(uSpin)*q.xz;f.xz=rot(-0.6*uSpin)*f.xz;',
     '  float ang=acos(clamp(dot(v,uPoke),-1.0,1.0));',
@@ -1156,7 +1149,7 @@ var Sophon = (function(){
     '  vec2 uv=(gl_FragCoord.xy*2.0-uRes)/uRes;',
     /* nothing of the Sophon lies outside this circle, and no ray needs to
        start further back than the ball that bounds it */
-    '  float rm=R*(1.0+1.15*uAmp+1.05*uFine+abs(uRip))*(1.0+abs(uSq)),r2=dot(uv,uv);',
+    '  float rm=R*(1.0+1.15*uAmp+1.05*uFine+abs(uRip)),r2=dot(uv,uv);',
     '  if(r2>(rm+0.03)*(rm+0.03)){gl_FragColor=vec4(0.0);return;}',
     '  vec3 ro=vec3(uv,1.6),rd=vec3(0.0,0.0,-1.0),p=ro,pm=ro;',
     '  float t=1.6-sqrt(max(rm*rm-r2,0.0)),md=1e9;',
@@ -1187,12 +1180,12 @@ var Sophon = (function(){
                                       depth they read as flicker, not as shape */
   var POSE = {spin:0.9, wob:1.7};  /* the still frame */
   /* A poke, at full strength: how far the surface dents and how high the
-     ripple stands (shares of the radius), how far the whole thing squashes,
-     and how much pace it adds. Poking it again within a couple of seconds
-     counts for more, up to a limit. */
-  var POKE = {dent:0.10, rip:0.045, sq:0.12, kick:2.2};
+     ripple stands (shares of the radius), and how much pace it adds.
+     Poking it again within a couple of seconds counts for more, up to a
+     limit. */
+  var POKE = {dent:0.12, rip:0.060, kick:0.6};
   var poke = {x:0, y:0, z:1, t:-1e9, k:0, n:0};
-  var CALM = {dent:0, rip:0, ripT:0, sq:0};
+  var CALM = {dent:0, rip:0, ripT:0};
 
   var glc = null, gl = null, U = null, ok = false, pal = null;
   var spin = POSE.spin, wob = POSE.wob, rate = 1, paceGoal = 1, attending = false, last = 0;
@@ -1214,7 +1207,7 @@ var Sophon = (function(){
       var loc = gl.getAttribLocation(prog, 'p');
       gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
       U = {};
-      ['uRes','uSpin','uT','uAmp','uFine','uPoke','uDent','uRip','uRipT','uSq','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
+      ['uRes','uSpin','uT','uAmp','uFine','uPoke','uDent','uRip','uRipT','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
       ok = true;
     }catch(err){ ok = false; }
   }
@@ -1262,7 +1255,7 @@ var Sophon = (function(){
       gl.uniform1f(U.uSpin, s % 62.832); gl.uniform1f(U.uT, w % 6283.2);
       gl.uniform1f(U.uAmp, AMP0 + (AMP1-AMP0)*e);
       gl.uniform3f(U.uPoke, poke.x, poke.y, poke.z);
-      gl.uniform1f(U.uDent, pk.dent); gl.uniform1f(U.uRip, pk.rip); gl.uniform1f(U.uRipT, pk.ripT); gl.uniform1f(U.uSq, pk.sq);
+      gl.uniform1f(U.uDent, pk.dent); gl.uniform1f(U.uRip, pk.rip); gl.uniform1f(U.uRipT, pk.ripT);
       gl.uniform1f(U.uFine, (FINE0 + (FINE1-FINE0)*e) * (c.clientWidth < 64 ? SMALL : 1));
       var h = []; pal.hues.forEach(function(c3){ h.push(c3[0]/255, c3[1]/255, c3[2]/255); });
       gl.uniform3fv(U.uHue, new Float32Array(h));
@@ -1305,9 +1298,8 @@ var Sophon = (function(){
   function still(c){ paint(c, POSE.spin, POSE.wob, 0); }
   /* What is left of the last poke at this moment. The dent goes in at once
      and lets go fast; the ripple builds a beat later and takes a second or
-     two to die; the squash is a spring that overshoots and settles. Each
-     fades to nothing, so a poke is something laid over the clock for a
-     moment, not a state it switches into. While the Sophon is working it
+     two to die. Both fade to nothing, so a poke is something laid over the
+     clock for a moment, not a state it switches into. While the Sophon is working it
      is already near the edge of its canvas, so a poke counts for less. */
   function poked(now){
     var t = (now - poke.t)/1000;
@@ -1316,8 +1308,7 @@ var Sophon = (function(){
     return {
       dent: POKE.dent * k * Math.exp(-t*8),
       rip:  POKE.rip  * k * Math.exp(-t*2.4) * (1 - Math.exp(-t*16)),
-      ripT: t*15,
-      sq:  -POKE.sq   * k * Math.exp(-t*4.2) * Math.sin(t*16)
+      ripT: t*15
     };
   }
   /* how worked up it is right now: it follows the pace */
@@ -1387,28 +1378,21 @@ var Sophon = (function(){
   };
 })();
 var TILE_MARK = '<canvas class="sophon"></canvas>';
-document.getElementById('heroMark').innerHTML = TILE_MARK + '<span class="sophon-say" id="sophonSay"></span>';
+document.getElementById('heroMark').innerHTML = TILE_MARK;
 document.getElementById('sbTile').innerHTML = TILE_MARK;
 Sophon.scan();
 
-/* Poke the Sophon on the first screen and it flinches, and says so. Nothing
-   on the page points at this; it is there for whoever tries. What it says
-   comes from a fixed list, in order, like everything else here. The whole
-   mark is hidden from screen readers, and this with it: it is play, and no
-   route to anything. With reduced motion it says its line and holds still. */
+/* Poke the Sophon on the first screen and it dents where it was touched,
+   and a ripple runs out from that point. Nothing on the page points at
+   this; it is there for whoever tries. It says nothing. The whole mark is
+   hidden from screen readers, and this with it: it is play, and no route
+   to anything. With reduced motion it holds still. */
 (function(){
-  var mark = document.getElementById('heroMark'), say = document.getElementById('sophonSay');
-  if(!mark || !say) return;
-  var LINES = ['Oww.', 'Hey.', 'That tickles.', 'I felt that.', 'Still here.', 'Okay, okay.', 'Ask me something.'];
-  var said = 0, hide = null;
+  var mark = document.getElementById('heroMark');
+  if(!mark) return;
   mark.addEventListener('pointerdown', function(e){
     var r = mark.getBoundingClientRect();
-    var n = Sophon.poke((e.clientX - r.left)/r.width*2 - 1, 1 - (e.clientY - r.top)/r.height*2);
-    if(!n) return;
-    say.textContent = n >= 5 ? 'Dizzy.' : LINES[said++ % LINES.length];
-    say.classList.remove('on'); void say.offsetWidth; say.classList.add('on');
-    clearTimeout(hide);
-    hide = setTimeout(function(){ say.classList.remove('on'); }, 1500);
+    Sophon.poke((e.clientX - r.left)/r.width*2 - 1, 1 - (e.clientY - r.top)/r.height*2);
   });
 })();
 
