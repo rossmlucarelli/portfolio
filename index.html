@@ -136,7 +136,10 @@ a{color:var(--accent);text-underline-offset:3px;}
 .sb-me-where{text-wrap:balance;}
 .sb-me-status{display:flex;align-items:center;gap:var(--sp-8);}
 .sb-me-status .dot{background:var(--accent-bright);}
-.theme-btn{padding:var(--sp-8);border-radius:var(--r-md);color:var(--ink-3);flex:none;}
+/* The theme switch sits in the top bar, beside the time. It used to share the
+   sidebar's foot with the account row, and left that row too narrow for
+   "Remote or Manchester hybrid" on one line. */
+.theme-btn{padding:var(--sp-8);border-radius:var(--r-md);color:var(--ink-2);flex:none;}
 .theme-btn:hover{background:var(--sunk);color:var(--ink);}
 .theme-btn svg{width:var(--size-icon);height:var(--size-icon);display:block;}
 
@@ -475,7 +478,11 @@ a.chip{text-decoration:none;}
 .sb-foot{border-top-color:var(--glass-line);}
 .sb-label{color:var(--accent);}
 .sb-item,.sb-link{position:relative;}
-.sb-item:hover,.sb-link:hover,.sb-me:hover,.sb-brand-hit:hover,.theme-btn:hover{background:color-mix(in srgb,var(--surface) 55%,transparent);}
+/* Hover is a teal tint and a teal title, the way a chip answers the pointer.
+   White over glass that is already half white barely showed. The current
+   thread keeps its own white card and does not take the hover. */
+.sb-item:hover,.sb-link:hover,.sb-me:hover,.sb-brand-hit:hover{background:color-mix(in srgb,var(--accent) 12%,transparent);}
+.sb-item:not([aria-current="true"]):hover .t,.sb-link:hover,.sb-link:hover svg,.sb-me:hover .sb-me-name{color:var(--accent);}
 /* the current thread is a card with a short bar of the border's colours */
 .sb-item[aria-current="true"]{background:color-mix(in srgb,var(--surface) 80%,transparent);box-shadow:var(--shadow-card);}
 .sb-item[aria-current="true"]::before{content:"";position:absolute;left:0;top:var(--sp-8);bottom:var(--sp-8);width:var(--sp-4);border-radius:var(--r-pill);background:linear-gradient(var(--edge-1),var(--edge-2),var(--edge-3));}
@@ -527,9 +534,6 @@ a.chip{text-decoration:none;}
           <span class="sb-me-where">Remote or Manchester hybrid</span>
         </span>
       </button>
-      <button class="theme-btn" id="themeBtn" aria-label="Switch colour theme">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
-      </button>
     </div>
   </aside>
 
@@ -544,6 +548,9 @@ a.chip{text-decoration:none;}
       </button>
       <div class="title" id="threadTitle">New conversation</div>
       <div class="status" id="statusChip"><span class="dot" aria-hidden="true"></span><span id="clockTop"></span></div>
+      <button class="theme-btn" id="themeBtn" aria-label="Switch colour theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+      </button>
     </header>
 
     <div class="stage" id="stage" role="log" aria-live="polite" aria-label="Conversation">
