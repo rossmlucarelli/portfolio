@@ -262,6 +262,8 @@ canvas.sophon{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;di
 
 .note{border-left:2px solid var(--accent);background:var(--accent-tint);padding:var(--sp-12) var(--sp-16);border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:var(--fs-14);line-height:var(--lh-20);margin:0 0 var(--sp-16);}
 .note b{font-family:var(--font-ui);font-weight:600;}
+.note.next{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-12);}
+.note.next p{margin:0;}
 
 .cards{display:grid;gap:var(--sp-12);margin:0 0 var(--sp-16);}
 @media (min-width:600px){ .cards.two,.cards.gallery{grid-template-columns:1fr 1fr;} }
@@ -1611,7 +1613,8 @@ var CASES = [
       {t:'h',v:'Three years later, with a model'},
       {t:'p',v:'In 2025 cinch was asking for ideas on where AI could help. Mine was to finish this page: the same three parts as the 2022 design, with a model writing the lines we couldn’t. The proposal named the old blocker explicitly, manual effort and rules engines, because the argument only lands if you say why it was a bad idea before and isn’t now.'},
       {t:'p',v:'It went into a deck alongside a bigger idea, a conversational car finder. I thought the conversation would take a while to build, and that smarter recommendations would be useful in the meantime.'},
-      {t:'p',v:'The proposal wasn’t taken forward, and I went on to design the conversational car finder.'}
+      {t:'p',v:'The proposal wasn’t taken forward.'},
+      {t:'next',key:'car-finder',label:'Read the car finder case study',v:'<b>What happened next.</b> I went on to design the conversational car finder. It is the next case study.'}
     ],
     probes:[
       {q:'What was your role, exactly?', a:[
@@ -2261,6 +2264,9 @@ function blocksHTML(blocks){
       out+='</ul>';
     }
     else if(b.t==='note') out += '<div class="note">'+b.v+'</div>';
+    /* the way on to the case study that follows this one: a line saying why,
+       and a chip that continues the transcript into it */
+    else if(b.t==='next' && byId[b.key]) out += '<div class="note next"><p>'+b.v+'</p><button class="chip" type="button" data-thread="'+b.key+'">'+esc(b.label)+'</button></div>';
     else if(b.t==='cards'){ out+='<div class="cards '+(b.cls||'')+'">'; b.v.forEach(function(k){ out+=cardHTML(k); }); out+='</div>'; }
     else if(b.t==='contact') out += contactHTML();
   });
