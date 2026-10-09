@@ -1049,7 +1049,7 @@ var Sophon = (function(){
   var VERT = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
   var FRAG = [
     'precision highp float;',
-    'uniform vec2 uRes;uniform float uSpin;uniform float uT;uniform float uAmp;',
+    'uniform vec2 uRes;uniform float uSpin;uniform float uT;uniform float uAmp;uniform float uFine;',
     'uniform vec3 uHue[6];uniform vec3 uSky;uniform vec3 uDeep;uniform vec3 uRim;',
     'uniform float uRimK;uniform float uHueK;',
     'const float R=0.8;',
@@ -1061,9 +1061,20 @@ var Sophon = (function(){
     '  float c=sin(4.2*q.z+uT*0.61+1.2*sin(3.0*q.x+uT*0.90));',
     '  return a*0.45+b*0.35+c*0.30;',
     '}',
+    /* the folds: a second, finer set of waves laid over the swell. They are
+       about twice as tight, move at their own pace, and sit in a frame that
+       turns the other way, so the two layers slide across each other and the
+       surface keeps folding into new shapes instead of repeating one */
+    'float fold(vec3 q){',
+    '  float a=sin(7.1*q.x-uT*1.70+1.9*sin(5.3*q.z+uT*1.10));',
+    '  float b=sin(6.3*q.y+uT*1.45+1.7*sin(6.7*q.x-uT*0.95));',
+    '  float c=sin(7.7*q.z-uT*1.25+1.5*sin(5.9*q.y+uT*1.30));',
+    '  return a*0.40+b*0.34+c*0.30;',
+    '}',
     'float map(vec3 p){',
-    '  float l=length(p);vec3 q=p/max(l,1e-4);q.xz=rot(uSpin)*q.xz;',
-    '  return l-R*(1.0+uAmp*bump(q));',
+    '  float l=length(p);vec3 q=p/max(l,1e-4),f=q;',
+    '  q.xz=rot(uSpin)*q.xz;f.xz=rot(-0.6*uSpin)*f.xz;',
+    '  return l-R*(1.0+uAmp*bump(q)+uFine*fold(f));',
     '}',
     'vec3 nrm(vec3 p){',
     '  vec2 e=vec2(0.006,0.0);',
@@ -1087,15 +1098,15 @@ var Sophon = (function(){
     '  vec2 uv=(gl_FragCoord.xy*2.0-uRes)/uRes;',
     /* nothing of the Sophon lies outside this circle, and no ray needs to
        start further back than the ball that bounds it */
-    '  float rm=R*(1.0+1.15*uAmp),r2=dot(uv,uv);',
+    '  float rm=R*(1.0+1.15*uAmp+1.05*uFine),r2=dot(uv,uv);',
     '  if(r2>(rm+0.03)*(rm+0.03)){gl_FragColor=vec4(0.0);return;}',
     '  vec3 ro=vec3(uv,1.6),rd=vec3(0.0,0.0,-1.0),p=ro,pm=ro;',
     '  float t=1.6-sqrt(max(rm*rm-r2,0.0)),md=1e9;',
-    '  for(int i=0;i<28;i++){',
+    '  for(int i=0;i<40;i++){',
     '    p=ro+rd*t;float d=map(p);',
     '    if(d<md){md=d;pm=p;}',
     '    if(d<0.0008||t>3.2)break;',
-    '    t+=d*0.7;',
+    '    t+=d*0.55;',
     '  }',
     '  float a=1.0-smoothstep(0.0,3.0/uRes.x,md);',
     '  if(a<=0.0){gl_FragColor=vec4(0.0);return;}',
@@ -1109,9 +1120,13 @@ var Sophon = (function(){
 
   var DPR = Math.min(window.devicePixelRatio || 1, 3);
   var SPIN = 6.2832/20;            /* the colours go once round in 20s at rest */
-  var WOB = 0.42;                  /* how fast the swell moves at rest */
+  var WOB = 0.5;                   /* how fast the surface moves at rest */
   var TOP = 5;                     /* how many times faster than rest it gets, while it's looking */
-  var AMP0 = 0.022, AMP1 = 0.042;  /* how deep the swell is: at rest, at full pace */
+  var AMP0 = 0.030, AMP1 = 0.055;  /* how deep the swell is: at rest, at full pace */
+  var FINE0 = 0.009, FINE1 = 0.018;/* how deep the folds are: at rest, at full pace */
+  var SMALL = 0.5;                 /* the folds at avatar size, as a share of the above:
+                                      at 32px they are a pixel or less, and at full
+                                      depth they read as flicker, not as shape */
   var POSE = {spin:0.9, wob:1.7};  /* the still frame */
 
   var glc = null, gl = null, U = null, ok = false, pal = null;
@@ -1134,7 +1149,7 @@ var Sophon = (function(){
       var loc = gl.getAttribLocation(prog, 'p');
       gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
       U = {};
-      ['uRes','uSpin','uT','uAmp','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
+      ['uRes','uSpin','uT','uAmp','uFine','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
       ok = true;
     }catch(err){ ok = false; }
   }
@@ -1167,7 +1182,8 @@ var Sophon = (function(){
   }
 
   /* draw one frame of the Sophon into a page canvas */
-  function paint(c, s, w, amp){
+  /* e is how worked up it is: 0 at rest, 1 at full pace */
+  function paint(c, s, w, e){
     var px = Math.round(c.clientWidth * DPR);
     if(!px) return;
     if(c.width !== px){ c.width = px; c.height = px; }
@@ -1177,7 +1193,9 @@ var Sophon = (function(){
       if(glc.width !== px){ glc.width = px; glc.height = px; }
       gl.viewport(0, 0, px, px);
       gl.uniform2f(U.uRes, px, px);
-      gl.uniform1f(U.uSpin, s % 6.2832); gl.uniform1f(U.uT, w % 6283.2); gl.uniform1f(U.uAmp, amp);
+      gl.uniform1f(U.uSpin, s % 62.832); gl.uniform1f(U.uT, w % 6283.2);
+      gl.uniform1f(U.uAmp, AMP0 + (AMP1-AMP0)*e);
+      gl.uniform1f(U.uFine, (FINE0 + (FINE1-FINE0)*e) * (c.clientWidth < 64 ? SMALL : 1));
       var h = []; pal.hues.forEach(function(c3){ h.push(c3[0]/255, c3[1]/255, c3[2]/255); });
       gl.uniform3fv(U.uHue, new Float32Array(h));
       gl.uniform3f(U.uSky, pal.sky[0]/255, pal.sky[1]/255, pal.sky[2]/255);
@@ -1216,11 +1234,11 @@ var Sophon = (function(){
     ctx.fillStyle = g; ctx.fillRect(0,0,px,px);
     ctx.restore();
   }
-  function still(c){ paint(c, POSE.spin, POSE.wob, AMP0); }
-  /* how deep the swell is right now: it follows the pace */
+  function still(c){ paint(c, POSE.spin, POSE.wob, 0); }
+  /* how worked up it is right now: it follows the pace */
   function amp(){
     var e = Math.max(0, Math.min(1, (rate-1)/(TOP-1)));
-    return AMP0 + (AMP1-AMP0) * e*e*(3-2*e);
+    return e*e*(3-2*e);
   }
 
   function frame(now){
