@@ -26,8 +26,11 @@
   /* the wash's six hues at line strength, in wheel order from the accent */
   --edge-1:#12A093; --edge-2:#5E8FD0; --edge-3:#9A78C6; --edge-4:#D97A80; --edge-5:#DCA046; --edge-6:#62B274;
   --edge-glow:.55; --edge-glow-focus:.75; --edge-glow-busy:.9;
-  /* the mark's mirrored ball: highlight, body, limb, etched line, lit line */
-  --orb-hi:#FFFFFF; --orb-mid:#E2F1EE; --orb-lo:#0E6159; --orb-line:#0A3F3B; --orb-lit:#FFFFFF; --orb-tint:78%;
+  /* the mark, a mirrored ball: what it reflects above and below, its edge,
+     how strong the edge and the six coloured lights are, and how far the
+     lights are let down with white (a mirror in a pale room reflects pale
+     colours) */
+  --orb-sky:#FFFFFF; --orb-deep:#2E7F77; --orb-rim:#0B4F4A; --orb-rim-k:.55; --orb-hue-k:.85; --orb-tint:.8;
   --shadow-card:0 1px 2px rgba(16,40,36,.05), 0 8px 24px -14px rgba(16,40,36,.22);
   --shadow-field:0 1px 2px rgba(16,40,36,.05), 0 10px 30px -18px rgba(16,40,36,.40);
   --shadow-pop:0 24px 60px -18px rgba(12,32,29,.38);
@@ -48,7 +51,7 @@
     --aurora-1:rgba(88,207,192,.14); --aurora-2:rgba(88,207,192,.07);
     --edge-1:#58CFC0; --edge-2:#78A5DC; --edge-3:#AA91D7; --edge-4:#E48C91; --edge-5:#E6B46E; --edge-6:#82C88C;
     --edge-glow:.5; --edge-glow-focus:.7; --edge-glow-busy:.85;
-    --orb-mid:#B9E4DD; --orb-lo:#072A27; --orb-line:#062522; --orb-tint:100%;
+    --orb-sky:#CFEDE8; --orb-deep:#0A1E1C; --orb-rim:#58CFC0; --orb-rim-k:.25; --orb-hue-k:.9; --orb-tint:1;
     --shadow-card:0 1px 2px rgba(0,0,0,.45), 0 10px 26px -16px rgba(0,0,0,.75);
     --shadow-field:0 1px 2px rgba(0,0,0,.45), 0 12px 34px -20px rgba(0,0,0,.85);
     --shadow-pop:0 28px 70px -20px rgba(0,0,0,.85);
@@ -63,7 +66,7 @@
   --aurora-1:rgba(88,207,192,.14); --aurora-2:rgba(88,207,192,.07);
   --edge-1:#58CFC0; --edge-2:#78A5DC; --edge-3:#AA91D7; --edge-4:#E48C91; --edge-5:#E6B46E; --edge-6:#82C88C;
   --edge-glow:.5; --edge-glow-focus:.7; --edge-glow-busy:.85;
-  --orb-mid:#B9E4DD; --orb-lo:#072A27; --orb-line:#062522; --orb-tint:100%;
+  --orb-sky:#CFEDE8; --orb-deep:#0A1E1C; --orb-rim:#58CFC0; --orb-rim-k:.25; --orb-hue-k:.9; --orb-tint:1;
   --shadow-card:0 1px 2px rgba(0,0,0,.45), 0 10px 26px -16px rgba(0,0,0,.75);
   --shadow-field:0 1px 2px rgba(0,0,0,.45), 0 12px 34px -20px rgba(0,0,0,.85);
   --shadow-pop:0 28px 70px -20px rgba(0,0,0,.85);
@@ -98,8 +101,7 @@ a{color:var(--accent);text-underline-offset:3px;}
 .sb-brand-hit{position:absolute;inset:calc(var(--sp-8) * -1);border-radius:var(--r-md);transition:background .14s ease;}
 .sb-brand-hit:hover{background:var(--sunk);}
 .sb-brand-hit:focus-visible{outline:2px solid var(--focus);outline-offset:0;}
-.tile{width:var(--size-avatar);height:var(--size-avatar);flex:none;border-radius:var(--r-md);background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;}
-.tile svg{width:var(--sp-24);height:var(--sp-24);display:block;}
+.tile{position:relative;width:var(--size-avatar);height:var(--size-avatar);flex:none;}
 .sb-head h1{font-family:var(--font-ui);font-size:17px;font-weight:600;letter-spacing:-.015em;margin:0;line-height:1.2;}
 .sb-head p{margin:var(--sp-4) 0 0;font-size:12.5px;color:var(--ink-2);line-height:1.35;}
 .sb-close{margin-left:auto;padding:var(--sp-4);color:var(--ink-3);border-radius:var(--r-sm);}
@@ -175,14 +177,13 @@ a{color:var(--accent);text-underline-offset:3px;}
   gap:clamp(var(--sp-32),5.2vh,var(--sp-48));
 }
 .hero-head{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);width:100%;}
-.hero-mark{width:56px;height:56px;color:var(--accent-bright);}
-.hero-mark svg{width:100%;height:100%;display:block;overflow:visible;}
-.hero-mark .ring{animation:bloom .9s cubic-bezier(.22,.9,.28,1) both;}
-.hero-mark .ring:nth-of-type(2){animation-delay:.07s;}
-.hero-mark .ring:nth-of-type(3){animation-delay:.14s;}
-.hero-mark .ring:nth-of-type(4){animation-delay:.21s;}
-.hero-mark .ring:nth-of-type(5){animation-delay:.28s;}
-.hero-mark .ring:nth-of-type(6){animation-delay:.35s;}
+/* The mark is a ball of liquid mirror, drawn live by script (see Mark).
+   Each box below is the size of the ball at rest. Its canvas is a quarter
+   larger and hangs over the edges, which leaves the surface room to swell
+   without being clipped. */
+.hero-mark{position:relative;width:96px;height:96px;animation:bloom .9s cubic-bezier(.22,.9,.28,1) both;}
+@media (max-width:599px){.hero-mark{width:80px;height:80px;}}
+canvas.orb{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;display:block;pointer-events:none;}
 @keyframes bloom{from{opacity:0;transform:scale(.5);}to{opacity:1;transform:scale(1);}}
 .hero h2{font-family:var(--font-display);font-weight:400;font-size:clamp(30px,6.4vw,44px);line-height:1.12;letter-spacing:-.018em;margin:0;text-wrap:balance;animation:rise .5s cubic-bezier(.32,.72,0,1) both;animation-delay:.1s;}
 .hero .sub{margin:0;max-width:52ch;font-size:15.5px;line-height:1.65;color:var(--ink-2);text-wrap:balance;animation:rise .5s cubic-bezier(.32,.72,0,1) both;animation-delay:.18s;}
@@ -211,8 +212,7 @@ a{color:var(--accent);text-underline-offset:3px;}
 .chat-inner{max-width:760px;margin:0 auto;padding:var(--sp-32) var(--sp-16) var(--sp-16);display:flex;flex-direction:column;gap:var(--sp-24);}
 .msg{display:flex;gap:var(--sp-12);align-items:flex-start;}
 .msg.user{justify-content:flex-end;}
-.av{width:var(--size-avatar);height:var(--size-avatar);flex:none;border-radius:var(--r-md);background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;}
-.av svg{width:var(--sp-24);height:var(--sp-24);display:block;}
+.av{position:relative;width:var(--size-avatar);height:var(--size-avatar);flex:none;}
 .body{min-width:0;flex:1;}
 .who{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:var(--sp-8);}
 .bubble{background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-lg);border-bottom-right-radius:var(--r-sm);padding:var(--sp-8) var(--sp-16);max-width:min(78%,440px);font-size:14.5px;}
@@ -300,66 +300,10 @@ a{color:var(--accent);text-underline-offset:3px;}
 .think-label.swap{opacity:0;}
 
 /* The avatar carries the working signal rather than a row of dots, so there
-   is one thing moving, not two. The mark is already a dot with arcs coming
-   off it: transmitting is what it draws, so animating it is the honest
-   reading. Arcs radiate out in sequence while it's looking; once words
-   start landing they settle into a slower, shallower breath, so the state
-   change is visible without a second component. */
-.av svg .arc,.av svg .core{transform-box:view-box;transform-origin:24px 24px;}
-.av svg .arc-1{--peak:1;}
-.av svg .arc-2{--peak:.78;}
-.av svg .arc-3{--peak:.56;}
-.msg.working .av svg .arc{animation:radiate 1.4s cubic-bezier(.4,0,.3,1) infinite;}
-.msg.working .av svg .arc-2{animation-delay:.16s;}
-.msg.working .av svg .arc-3{animation-delay:.32s;}
-.msg.working .av svg .core{animation:corebeat 1.4s ease-in-out infinite;}
-.msg.answering .av svg .arc{animation:settle 2.6s ease-in-out infinite;}
-.msg.answering .av svg .arc-2{animation-delay:.2s;}
-.msg.answering .av svg .arc-3{animation-delay:.4s;}
-@keyframes radiate{
-  0%{transform:scale(.72);opacity:0;}
-  38%{opacity:var(--peak,1);}
-  100%{transform:scale(1.14);opacity:0;}
-}
-@keyframes corebeat{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.22);opacity:.85;}}
-@keyframes settle{
-  0%,100%{transform:scale(1);opacity:calc(var(--peak,1) * .5);}
-  50%{transform:scale(1.05);opacity:var(--peak,1);}
-}
-/* --- the ball at the centre of the mark ---
-   The dot is a small mirrored ball. What it reflects is the wash: six soft
-   patches of the same six hues, in wheel order, turning on the prompt
-   box's clock (script writes --et), so the ball, the border and the lead
-   chip keep one time. Fine lines are etched into it. At rest they are a
-   faint dark trace; they light, with a glow in the same hues, while the
-   box has your attention on the first screen and while an answer is being
-   found, and stay half-lit as the words land. The gradients live once, in
-   a zero-size svg at the top of the body, and every copy of the mark
-   points at them. */
-.orb-defs{position:absolute;width:0;height:0;overflow:hidden;}
-.orb-s-hi{stop-color:var(--orb-hi);} .orb-s-mid{stop-color:var(--orb-mid);} .orb-s-lo{stop-color:var(--orb-lo);}
-/* in the light theme the border's hues are let down with white: a mirror
-   in a pale room reflects pale colours */
-.orb-s-h1{stop-color:var(--edge-1);stop-color:color-mix(in srgb,var(--edge-1) var(--orb-tint),#fff);}
-.orb-s-h2{stop-color:var(--edge-2);stop-color:color-mix(in srgb,var(--edge-2) var(--orb-tint),#fff);}
-.orb-s-h3{stop-color:var(--edge-3);stop-color:color-mix(in srgb,var(--edge-3) var(--orb-tint),#fff);}
-.orb-s-h4{stop-color:var(--edge-4);stop-color:color-mix(in srgb,var(--edge-4) var(--orb-tint),#fff);}
-.orb-s-h5{stop-color:var(--edge-5);stop-color:color-mix(in srgb,var(--edge-5) var(--orb-tint),#fff);}
-.orb-s-h6{stop-color:var(--edge-6);stop-color:color-mix(in srgb,var(--edge-6) var(--orb-tint),#fff);}
-.orb-hues,.orb-halo{transform-box:view-box;transform-origin:24px 24px;}
-.orb-hues{transform:rotate(calc(var(--et,0) * 1turn));}
-.orb-halo{transform:rotate(calc(var(--et,0) * 1turn)) scale(1.7);opacity:0;transition:opacity .5s ease;}
-.orb-etch{fill:none;stroke:var(--orb-line);stroke-width:.55;opacity:.5;transition:opacity .5s ease,stroke .5s ease;}
-.orb-etch circle{fill:var(--orb-line);stroke:none;transition:fill .5s ease;}
-.orb-pulse{fill:none;stroke:var(--orb-lit);stroke-width:.9;stroke-dasharray:1.6 8.4;opacity:0;transition:opacity .5s ease;}
-.main.attend .hero-mark .orb-halo{opacity:.7;}
-.msg.working .av .orb-halo{opacity:.9;}
-.msg.answering .av .orb-halo{opacity:.45;}
-.main.attend .hero-mark .orb-etch,.msg.working .av .orb-etch{stroke:var(--orb-lit);opacity:.85;}
-.msg.answering .av .orb-etch{stroke:var(--orb-lit);opacity:.6;}
-.main.attend .hero-mark .orb-etch circle,.msg.working .av .orb-etch circle,.msg.answering .av .orb-etch circle{fill:var(--orb-lit);}
-.main.attend .hero-mark .orb-pulse,.msg.working .av .orb-pulse{opacity:1;animation:orbpulse 1.4s linear infinite;}
-@keyframes orbpulse{from{stroke-dashoffset:10;}to{stroke-dashoffset:0;}}
+   is one thing moving, not two. It is the same ball as on the first screen:
+   it turns and swells faster while it's looking, eases as the words land,
+   and settles back to rest. Script does all of it; there is nothing to
+   style here. */
 .reveal{animation:rise .3s cubic-bezier(.32,.72,0,1) both;}
 @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
@@ -519,14 +463,10 @@ a.chip{text-decoration:none;}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
   .caret,.stream-caret{display:none;}
   .w{opacity:1;}
-  /* the blanket rule above would freeze the arcs on their last keyframe,
-     which is invisible — the mark must stay a mark */
-  .av svg .arc,.av svg .core{animation:none !important;}
-  .orb-pulse{display:none;}
   /* The hero's entrance starts each piece at opacity 0. Squeezed to .001ms
      it sometimes never painted its end state, leaving the greeting blank,
      so with reduced motion the hero has no entrance at all. */
-  .hero h2,.hero .sub,.hero-slot,.hero-chips,.hero-mark .ring{animation:none !important;}
+  .hero h2,.hero .sub,.hero-slot,.hero-chips,.hero-mark{animation:none !important;}
 }
 </style>
 
@@ -775,10 +715,9 @@ var Aurora = (function(){
    ========================================================= */
 var Edge = (function(){
   var el = document.getElementById('edge');
-  if(!el) return {pace:function(){}, follow:function(){}};
+  if(!el) return {pace:function(){}};
   var TURN = 11000;                       /* ms per turn at rest */
   var phase = 0, rate = 1, goal = 1, last = 0, lead = null;
-  var heroMark = document.getElementById('heroMark'), live = null;
 
   function frame(now){
     var dt = last ? Math.min(now-last, 50) : 16;
@@ -791,11 +730,6 @@ var Edge = (function(){
        first screen comes back, so look it up again if it has gone */
     if(!lead || !lead.isConnected) lead = document.querySelector('.hero-chips .chip.lead');
     if(lead) lead.style.setProperty('--et', v);
-    /* and so do the reflections in the mark's ball: the one on the first
-       screen, and the avatar of whichever answer is on its way. An avatar
-       that is let go keeps the angle it stopped at. */
-    if(heroMark && heroMark.offsetParent) heroMark.style.setProperty('--et', v);
-    if(live && live.isConnected) live.style.setProperty('--et', v);
     requestAnimationFrame(frame);
   }
   if(!REDUCED) requestAnimationFrame(frame);              /* reduced motion: it holds still */
@@ -805,8 +739,8 @@ var Edge = (function(){
       goal = v;
       var m = document.getElementById('main');
       if(m) m.classList.toggle('busy', v > 1);
-    },
-    follow:function(node){ live = node || null; }
+      if(Orb) Orb.pace(v);                 /* the mark keeps the same time */
+    }
   };
 })();
 
@@ -1069,74 +1003,251 @@ var Motes = (function(){
 })();
 
 /* =========================================================
-   0. Mark
+   0. Mark — a mirrored ball
+   The mark is a ball of liquid mirror, drawn live. What it reflects is
+   the wash: six lights in the border's six hues, circling it, under one
+   fixed highlight. Its surface is never quite still. At rest the colours
+   drift round and the surface swells slowly; while an answer is being
+   found both quicken and the swell deepens, and as the words land they
+   ease back. There is one clock and it is never reset: pace() only says
+   where the speed is heading and every frame closes part of the gap, so
+   no state begins or ends with a jump.
+   One hidden WebGL canvas draws the ball; the copy on the page that is
+   alive (the one on the first screen, or the newest answer's avatar) is
+   an ordinary canvas the frame is copied into. Every other copy holds
+   still: the sidebar's, and the avatars of earlier answers, which keep
+   the last frame they were given.
    ========================================================= */
-var ORB_R = 8.5;                     /* the ball, in the mark's 48-unit box */
-function orbNum(v){ return (+v).toFixed(2); }
-/* The ball's paint, defined once. Every stop takes its colour from a theme
-   token, so the ball changes with the theme without being redrawn. */
-(function(){
-  var R = ORB_R, i, a, d, s = '<svg class="orb-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>';
-  /* the body: a bright point up and to the left, falling to deep teal at the limb */
-  s += '<radialGradient id="orbBase" gradientUnits="userSpaceOnUse" cx="24" cy="24" r="'+R+'" fx="'+orbNum(24-R*0.34)+'" fy="'+orbNum(24-R*0.40)+'">'
-     + '<stop offset="0" class="orb-s-hi"/><stop offset=".5" class="orb-s-mid"/><stop offset="1" class="orb-s-lo"/></radialGradient>';
-  /* six reflections, one per hue of the wash, in wheel order round the ball */
-  for(i=0;i<6;i++){
-    a = (i*60-90) * Math.PI/180; d = R*0.64;
-    s += '<radialGradient id="orbHue'+(i+1)+'" gradientUnits="userSpaceOnUse" cx="'+orbNum(24+d*Math.cos(a))+'" cy="'+orbNum(24+d*Math.sin(a))+'" r="'+orbNum(R*0.58)+'">'
-       + '<stop offset="0" stop-opacity="1" class="orb-s-h'+(i+1)+'"/><stop offset="1" stop-opacity="0" class="orb-s-h'+(i+1)+'"/></radialGradient>';
+var Orb = (function(){
+  var VERT = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  var FRAG = [
+    'precision highp float;',
+    'uniform vec2 uRes;uniform float uSpin;uniform float uT;uniform float uAmp;',
+    'uniform vec3 uHue[6];uniform vec3 uSky;uniform vec3 uDeep;uniform vec3 uRim;',
+    'uniform float uRimK;uniform float uHueK;',
+    'const float R=0.8;',
+    'mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}',
+    /* the swell: three slow waves over the ball, in the ball's own turning frame */
+    'float bump(vec3 q){',
+    '  float a=sin(3.8*q.x+uT*1.00+1.6*sin(2.6*q.y+uT*0.70));',
+    '  float b=sin(3.3*q.y-uT*0.83+1.4*sin(3.4*q.z-uT*0.50));',
+    '  float c=sin(4.2*q.z+uT*0.61+1.2*sin(3.0*q.x+uT*0.90));',
+    '  return a*0.45+b*0.35+c*0.30;',
+    '}',
+    'float map(vec3 p){',
+    '  float l=length(p);vec3 q=p/max(l,1e-4);q.xz=rot(uSpin)*q.xz;',
+    '  return l-R*(1.0+uAmp*bump(q));',
+    '}',
+    'vec3 nrm(vec3 p){',
+    '  vec2 e=vec2(0.006,0.0);',
+    '  return normalize(vec3(map(p+e.xyy)-map(p-e.xyy),map(p+e.yxy)-map(p-e.yxy),map(p+e.yyx)-map(p-e.yyx)));',
+    '}',
+    /* the room the ball stands in: bright above, deep below, six coloured
+       lights circling at the horizon, one white light up and to the left */
+    'vec3 env(vec3 r){',
+    '  vec3 col=mix(uDeep,uSky,0.72*smoothstep(-0.7,0.5,r.y)+0.28*smoothstep(-0.32,-0.12,r.y));',
+    '  vec3 d=r;d.xz=rot(-uSpin)*d.xz;',
+    '  for(int i=0;i<6;i++){',
+    '    float a=float(i)*1.0471976;',
+    '    float el=mod(float(i),2.0)<0.5?0.40:-0.20;',
+    '    vec3 c=vec3(cos(a)*cos(el),sin(el),sin(a)*cos(el));',
+    '    col=mix(col,uHue[i],pow(max(dot(d,c),0.0),8.0)*uHueK);',
+    '  }',
+    '  float k=max(dot(r,normalize(vec3(-0.55,0.62,0.56))),0.0);',
+    '  return col+vec3(pow(k,90.0)*1.2+pow(k,12.0)*0.30);',
+    '}',
+    'void main(){',
+    '  vec2 uv=(gl_FragCoord.xy*2.0-uRes)/uRes;',
+    /* nothing of the ball lies outside this circle, and no ray needs to
+       start further back than the ball it bounds */
+    '  float rm=R*(1.0+1.15*uAmp),r2=dot(uv,uv);',
+    '  if(r2>(rm+0.03)*(rm+0.03)){gl_FragColor=vec4(0.0);return;}',
+    '  vec3 ro=vec3(uv,1.6),rd=vec3(0.0,0.0,-1.0),p=ro,pm=ro;',
+    '  float t=1.6-sqrt(max(rm*rm-r2,0.0)),md=1e9;',
+    '  for(int i=0;i<28;i++){',
+    '    p=ro+rd*t;float d=map(p);',
+    '    if(d<md){md=d;pm=p;}',
+    '    if(d<0.0008||t>3.2)break;',
+    '    t+=d*0.7;',
+    '  }',
+    '  float a=1.0-smoothstep(0.0,3.0/uRes.x,md);',
+    '  if(a<=0.0){gl_FragColor=vec4(0.0);return;}',
+    '  vec3 n=nrm(pm);',
+    '  vec3 col=env(reflect(rd,n));',
+    '  col=mix(col,uRim,pow(1.0-clamp(n.z,0.0,1.0),3.0)*uRimK);',
+    '  col=clamp(col,0.0,1.0);',
+    '  gl_FragColor=vec4(col*a,a);',
+    '}'
+  ].join('\n');
+
+  var DPR = Math.min(window.devicePixelRatio || 1, 3);
+  var SPIN = 6.2832/20;            /* the colours go once round in 20s at rest */
+  var WOB = 0.42;                  /* how fast the swell moves at rest */
+  var TOP = 5;                     /* how many times faster than rest it gets, while it's looking */
+  var AMP0 = 0.022, AMP1 = 0.042;  /* how deep the swell is: at rest, at full pace */
+  var POSE = {spin:0.9, wob:1.7};  /* the still frame */
+
+  var glc = null, gl = null, U = null, ok = false, pal = null;
+  var spin = POSE.spin, wob = POSE.wob, rate = 1, paceGoal = 1, attending = false, last = 0;
+  var hero = null, avatar = null, all = [];
+
+  function setup(){
+    try{
+      var prog = gl.createProgram();
+      [[gl.VERTEX_SHADER,VERT],[gl.FRAGMENT_SHADER,FRAG]].forEach(function(s){
+        var sh = gl.createShader(s[0]); gl.shaderSource(sh, s[1]); gl.compileShader(sh);
+        if(!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh));
+        gl.attachShader(prog, sh);
+      });
+      gl.linkProgram(prog);
+      if(!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+      gl.useProgram(prog);
+      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+      var loc = gl.getAttribLocation(prog, 'p');
+      gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+      U = {};
+      ['uRes','uSpin','uT','uAmp','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
+      ok = true;
+    }catch(err){ ok = false; }
   }
-  /* the dark half of a mirrored ball: what is below the horizon */
-  s += '<linearGradient id="orbGround" gradientUnits="userSpaceOnUse" x1="24" y1="'+orbNum(24+R*0.1)+'" x2="24" y2="'+(24+R)+'">'
-     + '<stop offset="0" stop-opacity=".78" class="orb-s-lo"/><stop offset=".55" stop-opacity=".38" class="orb-s-lo"/><stop offset="1" stop-opacity=".05" class="orb-s-lo"/></linearGradient>';
-  /* reflections bunch and darken toward the edge */
-  s += '<radialGradient id="orbLimb" gradientUnits="userSpaceOnUse" cx="24" cy="24" r="'+R+'">'
-     + '<stop offset=".62" stop-opacity="0" class="orb-s-lo"/><stop offset=".9" stop-opacity=".5" class="orb-s-lo"/><stop offset="1" stop-opacity=".85" class="orb-s-lo"/></radialGradient>';
-  s += '<radialGradient id="orbSpec" gradientUnits="userSpaceOnUse" cx="'+orbNum(24-R*0.38)+'" cy="'+orbNum(24-R*0.44)+'" r="'+orbNum(R*0.3)+'">'
-     + '<stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset=".6" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>';
-  s += '<linearGradient id="orbRim" gradientUnits="userSpaceOnUse" x1="'+(24-R)+'" y1="'+(24-R)+'" x2="'+(24+R)+'" y2="'+(24+R)+'">'
-     + '<stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".75"/></linearGradient>';
-  s += '</defs></svg>';
-  document.body.insertAdjacentHTML('afterbegin', s);
-})();
-/* three etched traces, each ending in a pad: [path, pad x, pad y] */
-var ORB_ETCH = [
-  ['M17.6 22.4H20.6L22.2 24H25.6', 26.4, 24],
-  ['M30.6 26.8H27.8L26.4 28.2H22.6', 21.8, 28.2],
-  ['M24.4 16.6V18.8L25.8 20.2H28.6', 29.4, 20.2]
-];
-function markSVG(){
-  var R = ORB_R, i, hx = R*0.9887, hy = 24+R*0.15;
-  var s = '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">';
-  var hues = '';
-  for(i=1;i<=6;i++) hues += '<circle cx="24" cy="24" r="'+R+'" fill="url(#orbHue'+i+')"/>';
-  s += '<g class="ring core orb">';
-  s += '<g class="orb-halo">'+hues+'</g>';
-  s += '<circle cx="24" cy="24" r="'+R+'" fill="url(#orbBase)"/>';
-  s += '<g class="orb-hues">'+hues+'</g>';
-  s += '<path opacity=".4" d="M'+orbNum(24-hx)+' '+orbNum(hy)+' Q24 '+orbNum(24+R*0.62)+' '+orbNum(24+hx)+' '+orbNum(hy)+' A'+R+' '+R+' 0 0 1 '+orbNum(24-hx)+' '+orbNum(hy)+'Z" fill="url(#orbGround)"/>';
-  s += '<circle cx="24" cy="24" r="'+R+'" fill="url(#orbLimb)"/>';
-  s += '<g class="orb-etch" stroke-linecap="round" stroke-linejoin="round">';
-  ORB_ETCH.forEach(function(e){ s += '<path d="'+e[0]+'"/><circle cx="'+e[1]+'" cy="'+e[2]+'" r=".8"/>'; });
-  s += '<path d="M20.2 30.4V28.4"/><path d="M27.6 31.2V30"/></g>';
-  s += '<g class="orb-pulse" stroke-linecap="round" stroke-linejoin="round">';
-  ORB_ETCH.forEach(function(e){ s += '<path pathLength="10" d="'+e[0]+'"/>'; });
-  s += '</g>';
-  s += '<circle cx="24" cy="24" r="'+R+'" fill="url(#orbSpec)"/>';
-  s += '<circle cx="24" cy="24" r="'+(R-0.3)+'" stroke="url(#orbRim)" stroke-width=".6"/>';
-  s += '</g>';
-  /* the arcs sit further out than they did round the dot, to clear the ball */
-  [13,17.5,22].forEach(function(r,i){
-    var o=(1-i*0.22).toFixed(2);
-    var c='ring arc arc-'+(i+1);
-    s += '<path class="'+c+'" d="M'+(24+r*0.5)+' '+orbNum(24-r*0.866)+' A '+r+' '+r+' 0 0 1 '+(24+r*0.5)+' '+orbNum(24+r*0.866)+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="'+o+'"/>';
-    s += '<path class="'+c+'" d="M'+(24-r*0.5)+' '+orbNum(24-r*0.866)+' A '+r+' '+r+' 0 0 0 '+(24-r*0.5)+' '+orbNum(24+r*0.866)+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="'+o+'"/>';
+  function init(){
+    glc = document.createElement('canvas');
+    try{ gl = glc.getContext('webgl', {alpha:true, premultipliedAlpha:true, antialias:false}) || glc.getContext('experimental-webgl'); }catch(err){ gl = null; }
+    if(!gl) return;
+    glc.addEventListener('webglcontextlost', function(e){ e.preventDefault(); ok = false; });
+    glc.addEventListener('webglcontextrestored', setup);
+    setup();
+  }
+
+  function hex(v){
+    v = (v||'').trim().replace('#','');
+    if(v.length===3) v = v[0]+v[0]+v[1]+v[1]+v[2]+v[2];
+    var n = parseInt(v,16);
+    return isNaN(n) ? [128,128,128] : [(n>>16)&255,(n>>8)&255,n&255];
+  }
+  function readTheme(){
+    var cs = getComputedStyle(document.documentElement);
+    function tok(n){ return hex(cs.getPropertyValue(n)); }
+    function num(n, d){ var v = parseFloat(cs.getPropertyValue(n)); return isNaN(v) ? d : v; }
+    var tint = num('--orb-tint', 1);
+    pal = {
+      sky:tok('--orb-sky'), deep:tok('--orb-deep'), rim:tok('--orb-rim'),
+      rimK:num('--orb-rim-k', .5), hueK:num('--orb-hue-k', .85),
+      /* a mirror in a pale room reflects pale colours: tint < 1 lets the hues down with white */
+      hues:[1,2,3,4,5,6].map(function(n){ return tok('--edge-'+n).map(function(c){ return c*tint + 255*(1-tint); }); })
+    };
+  }
+
+  /* draw one frame of the ball into a page canvas */
+  function paint(c, s, w, amp){
+    var px = Math.round(c.clientWidth * DPR);
+    if(!px) return;
+    if(c.width !== px){ c.width = px; c.height = px; }
+    var ctx = c._ctx || (c._ctx = c.getContext('2d'));
+    ctx.clearRect(0, 0, px, px);
+    if(ok){
+      if(glc.width !== px){ glc.width = px; glc.height = px; }
+      gl.viewport(0, 0, px, px);
+      gl.uniform2f(U.uRes, px, px);
+      gl.uniform1f(U.uSpin, s % 6.2832); gl.uniform1f(U.uT, w % 6283.2); gl.uniform1f(U.uAmp, amp);
+      var h = []; pal.hues.forEach(function(c3){ h.push(c3[0]/255, c3[1]/255, c3[2]/255); });
+      gl.uniform3fv(U.uHue, new Float32Array(h));
+      gl.uniform3f(U.uSky, pal.sky[0]/255, pal.sky[1]/255, pal.sky[2]/255);
+      gl.uniform3f(U.uDeep, pal.deep[0]/255, pal.deep[1]/255, pal.deep[2]/255);
+      gl.uniform3f(U.uRim, pal.rim[0]/255, pal.rim[1]/255, pal.rim[2]/255);
+      gl.uniform1f(U.uRimK, pal.rimK); gl.uniform1f(U.uHueK, pal.hueK);
+      gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      ctx.drawImage(glc, 0, 0);
+    } else {
+      flat(ctx, px, s);
+    }
+  }
+  /* without WebGL: the same ball painted flat. The colours still turn; the
+     surface does not move. */
+  function flat(ctx, px, s){
+    var m = px/2, r = px*0.4, g, i, a;
+    function rgb(c3, al){ return 'rgba('+Math.round(c3[0])+','+Math.round(c3[1])+','+Math.round(c3[2])+','+al+')'; }
+    ctx.save();
+    ctx.beginPath(); ctx.arc(m, m, r, 0, 6.2832); ctx.clip();
+    g = ctx.createLinearGradient(0, m-r, 0, m+r);
+    g.addColorStop(0, rgb(pal.sky,1)); g.addColorStop(1, rgb(pal.deep,1));
+    ctx.fillStyle = g; ctx.fillRect(0,0,px,px);
+    for(i=0;i<6;i++){
+      a = i*1.0472 + s;
+      var x = m + Math.cos(a)*r*0.6, y = m + Math.sin(a)*r*0.6;
+      g = ctx.createRadialGradient(x, y, 0, x, y, r*0.62);
+      g.addColorStop(0, rgb(pal.hues[i], pal.hueK)); g.addColorStop(1, rgb(pal.hues[i], 0));
+      ctx.fillStyle = g; ctx.fillRect(0,0,px,px);
+    }
+    g = ctx.createRadialGradient(m, m, r*0.55, m, m, r);
+    g.addColorStop(0, rgb(pal.rim,0)); g.addColorStop(1, rgb(pal.rim, pal.rimK));
+    ctx.fillStyle = g; ctx.fillRect(0,0,px,px);
+    g = ctx.createRadialGradient(m-r*0.36, m-r*0.42, 0, m-r*0.36, m-r*0.42, r*0.34);
+    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,px,px);
+    ctx.restore();
+  }
+  function still(c){ paint(c, POSE.spin, POSE.wob, AMP0); }
+  /* how deep the swell is right now: it follows the pace */
+  function amp(){
+    var e = Math.max(0, Math.min(1, (rate-1)/(TOP-1)));
+    return AMP0 + (AMP1-AMP0) * e*e*(3-2*e);
+  }
+
+  function frame(now){
+    var dt = last ? Math.min(now-last, 50) : 16;
+    last = now;
+    /* the prompt box's border runs 3.5 times faster while it's looking and
+       1.8 as the words land; the ball stretches the same two steps to TOP
+       and about half of it, and lifts a little while the box has focus */
+    var goal = Math.max(1 + (paceGoal-1) * (TOP-1)/2.5, attending ? 1.4 : 1);
+    rate += (goal - rate) * (1 - Math.exp(-dt/520));        /* ease toward, never snap */
+    spin += dt/1000 * SPIN * rate;
+    wob  += dt/1000 * WOB * rate;
+    var c = (hero && hero.offsetParent) ? hero : (avatar && avatar.isConnected ? avatar : null);
+    if(c) paint(c, spin, wob, amp());
+    requestAnimationFrame(frame);
+  }
+
+  init();
+  readTheme();
+  if(!REDUCED) requestAnimationFrame(frame);              /* reduced motion: it holds still */
+  /* a ball that was hidden when it was adopted (the rail, below tablet
+     width) has no size and was not drawn; draw it once it has one */
+  window.addEventListener('resize', function(){
+    DPR = Math.min(window.devicePixelRatio || 1, 3);
+    all.forEach(function(c){ if(c.isConnected && Math.round(c.clientWidth*DPR) !== c.width && (REDUCED || (c !== hero && c !== avatar))) still(c); });
   });
-  return s+'</svg>';
-}
-document.getElementById('heroMark').innerHTML = markSVG();
-var TILE_MARK = markSVG();
+
+  return {
+    /* adopt any ball on the page that has not been seen yet */
+    scan:function(){
+      [].forEach.call(document.querySelectorAll('canvas.orb'), function(c){
+        if(c._orb) return;
+        c._orb = true; all.push(c);
+        var isLive = true;
+        if(c.closest('#heroMark')) hero = c;
+        else if(c.closest('.msg')) avatar = c;       /* the one before it keeps its last frame */
+        else isLive = false;
+        /* a live one starts from wherever the clock is, not from the still pose */
+        if(isLive && !REDUCED) paint(c, spin, wob, amp()); else still(c);
+      });
+      all = all.filter(function(c){ return c.isConnected; });
+    },
+    pace:function(v){ paceGoal = v; },
+    attend:function(on){ attending = !!on; },
+    retheme:function(){
+      readTheme();
+      all.forEach(function(c){ if(c.isConnected && (REDUCED || (c !== hero && c !== avatar))) still(c); });
+    }
+  };
+})();
+var TILE_MARK = '<canvas class="orb"></canvas>';
+document.getElementById('heroMark').innerHTML = TILE_MARK;
 document.getElementById('sbTile').innerHTML = TILE_MARK;
+Orb.scan();
 
 /* =========================================================
    1. Artwork
@@ -2172,7 +2283,6 @@ function avState(bodyEl, state){
   /* the prompt box keeps the same time: quick while it looks, easing as
      words land, back to rest when it's done */
   Edge.pace(state==='working' ? 3.5 : state==='answering' ? 1.8 : 1);
-  Edge.follow(state ? msg.querySelector('.av') : null);
 }
 
 function streamInto(bodyEl, html, done){
@@ -2229,6 +2339,7 @@ function newAssistant(){
   wrap.className='msg reveal';
   wrap.innerHTML='<div class="av" aria-hidden="true">'+TILE_MARK+'</div><div class="body"><div class="who">RossLM</div></div>';
   inner.appendChild(wrap);
+  Orb.scan();                            /* this avatar is the live one now */
   return wrap.querySelector('.body');
 }
 /* The pause has to be long enough to READ, or the label is decoration.
@@ -2586,10 +2697,10 @@ input.addEventListener('focus', function(){
   if(!ghostDead){ stopGhost(); ghost.textContent='Ask me something…'; }
   syncGhost();
   Aurora.speed(1.8);
-  main.classList.add('attend');
+  Orb.attend(true);
   if(!suggestMuted) openSuggest();
 });
-input.addEventListener('blur', function(){ Aurora.speed(1); main.classList.remove('attend'); });
+input.addEventListener('blur', function(){ Aurora.speed(1); Orb.attend(false); });
 input.addEventListener('input', function(){
   syncGhost(); autosize();
   Aurora.speed(input.value.length ? 2.3 : 1.8);
@@ -2710,6 +2821,7 @@ railHTML+='<div class="rail-spacer"></div>'+
   '<button class="rail-btn" type="button" data-go="contact" data-nav="contact" aria-current="false" title="Get in touch" aria-label="Get in touch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></button>'+
   '<button class="rail-btn" type="button" id="railHome" title="New conversation" aria-label="New conversation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>';
 document.getElementById('rail').innerHTML=railHTML;
+Orb.scan();
 
 heroChips.innerHTML=[
   {label:'The work I’m proudest of',go:'help-me-choose',lead:true},
@@ -2772,6 +2884,7 @@ themeBtn.addEventListener('click', function(){
   try{ localStorage.setItem('rosslm-theme',next); }catch(err){}
   Aurora.retheme();
   Motes.retheme();
+  Orb.retheme();
 });
 
 document.addEventListener('click', function(e){
