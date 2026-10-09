@@ -777,7 +777,10 @@ var Edge = (function(){
    pushed a few pixels away, then drifts back more slowly than it left,
    so the pointer leaves a short trail. Colour is by position, in the
    wash's own left-to-right order. Nothing is drawn behind the hero's
-   text. Touch screens get the still field. In a conversation the grid
+   text. A touch screen has no hover, so there one icon at a time takes
+   its colour for a moment and lets it go, a new one about every half
+   second: no movement, two to four alight at once, and not at full
+   strength. Ross chose the rate from four. In a conversation the grid
    stays where it is, clears the text column instead, and ignores the
    pointer.
    ========================================================= */
@@ -788,6 +791,9 @@ var Motes = (function(){
   var ctx = cv.getContext('2d');
   var host = cv.parentNode;
   var PITCH = 48, SIZE = 16, REACH = 128, PUSH = 6, REST = 0.13;
+  /* the touch-screen glimmer: how strong, how long it holds, how often */
+  var GLIM = 0.5, GLIM_HOLD = 1300, GLIM_EVERY = [300, 700];
+  var NO_HOVER = !!(window.matchMedia && window.matchMedia('(hover: none)').matches);
   var PATHS = [
     /* dogs */
     "M3.2 7a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0M5.6 4.6a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0M8.2 4.6a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0M10.6 7a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0M8 8.2c-2 0-3.8 1.8-3.8 3.4 0 1.200 0.900 1.900 1.900 1.900 0.800 0 1.200-0.400 1.900-0.400s1.100 0.400 1.900 0.400c1 0 1.900-0.700 1.900-1.900C11.800 10 10 8.200 8 8.200z",
@@ -965,7 +971,7 @@ var Motes = (function(){
         }
         grid[r][c] = n;
         if(y > H + SIZE) continue;
-        var it = {x:x, y:y, p:PATHS[n], m:0, mt:0, c:hueAt(x/W), s:0, ox:0, oy:0};
+        var it = {x:x, y:y, p:PATHS[n], m:0, mt:0, c:hueAt(x/W), s:0, ox:0, oy:0, g:0, until:0};
         it.m = it.mt = target(it);
         items.push(it);
       }
@@ -979,15 +985,16 @@ var Motes = (function(){
     for(var i=0;i<items.length;i++){
       var it = items[i], s = it.s;
       if(it.m < 0.01) continue;
+      var g = Math.max(s, it.g);                       /* colour: pointer or glimmer, whichever is more */
       var k = (SIZE/16) * (1 + 0.14*s) * dpr;
       ctx.setTransform(k,0,0,k, (it.x+it.ox)*dpr - 8*k, (it.y+it.oy)*dpr - 8*k);
       var c = it.c;
-      ctx.strokeStyle = 'rgba('+Math.round(ink[0]+(c[0]-ink[0])*s)+','+Math.round(ink[1]+(c[1]-ink[1])*s)+','+Math.round(ink[2]+(c[2]-ink[2])*s)+','+(it.m*(REST+(1-REST)*s)).toFixed(3)+')';
+      ctx.strokeStyle = 'rgba('+Math.round(ink[0]+(c[0]-ink[0])*g)+','+Math.round(ink[1]+(c[1]-ink[1])*g)+','+Math.round(ink[2]+(c[2]-ink[2])*g)+','+(it.m*Math.max(REST+(1-REST)*s, REST+(GLIM-REST)*it.g)).toFixed(3)+')';
       ctx.stroke(it.p);
     }
   }
   function frame(){
-    var live = false;
+    var live = false, now = Date.now();
     for(var i=0;i<items.length;i++){
       var it = items[i];
       var dx = it.x-mx, dy = it.y-my, d = Math.sqrt(dx*dx+dy*dy);
@@ -1000,11 +1007,27 @@ var Motes = (function(){
       }
       if(it.s < 0.004 && t === 0){ it.s = 0; it.ox = 0; it.oy = 0; } else live = true;
       if(Math.abs(it.mt-it.m) > 0.004){ it.m += (it.mt-it.m)*0.07; live = true; } else it.m = it.mt;
+      var gt = now < it.until ? 1 : 0;                 /* slow in, slower out */
+      if(gt || it.g > 0.004){ it.g += (gt-it.g)*(gt ? 0.045 : 0.02); live = true; } else it.g = 0;
     }
     draw();
     raf = live ? requestAnimationFrame(frame) : null;
   }
   function kick(){ if(!raf) raf = requestAnimationFrame(frame); }
+
+  /* The glimmer. Nothing here answers a touch: it runs on its own clock,
+     first screen only, and stops for reduced motion or a hidden tab. */
+  function glimmer(){
+    setTimeout(glimmer, GLIM_EVERY[0] + Math.random()*(GLIM_EVERY[1]-GLIM_EVERY[0]));
+    if(!NO_HOVER || REDUCED || document.hidden || !host.classList.contains('zero')) return;
+    var pool = items.filter(function(it){ return it.mt > 0.8 && it.y < H - SIZE && !it.until; });
+    if(!pool.length) return;
+    var it = pool[Math.floor(Math.random()*pool.length)];
+    it.until = Date.now() + GLIM_HOLD;
+    setTimeout(function(){ it.until = 0; }, GLIM_HOLD + 4000);   /* free to be picked again once it has faded */
+    kick();
+  }
+  setTimeout(glimmer, 2400);
 
   /* mouse and pen only: a finger has no hover, and a drag there is a scroll */
   host.addEventListener('pointermove', function(e){
@@ -1022,7 +1045,7 @@ var Motes = (function(){
   readTheme();
   return {
     retheme:function(){ readTheme(); items.forEach(function(it){ it.c = hueAt(it.x/W); }); draw(); },
-    layout:function(){ mx = my = -1e4; layout(); }
+    layout:function(){ mx = my = -1e4; items.forEach(function(it){ if(it.until) it.until = 1; }); layout(); }
   };
 })();
 
