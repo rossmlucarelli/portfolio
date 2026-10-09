@@ -197,7 +197,7 @@ a{color:var(--accent);text-underline-offset:3px;}
    turning in step with it: the two things on the first screen that carry
    that border are the two places to start. Script writes --et. */
 .hero-chips .chip.lead{position:relative;color:var(--accent);font-weight:600;border-color:transparent;--et:0;}
-.hero-chips .chip.lead::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;pointer-events:none;
+.hero-chips .chip.lead::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:var(--edge-w,2px);pointer-events:none;
   background:conic-gradient(from calc(var(--et) * 1turn),var(--edge-1),var(--edge-2) 17%,var(--edge-3) 34%,var(--edge-4) 50%,var(--edge-5) 66%,var(--edge-6) 83%,var(--edge-1));
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);}
 .hero-chips .chip.lead:hover::before{opacity:0;}
@@ -376,13 +376,20 @@ a{color:var(--accent);text-underline-offset:3px;}
 .edge{position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;--et:0;
   --edge-paint:conic-gradient(from calc(var(--et) * 1turn),var(--edge-1),var(--edge-2) 17%,var(--edge-3) 34%,var(--edge-4) 50%,var(--edge-5) 66%,var(--edge-6) 83%,var(--edge-1));}
 .edge::before,.edge::after{content:"";position:absolute;border-radius:inherit;background:var(--edge-paint);}
-.edge::before{inset:0;padding:2px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);}
+/* The line's thickness comes from --edge-w and --edge-w-focus, which script
+   sets to a whole number of SCREEN pixels. On a display scaled to 125%,
+   150% or 175% a plain 3px is 3.75, 4.5 or 5.25 screen pixels, and the
+   browser rounded the inner edge its own way at each end of the box: one
+   end came out thinner than the other, with a squarer inner corner. A
+   whole number rounds the same way everywhere. 2px and 3px are what a
+   browser without the script gets. */
+.edge::before{inset:0;padding:var(--edge-w,2px);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);}
 .edge::after{inset:calc(var(--sp-8) * -1);border-radius:var(--sp-40);z-index:-1;filter:blur(24px);opacity:var(--edge-glow);transition:opacity .6s ease;}
 /* Focus used to turn the border teal and add a pale ring. The border is
    spoken for now, and a ring between the line and its glow reads as a
    second border, so focus thickens the line by a pixel and brings the
    glow up instead. */
-.field:focus-within .edge::before{padding:3px;}
+.field:focus-within .edge::before{padding:var(--edge-w-focus,3px);}
 .field:focus-within .edge::after{opacity:var(--edge-glow-focus);}
 .main.busy .edge::after{opacity:var(--edge-glow-busy);}
 /* Docked, the field sits 12 to 16px under the divider. The glow is pulled
@@ -742,6 +749,17 @@ var Aurora = (function(){
    ========================================================= */
 var Edge = (function(){
   var el = document.getElementById('edge');
+  /* The line is 2px, and 3px when the box has focus, taken to the nearest
+     whole number of screen pixels (see the note on .edge::before). The
+     scale changes when the page is zoomed or moved to another screen, and
+     both fire a resize. */
+  function snap(){
+    var d = window.devicePixelRatio || 1, rest = Math.max(1, Math.round(2*d)), root = document.documentElement.style;
+    root.setProperty('--edge-w', (rest/d).toFixed(4) + 'px');
+    root.setProperty('--edge-w-focus', ((rest + Math.max(1, Math.round(d)))/d).toFixed(4) + 'px');
+  }
+  snap();
+  window.addEventListener('resize', snap);
   if(!el) return {pace:function(){}};
   var TURN = 11000;                       /* ms per turn at rest */
   var phase = 0, rate = 1, goal = 1, last = 0, lead = null;
