@@ -282,6 +282,10 @@ canvas.sophon{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;di
 .lb-fig img{width:auto;height:auto;max-width:100%;display:block;margin:0 auto;border-radius:var(--r-sm);background:var(--surface);}
 .lb-fig.shot{padding:var(--sp-16);}
 .card .frame.shot{background:var(--surface);}
+.frame picture{display:contents;}
+/* A screenshot with a phone-sized twin shows the twin on phones, in a taller
+   frame. A desktop screen shrunk to 340px is a picture of text nobody can read. */
+@media (max-width:599px){ .card .frame.duo{aspect-ratio:4/5;} }
 .card .cap{padding:var(--sp-12);display:flex;align-items:flex-start;gap:var(--sp-8);}
 .card .cap span{font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-2);}
 .card .cap svg{width:var(--size-icon);height:var(--size-icon);flex:none;color:var(--ink-3);margin-top:var(--sp-2);}
@@ -1407,40 +1411,61 @@ function txt(x,y,s,sz,f,wt,an){return '<text x="'+x+'" y="'+y+'" font-family="IB
 function pill(x,y,w,l,a){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="24" rx="12" fill="'+(a?P.tint:P.panel)+'" stroke="'+(a?P.acc:P.line)+'" stroke-width="1.2"/>'+txt(x+11,y+16,l,10.5,a?P.acc:P.ink2,500);}
 
 var ART = {
-  criteria:{
-    title:'Criteria panel and ranked results',
-    caption:'The brief stays visible as editable chips. Each result carries one line explaining why it is there — not the model’s full reasoning, just the part that changes a decision.',
-    svg:function(){
-      var s=box(24,22,592,356,12,P.bg)+txt(44,48,'YOUR BRIEF',10,P.ink3,500);
-      s+=pill(44,60,104,'Family of four',true)+pill(156,60,86,'Under £18k',true)+pill(250,60,96,'Automatic',true)+pill(354,60,118,'Low mileage',true)+pill(480,60,60,'+ Add',false);
-      s+='<line x1="44" y1="104" x2="596" y2="104" stroke="'+P.faint+'" stroke-width="1.2"/>'+txt(44,128,'12 CARS MATCH — RANKED',10,P.ink3,500);
-      var y=142,rows=[['Skoda Octavia Estate','Boot fits the pram and the dog'],['Kia Ceed Sportswagon','Longest warranty left of the twelve'],['Ford Focus Estate','Cheapest to run at your mileage']];
-      for(var i=0;i<rows.length;i++){
-        s+=box(44,y,552,66,10,P.bg)+bar(58,y+14,74,38,P.panel,6);
-        s+='<text x="146" y="'+(y+30)+'" font-family="Instrument Sans, sans-serif" font-size="13" font-weight="600" fill="'+P.ink+'">'+rows[i][0]+'</text>';
-        s+='<circle cx="152" cy="'+(y+45)+'" r="3" fill="'+P.acc+'"/>'+txt(162,y+49,rows[i][1],10.5,P.ink2)+pill(500,y+20,80,'Attach',false);
-        y+=76;
-      }
-      return svgWrap(s);
-    }
+  /* The car finder screens are captures of the working prototype, each at a
+     desktop and a phone width. */
+  cfHandover:{
+    title:'Search hands over, and says why',
+    caption:'The working prototype, on sample data. Search has applied the filters it can. The rest depends on the shape of the boot, which filters can’t judge, so the conversation is offered with the reason attached. Staying with the results is one tap.',
+    alt:'Search results with a panel headed This needs more than filters, offering to carry on in the AI car finder or stay with these results.',
+    img:'img/cf-handover.webp', w:1600, h:1150, imgSm:'img/cf-handover-sm.webp', wSm:780, hSm:1688, shot:true
   },
-  compromise:{
-    title:'Compromise flag',
-    caption:'When nothing clears every criterion, the interface names the constraint that had to give and offers to re-run without it. The alternative — silently returning near-misses — teaches people not to trust the results.',
-    svg:function(){
-      var s=box(24,22,592,356,12,P.bg)+txt(48,58,'0 CARS MATCH ALL FIVE',10,P.ink3,500)+box(48,74,544,104,10,P.tint);
-      s+='<rect x="48" y="74" width="3.5" height="104" rx="2" fill="'+P.acc+'"/>';
-      s+='<text x="70" y="104" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="'+P.ink+'">One thing has to give.</text>';
-      s+=txt(70,126,'Nothing under £18,000 has both a panoramic roof and',11,P.ink2)+txt(70,144,'under 20,000 miles. Relax one and I will show you the rest.',11,P.ink2);
-      s+=pill(70,152,146,'Drop the roof — 9 cars',true)+pill(224,152,152,'Allow 30k miles — 4 cars',false);
-      s+='<line x1="48" y1="204" x2="592" y2="204" stroke="'+P.faint+'" stroke-width="1.2"/>'+txt(48,228,'CLOSEST, WITH THE TRADE-OFF SHOWN',10,P.ink3,500);
-      var y=242;
-      for(var i=0;i<2;i++){
-        s+=box(48,y,544,54,10,P.bg)+bar(62,y+12,60,30,P.panel,6)+bar(136,y+16,150,8,P.faint,4)+bar(136,y+30,206,7,P.faint,4)+pill(452,y+15,126,'No roof · 12k miles',false);
-        y+=64;
-      }
-      return svgWrap(s);
-    }
+  cfQuestions:{
+    title:'It asks before it suggests',
+    caption:'The working prototype, on sample data. What it understood, how many cars are still in play, then the first of up to three questions. Each one says why it is being asked and can be skipped.',
+    alt:'The AI car finder playing back what it understood, saying 703 cars could fit so far, and asking question 1 of 3 with the reason for asking underneath.',
+    img:'img/cf-questions.webp', w:1600, h:1150, imgSm:'img/cf-questions-sm.webp', wSm:780, hSm:1688, shot:true
+  },
+  cfRecs:{
+    title:'Recommendations, each with its reasons',
+    caption:'The working prototype, on sample data. Seven cars out of 316, the number of things that is based on, and up to three reasons per car in the customer’s own terms. No confidence score.',
+    alt:'The AI car finder showing the top 7 of 316 matches. Each car lists its reasons under the heading Why this car.',
+    img:'img/cf-recs.webp', w:1600, h:1150, imgSm:'img/cf-recs-sm.webp', wSm:780, hSm:1688, shot:true
+  },
+  cfBrief:{
+    title:'The rule behind a reading',
+    caption:'The working prototype, on sample data. The brief, opened from the results. Chips in quotes are the system’s reading of what was said. This one shows its rule, and that the fit was worked out from measurements rather than verified.',
+    alt:'The brief shown as removable chips. A popover on the chip Fits a double pram explains how it is decided and says it is a likely fit to confirm on the car’s page.',
+    img:'img/cf-brief.webp', w:1600, h:1150, imgSm:'img/cf-brief-sm.webp', wSm:780, hSm:1688, shot:true
+  },
+  cfCompromise:{
+    title:'One thing has to give',
+    caption:'The working prototype, on sample data. Nothing fits the new request, so it says so, names the £599 gap, and offers two ways round it. Each gives up a single thing, and neither happens until the customer picks.',
+    alt:'A panel reading I can’t find an electric car under £12,000 that fits the rest of your search, with two options: keep it electric, or keep the budget.',
+    img:'img/cf-compromise.webp', w:1600, h:1150, imgSm:'img/cf-compromise-sm.webp', wSm:780, hSm:1688, shot:true
+  },
+  cfNearMiss:{
+    title:'A near miss, shown as one',
+    caption:'The working prototype, on sample data. Nothing meets the new budget and the closest car is £8 a month over. It shows that car, says the budget has been set aside, and the card marks where it misses.',
+    alt:'The AI car finder saying it can’t find an Evoque under £250 a month and has set that budget aside. The one car shown lists £8 a month over your £250 as the thing it misses.',
+    img:'img/cf-near-miss.webp', w:1600, h:1150, imgSm:'img/cf-near-miss-sm.webp', wSm:780, hSm:1688, shot:true
+  },
+  cfCompare:{
+    title:'Two cars, side by side',
+    caption:'The working prototype, on sample data. Compared on what the customer said matters, with a tick where one car stands out, and a line underneath saying which it would put first and why.',
+    alt:'A table comparing a Ford S-Max and a Vauxhall Grandland X on boot size, getting the dog in, driving position, seats, fuel, age and price, followed by a verdict.',
+    img:'img/cf-compare.webp', w:1600, h:1150, imgSm:'img/cf-compare-sm.webp', wSm:780, hSm:1688, shot:true
+  },
+  cfReturn:{
+    title:'Coming back a week later',
+    caption:'The working prototype, on sample data. A saved conversation reopened. What changed is said first: one car sold, one dropped in price, one is new.',
+    alt:'A saved conversation reopened, starting with Welcome back, three things have changed since Tuesday, followed by today’s best matches.',
+    img:'img/cf-return.webp', w:1600, h:1150, imgSm:'img/cf-return-sm.webp', wSm:780, hSm:1688, shot:true
+  },
+  cfVerified:{
+    title:'Confirmed, or left out',
+    caption:'The working prototype, on sample data. Asked to take a folded wheelchair, it keeps only the cars where the fit is confirmed. One drops out, and it says that car may well fit but it can’t confirm it.',
+    alt:'The AI car finder adding Takes a folded wheelchair, explaining it never works this out from boot measurements, and showing the three cars where the fit is confirmed.',
+    img:'img/cf-verified.webp', w:1600, h:1150, imgSm:'img/cf-verified-sm.webp', wSm:780, hSm:1688, shot:true
   },
   hmcFunnel:{
     title:'Where Help Me Choose lost people',
@@ -1724,23 +1749,31 @@ var CASES = [
     meta:['cinch','Designed, not built','Senior UX Designer'],
     triad:{
       challenge:'“Help Me Choose” — a branching wizard I originally built — could answer <em>what do you want</em> but never <em>why this car</em>. An LLM-driven mode could, and immediately raised harder questions than the wizard ever had.',
-      solution:'Five decisions made deliberately and in order: what the criteria look like, how much reasoning to show, what happens when nothing matches, how results are ranked, and how a car gets pulled into the conversation for comparison.',
+      solution:'Search stays for people who know what they want. The AI car finder is a separate mode for needs that filters can’t express. It asks before it suggests, shows what it understood, gives its reasons for every car, and says so when something has to give.',
       impact:'I designed it. It wasn’t built, so it has no numbers of its own. The bar it was designed against is the wizard’s own overhaul: <b>+6.9% journey completion</b>, <b>+8.8% basket additions</b> and <b>+4.5% completed purchases</b>.'
     },
     intro:[
       {t:'p',cls:'lede',v:'This is a design that never shipped. It was meant to replace a wizard I had built myself.'},
       {t:'p',v:'Having built the wizard made it easier to be honest about what it was bad at. It collected answers well, it never explained itself, and it couldn’t tell you when your requirements didn’t fit together.'},
       {t:'p',v:'The interesting part wasn’t adding a model. It was deciding how much of the model to show, and what it is allowed to do without asking.'},
+      {t:'p',v:'I designed it as a working prototype. The screens here are that prototype, running on sample data.'},
 
-      {t:'h',v:'The brief stays on screen'},
-      {t:'p',v:'You describe what you need in your own words, and the system turns that into criteria. Those criteria stay visible as editable chips for the whole conversation, so what it thinks you asked for is always there to check and to change.'},
-      {t:'p',v:'Each result carries one line on why it is there, and no confidence score. Getting to that was the hardest decision on the project.'},
-      {t:'cards',v:['criteria']},
+      {t:'h',v:'It starts in search, and asks before it suggests'},
+      {t:'p',v:'Most searches never need a conversation. “SUV under £15,000” maps straight to filters and comes back at once, with no AI wait. The AI car finder is only offered when filters can’t judge the request, and the offer says why: a double pram and a Labrador depend on the shape of the boot.'},
+      {t:'p',v:'Carry on and it plays back what it understood and how many cars are still in play. Then it asks up to three questions before suggesting anything. Each one says why it is being asked, and each one can be skipped. A make, a model and a budget is enough to go on, so that gets no questions at all.'},
+      {t:'cards',cls:'two',v:['cfHandover','cfQuestions']},
 
-      {t:'h',v:'When nothing fits, it says so and asks'},
-      {t:'p',v:'If no car clears every criterion, the system names the constraint that has to give and offers to re-run without it, with the consequence attached: drop the panoramic roof and nine cars appear. What it never does is quietly relax a requirement and hand back near-misses.'},
-      {t:'p',v:'That is the human-in-the-loop decision in this design. The system searches and ranks on its own. Changing what you asked for is yours to approve.'},
-      {t:'cards',v:['compromise']}
+      {t:'h',v:'Every car says why it is there'},
+      {t:'p',v:'How much reasoning to show was the hardest decision on the project. Each car leads with up to three reasons in the customer’s terms: “Back row folds flat when there are five of you”. Where a car misses something, the card says which thing. There is no confidence score.'},
+      {t:'p',v:'The brief behind the results is one tap away, as chips you can remove. Anything in quotes is the system’s reading of what you said. Select it and you get the rule behind it, and whether that rule rests on verified data or was worked out from measurements.'},
+      {t:'p',v:'Tick two cars and it compares them side by side on what you said matters, and says which it would put first.'},
+      {t:'cards',cls:'two',v:['cfRecs','cfBrief']},
+
+      {t:'h',v:'When it can’t be done, it says so'},
+      {t:'p',v:'Ask for an electric car under £12,000 on top of that search and nothing fits. It says so, names the £599 gap, and offers two ways round it. Each gives up a single thing, and nothing changes until you pick.'},
+      {t:'p',v:'Sometimes there is nothing to choose between. Ask for an Evoque under £250 a month and the closest is £8 over. It shows that car rather than nothing, sets the budget aside and says it has. The request stays in the brief, struck through, and the card says where the car misses.'},
+      {t:'p',v:'That is the line in this design. It searches and ranks on its own. It can set a request aside, but only in the open, where you can see what was given up. What it never does is drop one quietly and hand back near-misses as if they were matches.'},
+      {t:'cards',cls:'two',v:['cfCompromise','cfNearMiss']}
     ],
     probes:[
       {q:'What was your role, exactly?', a:[
@@ -1755,8 +1788,24 @@ var CASES = [
       ]},
       {q:'What was the hardest decision?', a:[
         {t:'p',v:'How much reasoning to show. Too little and it’s a black box people don’t trust with an £18,000 purchase. Too much and you’re publishing the model’s homework, which is impressive to nobody and slows the decision down.'},
-        {t:'p',v:'The test I landed on: <em>one line, and only if it could change what you click</em>. “Boot fits the pram and the dog” passes. “Matched on 7 of 9 weighted attributes” does not.'},
-        {t:'p',v:'The related call was confidence scores. We discussed showing a percentage next to each match. I argued against it — a number like that implies a precision the system doesn’t have, and once it’s on screen people treat it as fact.'}
+        {t:'p',v:'The test I landed on: <em>a reason earns its place only if it could change what you click</em>. Each car shows up to three, and the rest sit behind “Show more”. “700 litre boot, the biggest here” passes. Listing everything the system weighed does not.'},
+        {t:'p',v:'The related call was confidence scores. We discussed showing a percentage next to each match. I argued against it — a number like that implies a precision the system doesn’t have, and once it’s on screen people treat it as fact. What the card gives is a plain count of your own requests: “Matches everything except one request”.'}
+      ]},
+      {q:'Where does it refuse to guess?', a:[
+        {t:'p',v:'Where getting it wrong would matter.'},
+        {t:'list',v:[
+          '<b>Safety and legal limits.</b> Towing capacity and ULEZ only ever use confirmed data. Whether a folded wheelchair fits is never worked out from boot measurements. A car that might fit drops out, and it says that is why.',
+          '<b>Health.</b> Asked for a car that someone’s dad can get in and out of more easily, it looks at seat height, how wide the doors open and the sill. It says it doesn’t need to know anything about his health.',
+          '<b>Money.</b> It will explain how PCP and HP differ. It won’t say whether £300 a month is affordable, and points to the finance step on the car’s page.',
+          '<b>Figures it doesn’t have.</b> Asked what public charging costs, it says it has no live prices and won’t give a figure it can’t stand behind.'
+        ]},
+        {t:'cards',v:['cfVerified']},
+        {t:'p',v:'Where a fit is worked out and not verified, it is labelled as likely, with a prompt to check the car’s page. And an assumption is said out loud so it can be corrected: “I’ve assumed 150 miles a week. Tell me if that’s wrong.”'}
+      ]},
+      {q:'What happens when someone comes back?', a:[
+        {t:'p',v:'People go away and do their research, so every conversation is saved. Come back a week later and it leads with what has changed: what sold, what dropped in price, what is new.'},
+        {t:'cards',v:['cfReturn']},
+        {t:'p',v:'A sold car stays in the earlier turn, marked as no longer available, and isn’t recommended again. Signed out, conversations are kept on that device only, and it says so.'}
       ]},
       {q:'How did you handle SLT pushback?', a:[
         {t:'p',v:'The commercial pull was toward a system that always recommends, confidently. A model that says “nothing matches” looks like a model that isn’t selling cars.'},
@@ -1780,7 +1829,7 @@ var CASES = [
       ]},
       {q:'How did this work with engineering?', a:[
         {t:'p',v:'Closely, and early. I came up through front-end engineering — six years building interfaces before I moved into UX — and while I wouldn’t claim to be shipping production code now, it left me able to read a codebase and hold my end of a technical conversation. Mostly it means I can tell the difference between a design that’s hard to build and one that’s hard to build <em>in this stack</em>. cinch is Next.js and React Native, and knowing that changes which ideas I bring to the table at all.'},
-        {t:'p',v:'The practical version: I brought the criteria chips as a working prototype rather than a static frame, because the interaction question — what happens when you remove a constraint mid-conversation — can’t be answered in Figma.'}
+        {t:'p',v:'The practical version: I designed the whole thing as a working prototype rather than as static frames, because the interaction question — what happens when you remove a constraint mid-conversation — can’t be answered in Figma.'}
       ]}
     ],
     follow:['agentic','help-me-choose','competitors']
@@ -1881,31 +1930,32 @@ var TOPICS = {
       {t:'p',cls:'lede',v:'An agent is worth as much as the amount of it you can leave alone. The design work is deciding what it does unasked, what it checks first, and what it looks like when it is wrong.'},
       {t:'p',v:'These are the positions I hold. Each one came out of a decision on the conversational car finder, which I designed and which wasn’t built, rather than out of a framework.'},
       {t:'decisions',v:[
-        {k:'Keep the brief on screen',v:'What the system thinks you asked for stays visible and editable throughout. If people can’t see its understanding of the job they can’t correct it, and they stop trusting everything downstream.'},
-        {k:'Act inside the brief, ask before changing it',v:'Searching and ranking need no permission. Dropping one of your requirements does. The system can propose that; it doesn’t get to do it quietly.'},
-        {k:'One line of reasoning, if it changes a decision',v:'“Boot fits the pram and the dog” earns its place. “Matched on 7 of 9 weighted attributes” is the model’s homework.'},
-        {k:'No confidence it can’t back up',v:'A percentage implies a precision the system doesn’t have, and once it is on screen people treat it as fact.'},
+        {k:'Keep the brief within reach',v:'The results say how many things they are based on, and what the system thinks you asked for is one tap away, editable. If people can’t see its understanding of the job they can’t correct it, and they stop trusting everything downstream.'},
+        {k:'Act inside the brief, never change it quietly',v:'Searching and ranking need no permission. Where there is a choice about what to give up, it asks. Where only one thing can give, it sets that aside, says so, and leaves it struck through in the brief so you can see what was given up.'},
+        {k:'A reason, if it could change a decision',v:'“Back row folds flat when there are five of you” earns its place. Listing everything it weighed is the model’s homework.'},
+        {k:'No confidence it can’t back up',v:'A percentage implies a precision the system doesn’t have, and once it is on screen people treat it as fact. A fit that was worked out and not verified is labelled as likely.'},
         {k:'Design the failure first',v:'What it does when nothing fits decides whether anyone believes it when something does.'}
       ]}
     ],
     probes:[
       {q:'When should it act, and when should it ask?', a:[
         {t:'p',v:'The line I use is reversibility, measured in the person’s terms rather than the system’s.'},
-        {t:'p',v:'Re-running a search costs the person nothing, so it just happens. Relaxing a requirement changes what they asked for, so it is offered as a choice with the consequence attached: drop the panoramic roof and nine cars appear, allow 30,000 miles and four do.'},
+        {t:'p',v:'Re-running a search costs the person nothing, so it just happens. Relaxing a requirement changes what they asked for. Where there are two ways to do it, it is offered as a choice with the consequence attached: keep it electric and 39 cars fit, keep the budget and 141 do.'},
+        {t:'p',v:'Where only one thing can give, it shows the nearest car and sets that request aside in the open. It stays in the brief, struck through, so the person can see what was given up.'},
         {t:'p',v:'Both ends of that scale fail the same way. An agent that asks about everything has handed the work back. One that asks about nothing has taken a decision that wasn’t its to take.'},
-        {t:'cards',v:['compromise']}
+        {t:'cards',v:['cfCompromise']}
       ]},
       {q:'How much of its working should people see?', a:[
         {t:'p',v:'I separate two things that both get called transparency.'},
-        {t:'p',v:'What it thinks the job is should be visible all the time, because that is the part a person can act on. On the car finder that is the row of criteria chips: the brief, in the person’s words, editable.'},
-        {t:'p',v:'Why it did something is rationed. The test is one line, and only if it could change what you click. Showing all of it feels like openness and works like noise, and it slows down the decision the person came to make.'},
-        {t:'cards',v:['criteria']}
+        {t:'p',v:'What it thinks the job is should always be within reach, because that is the part a person can act on. On the car finder the results say how many things they are based on, and the brief opens from there as chips you can remove. Anything in quotes is the system’s reading, with the rule behind it.'},
+        {t:'p',v:'Why it did something is rationed. The test is whether it could change what you click. Showing all of it feels like openness and works like noise, and it slows down the decision the person came to make.'},
+        {t:'cards',v:['cfBrief']}
       ]},
       {q:'What happens when it gets it wrong?', a:[
         {t:'p',v:'Three different failures, and they need three different designs.'},
         {t:'decisions',v:[
           {k:'It can’t do what was asked',v:'It says so, names what has to give, and offers the nearest thing with the trade-off shown. I designed this state second on the car finder and should have designed it first.'},
-          {k:'It did something slightly different',v:'The visible brief is how you catch it. If the system’s version of the request is on screen, drift shows up as a chip you didn’t add.'},
+          {k:'It did something slightly different',v:'The brief is how you catch it. If the system’s version of the request is there to open, drift shows up as a chip you didn’t add.'},
           {k:'It is confidently wrong about a fact',v:'The dangerous one, because nothing about it looks wrong. Anything factual needs a route back to a source a person can check.'}
         ]},
         {t:'p',v:'I have been on the receiving end of the third. Building this site, the model took a mislabelled figure from my CV and repeated it in three places. The source deck corrected both of us.'}
@@ -2003,12 +2053,13 @@ var TOPICS = {
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
       {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','criteria','compromise','categories']},
-      {t:'note',v:'<b>Seven of these are real files</b> — the Help Me Choose results page as designed and as it is live, two of its questions, the grouping exercise and the Axure prototype. The rest are schematic redraws. Happy to walk through the actual files in a call.'}
+      {t:'cards',cls:'gallery',v:['recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','categories']},
+      {t:'note',v:'<b>Most of these are the real thing.</b> Seven are Help Me Choose files: the results page as designed and as it is live, two of its questions, the grouping exercise and the Axure prototype. Six are the car finder’s working prototype, on sample data. The other four are redraws and diagrams. Happy to walk through the actual files in a call.'}
     ],
     probes:[
-      {q:'Why not show the real screens?', a:[
-        {t:'p',v:'Most of it is unreleased or behind a login, and some of it involves a partner’s data. Putting it on a public URL would be a poor way to demonstrate judgement.'},
+      {q:'Are these the real screens?', a:[
+        {t:'p',v:'Most of them. The Help Me Choose images are the real files. The car finder was designed as a working prototype and wasn’t built, so the prototype is the real thing, and those screens are it running on sample data.'},
+        {t:'p',v:'The rest of my work is behind a login, and some of it involves a partner’s data. Putting that on a public URL would be a poor way to demonstrate judgement.'},
         {t:'p',v:'In a portfolio review I’ll walk through the real files, including the versions that didn’t work — which are usually the more interesting half.'}
       ]},
       {q:'Can I see the full case studies?', a:[
@@ -2286,13 +2337,18 @@ var main=document.getElementById('main'), stage=document.getElementById('stage')
 
 function esc(s){ return String(s).replace(/&(?![a-z#0-9]+;)/g,'&amp;').replace(/</g,'&lt;'); }
 
+/* A screenshot. One with a phone-sized twin (imgSm) serves the twin to phones. */
+function shotHTML(a, eager){
+  var img='<img src="'+a.img+'" alt="'+(a.alt||a.title)+'"'+(a.w?' width="'+a.w+'" height="'+a.h+'"':'')+(eager?'':' loading="lazy" decoding="async"')+'>';
+  return a.imgSm
+    ? '<picture><source media="(max-width:599px)" srcset="'+a.imgSm+'"'+(a.wSm?' width="'+a.wSm+'" height="'+a.hSm+'"':'')+'>'+img+'</picture>'
+    : img;
+}
 function cardHTML(key){
   var a=ART[key];
-  var inner = a.img
-    ? '<img src="'+a.img+'" alt="'+(a.alt||a.title)+'"'+(a.w?' width="'+a.w+'" height="'+a.h+'"':'')+' loading="lazy" decoding="async">'
-    : a.svg();
+  var inner = a.img ? shotHTML(a) : a.svg();
   return '<button class="card" data-art="'+key+'" type="button" aria-label="Open: '+a.title+'">'+
-    '<span class="frame'+(a.shot?' shot':'')+'">'+inner+'</span><span class="cap">'+
+    '<span class="frame'+(a.shot?' shot':'')+(a.imgSm?' duo':'')+'">'+inner+'</span><span class="cap">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3M18 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg>'+
     '<span>'+a.title+'</span></span></button>';
 }
@@ -2986,9 +3042,7 @@ function openLightbox(key){
   document.getElementById('lbTitle').textContent=a.title;
   document.getElementById('lbCap').textContent=a.caption;
   lbFig.className = 'lb-fig' + (a.shot ? ' shot' : '');
-  lbFig.innerHTML = a.img
-    ? '<img src="'+a.img+'" alt="'+(a.alt||a.title)+'"'+(a.w?' width="'+a.w+'" height="'+a.h+'"':'')+'>'
-    : a.svg();
+  lbFig.innerHTML = a.img ? shotHTML(a, true) : a.svg();
   lb.classList.add('on');
   document.getElementById('lbClose').focus();
 }
