@@ -1544,6 +1544,24 @@ var ART = {
     alt:'The question “Which body types do you like?” with a card each for hatchback, estate, SUV and coupe. Every card has a photo, a seat count and a one-line description.',
     img:'img/hmc-body-types.webp', w:1292, h:968, shot:true
   },
+  hmcPreselected:{
+    title:'Body types, already picked for you',
+    caption:'The soft check: “We’ve picked some for you already.” Body types were ticked from the earlier answers. People missed the pre-selection and didn’t understand it, even after we told them directly.',
+    alt:'The question “Which body types do you like?” with the line “We’ve picked some for you already.” Hatchback, estate and SUV are ticked; coupe, convertible, saloon and MPV are not.',
+    img:'img/hmc-body-types-preselected.webp', w:1440, h:1806, shot:true
+  },
+  hmcIllustrated:{
+    title:'Illustrated options, never used',
+    caption:'Illustrations by another designer at cinch. Only six of the nine options were drawn, and brand wouldn’t let us use them.',
+    alt:'The question “What’s most important to you for your next car?” with six options, each a line illustration: a car between parking bays, a car on a winding road, an open boot with a box, a car on a slope, a car beside trees with a heart, and a car with speed lines.',
+    img:'img/hmc-illustrated.webp', w:1600, h:1035, shot:true
+  },
+  hmcPrice:{
+    title:'A price range with the stock behind it',
+    caption:'The bars show how many cars there are at each price, and the ones inside your range light up. Designed, never shipped.',
+    alt:'The question “What price range are you looking in?” with a range slider set to £20,000 to £32,000 over a bar chart of stock by price. Bars inside the range are purple, the rest grey.',
+    img:'img/hmc-price-range.webp', w:1440, h:900, shot:true
+  },
   hmcPrompt:{
     title:'The prompt, written as a content spec',
     caption:'Writing the model’s instructions is content design with a different reader. The rule that mattered most is the one at the bottom — the same benefit-over-specification rule I’d give a human writer, just stated explicitly because the model won’t infer it.',
@@ -1739,7 +1757,7 @@ var CASES = [
           '<b>A soft-check question</b> on body types. Given the previous answers, we pre-selected what we thought the best body types were, so that question had to know what had been answered before it.'
         ]},
         {t:'p',v:'The test changed that last one. People said they missed the pre-selection and didn’t understand it, even after we told them directly, so it was removed.'},
-        {t:'cards',v:['hmcAxure']},
+        {t:'cards',cls:'two',v:['hmcAxure','hmcPreselected']},
         {t:'p',v:'A linear click-through would have produced a clean test result and told us nothing about the parts most likely to break. I use whichever tool answers the question in front of me; that isn’t always the fashionable one.'}
       ]},
       {q:'What was the prompt in the 2025 proposal?', a:[
@@ -1748,6 +1766,13 @@ var CASES = [
         {t:'p',v:'I wrote the spec: the role it plays, what it gets handed, what to produce, how long. Then the rule that carries the whole thing — <em>instead of “the car has a large boot”, write “the large boot gives you plenty of space for your stuff.”</em> Benefit, not specification. It is the same rule I would give a human writer; the difference is that a model needs it stated every time rather than absorbed once.'},
         {t:'p',v:'And I ran example briefs through an LLM to test the basic function, rather than only describing what it might produce. A proposal about generated language is worth exactly as much as the language it generates.'},
         {t:'cards',cls:'two',v:['hmcPrompt','hmcGenerated']}
+      ]},
+      {q:'What didn’t make it?', a:[
+        {t:'p',v:'Two designs that never shipped. I still like both.'},
+        {t:'p',v:'<b>Illustrated options.</b> Another designer at cinch drew an illustration for each answer to “What’s most important to you for your next car?”. I thought they were brilliant, and they described the content really well. Brand wouldn’t let us use them, and only six of the nine were ever drawn.'},
+        {t:'cards',v:['hmcIllustrated']},
+        {t:'p',v:'<b>A price range with the stock behind it.</b> The slider sat on a chart of how many cars there were at each price, so you could see how much was available in your range before you picked it. It’s the same thinking as the car finder’s “one thing has to give”: show people what exists before they ask for something that doesn’t.'},
+        {t:'cards',v:['hmcPrice']}
       ]}
     ],
     follow:['car-finder','agentic','competitors']
@@ -2063,8 +2088,8 @@ var TOPICS = {
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
       {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','categories']},
-      {t:'note',v:'<b>Most of these are the real thing.</b> Seven are Help Me Choose files: the results page as designed and as it is live, two of its questions, the grouping exercise and the Axure prototype. Six are the car finder’s working prototype, on sample data. The other four are redraws and diagrams. Happy to walk through the actual files in a call.'}
+      {t:'cards',cls:'gallery',v:['recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','categories']},
+      {t:'note',v:'<b>Most of these are the real thing.</b> Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. Six are the car finder’s working prototype, on sample data. The other four are redraws and diagrams. Happy to walk through the actual files in a call.'}
     ],
     probes:[
       {q:'Are these the real screens?', a:[
@@ -2247,7 +2272,7 @@ var INTENTS = [
   {key:'contact',words:['contact','email','hire','hiring','recruit','available','availability','talk','call','chat','reach','cv','resume','linkedin','role','job','vacancy','opportunity','rate','freelance','notice','salary']},
   {key:'agentic',words:['agent','agents','agentic','autonomy','autonomous','human in the loop','oversight','tool use','multi step']},
   {key:'car-finder',words:['car finder','conversational','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
-  {key:'help-me-choose',words:['help me choose','hmc','wizard','proud','proudest','best work','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
+  {key:'help-me-choose',words:['help me choose','hmc','wizard','proud','proudest','best work','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy']},
   {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report']},
   {key:'ai',words:['ai','artificial intelligence','claude','copilot','gpt','llm','prompt','automate','automation','tooling','guardrail','workflow','this site','this page','built this','how was this made','ai generated','generated']},
