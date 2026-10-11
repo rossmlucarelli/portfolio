@@ -1477,6 +1477,40 @@ var ART = {
     alt:'The AI car finder adding Takes a folded wheelchair, explaining it never works this out from boot measurements, and showing the three cars where the fit is confirmed.',
     img:'img/cf-verified.webp', w:1600, h:1150, imgSm:'img/cf-verified-sm.webp', wSm:780, hSm:1688, shot:true
   },
+  cfSearches:{
+    title:'997 real searches, sorted by what the car finder would do',
+    caption:'Every term typed into cinch’s search box in one test, sorted against the rules the car finder was designed with. Registration plates and a postcode are shown as X’s. It is about a thousand searches, so it supports the design’s assumptions rather than proving them.',
+    alt:'Four bars. Search handles it: 964 searches, 96.7%. Offer the conversation: 14, 1.4%. Not a car search: 11, 1.1%. Couldn’t tell: 8, 0.8%.',
+    svg:function(){
+      /* One series, one hue. Every value is labelled, so the three tiny bars
+         still read: being tiny is the finding. */
+      var rows=[
+        ['Search handles it',964,'“audi” · “polo” · “automatic” · “7 seater” · “cars under £200 a month”'],
+        ['Offer the conversation',14,'“a quick electric car with a big boot” · “best car for towing a caravan”'],
+        ['Not a car search',11,'XX00 XXX (five registrations) · XX0 0XX (a postcode) · “warranty”'],
+        ['Couldn’t tell',8,'“gov” · “be” · “it7” · “hp car”']
+      ];
+      var total=997, x0=24, maxW=440, y=92;
+      function bar(x,y,w,h,fill){
+        var r=Math.min(4,w);
+        return '<path d="M'+x+' '+y+' h'+(w-r)+' a'+r+' '+r+' 0 0 1 '+r+' '+r+
+               ' v'+(h-2*r)+' a'+r+' '+r+' 0 0 1 '+(-r)+' '+r+' h'+(-(w-r))+' z" fill="'+fill+'"/>';
+      }
+      var s='<text x="24" y="40" font-family="Instrument Sans, sans-serif" font-size="15" font-weight="600" fill="'+P.ink+'">997 searches, sorted by what the car finder would do</text>';
+      s+=txt(24,60,'TERMS TYPED INTO CINCH’S SEARCH BOX, ONE TEST',9.5,P.ink3,500);
+      rows.forEach(function(r){
+        s+='<text x="'+x0+'" y="'+y+'" font-family="Instrument Sans, sans-serif" font-size="12" font-weight="600" fill="'+P.ink+'">'+r[0]+'</text>';
+        var w=Math.max(4,maxW*r[1]/total);
+        s+='<rect x="'+x0+'" y="'+(y+10)+'" width="'+maxW+'" height="18" rx="4" fill="'+P.panel+'"/>';
+        s+=bar(x0,y+10,w,18,P.acc);
+        s+=txt(x0+maxW+12,y+23,r[1]+' · '+(100*r[1]/total).toFixed(1)+'%',10.5,P.ink,500);
+        s+=txt(x0,y+46,r[2],9.5,P.ink3);
+        y+=72;
+      });
+      s+=txt(24,388,'Registrations and a postcode shown as X’s. One test, 616 different terms.',9.5,P.ink3);
+      return svgWrap(s);
+    }
+  },
   hmcFunnel:{
     title:'Where Help Me Choose lost people',
     caption:'Retention at each step of the original wizard. The first transition cost 28.3%. Each of the six after it cost between 0.5% and 7.2%, so the length of the flow wasn’t the problem.',
@@ -1739,6 +1773,15 @@ var CASES = [
         {t:'p',v:'It went into a deck alongside a bigger idea, a conversational car finder. I thought the conversation would take a while to build, and that smarter recommendations would be useful in the meantime.'},
         {t:'p',v:'Then I designed the conversation.'},
         {t:'next',key:'help-me-choose',label:'Read the Help Me Choose case study',v:'<b>The full story</b> — the original wizard, the numbers its 2022 rebuild moved, the design that was three years early and the prompt I wrote for it — is in the <b>Help Me Choose</b> case study.'}
+      ]},
+      {q:'What did real searches say?', a:[
+        {t:'p',v:'Since I designed it, cinch’s search box has started taking free text, so I could see what people actually type into it. I sorted the first 997 searches, 616 different terms, by what the car finder would do with each one.'},
+        {t:'cards',v:['cfSearches']},
+        {t:'p',v:'<b>Almost all of it is search’s job.</b> Nearly 97% were a make, a model or something a filter already handles. That is the case for keeping search as the front door, and offering the conversation only when filters can’t judge the request.'},
+        {t:'p',v:'<b>The ones that need a conversation read like a brief.</b> “a quick electric car with a big boot”, “family car large boot”, “best car for towing a caravan”, which is one it would only answer from confirmed data.'},
+        {t:'p',v:'<b>One it wasn’t designed for.</b> “how many dogs can fit in a nissan juke” is a question about one car, not a request for suggestions. It is worth designing for.'},
+        {t:'p',v:'<b>Some weren’t car searches at all.</b> Five were registration plates and one was a postcode; they are shown as X’s here. Someone typing a reg is most likely after a valuation, or trying to find a car they saw on cinch. Search could check it: a car that is or was on cinch goes to its page, and any other reg offers a valuation.'},
+        {t:'p',v:'It is about a thousand searches from one test, so it supports the design’s assumptions rather than proving them.'}
       ]},
       {q:'What was the hardest decision?', a:[
         {t:'p',v:'How much reasoning to show. Too little and it’s a black box people don’t trust with an £18,000 purchase. Too much and you’re publishing the model’s homework, which is impressive to nobody and slows the decision down.'},
@@ -2089,8 +2132,8 @@ var TOPICS = {
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
       {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','categories']},
-      {t:'note',v:'<b>Most of these are the real thing.</b> Six are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other four are redraws and diagrams. Happy to walk through the actual files in a call.'}
+      {t:'cards',cls:'gallery',v:['cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','categories']},
+      {t:'note',v:'<b>Most of these are the real thing.</b> Six are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other five are redraws and diagrams. Happy to walk through the actual files in a call.'}
     ],
     probes:[
       {q:'Are these the real screens?', a:[
@@ -2272,7 +2315,7 @@ var CV = CV_URL
 var INTENTS = [
   {key:'contact',words:['contact','email','hire','hiring','recruit','available','availability','talk','call','chat','reach','cv','resume','linkedin','role','job','vacancy','opportunity','rate','freelance','notice','salary']},
   {key:'agentic',words:['agent','agents','agentic','autonomy','autonomous','human in the loop','oversight','tool use','multi step']},
-  {key:'car-finder',words:['car finder','conversational','proud','proudest','best work','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
+  {key:'car-finder',words:['car finder','conversational','proud','proudest','best work','real searches','search terms','registration','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy']},
   {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report']},
