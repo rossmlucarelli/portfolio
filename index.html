@@ -487,6 +487,16 @@ a.chip{text-decoration:none;}
    thread keeps its own white card and does not take the hover. */
 .sb-item:hover,.sb-link:hover,.sb-me:hover,.sb-brand-hit:hover{background:color-mix(in srgb,var(--accent) 12%,transparent);}
 .sb-item:not([aria-current="true"]):hover .t,.sb-link:hover,.sb-link:hover svg,.sb-me:hover .sb-me-name{color:var(--accent);}
+/* The two blocks that sit in the pane's corners, the brand at the top and
+   the account row at the bottom, are each 8px in from its edge. The pane's
+   corner is 24px, so theirs is 16px: the two curves run parallel and the gap
+   between them is the same all the way round. At 8px they were tighter than
+   the corner they sat in. Where the pane floats, the head's top padding
+   comes down from 24 to 16 so the brand block is 8px from the top as it is
+   from the sides. The rows in between are nowhere near a corner and keep
+   8px. */
+.sb-brand-hit,.sb-me{border-radius:var(--r-lg);}
+@media (min-width:1024px){ .sb-head{padding-top:var(--sp-16);} }
 /* the current thread is a card with a short bar of the border's colours */
 .sb-item[aria-current="true"]{background:color-mix(in srgb,var(--surface) 80%,transparent);box-shadow:var(--shadow-card);}
 .sb-item[aria-current="true"]::before{content:"";position:absolute;left:0;top:var(--sp-8);bottom:var(--sp-8);width:var(--sp-4);border-radius:var(--r-pill);background:linear-gradient(var(--edge-1),var(--edge-2),var(--edge-3));}
