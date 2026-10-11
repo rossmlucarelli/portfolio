@@ -1471,6 +1471,12 @@ var ART = {
     alt:'A saved conversation reopened, starting with Welcome back, three things have changed since Tuesday, followed by today’s best matches.',
     img:'img/cf-return.webp', w:1600, h:1150, imgSm:'img/cf-return-sm.webp', wSm:780, hSm:1688, shot:true
   },
+  cfJump:{
+    title:'Finding your way back in a long conversation',
+    caption:'The working prototype, on sample data, nine messages in. Each message leaves a mark in a rail down the right; hovering opens the list, and the one you are reading is highlighted. On a phone the same list opens from a button in the top bar.',
+    alt:'A long conversation with a list of the customer’s nine messages open on the right. Answers to its questions read Seats: up to 5, Journeys: a mix of both and Budget: up to £18,000. Compare the top two for me is highlighted.',
+    img:'img/cf-jump.webp', w:1440, h:900, imgSm:'img/cf-jump-sm.webp', wSm:780, hSm:1688, shot:true
+  },
   cfVerified:{
     title:'Confirmed, or left out',
     caption:'The working prototype, on sample data. Asked to take a folded wheelchair, it keeps only the cars where the fit is confirmed. One drops out, and it says that car may well fit but it can’t confirm it.',
@@ -1802,7 +1808,9 @@ var CASES = [
       {q:'What happens when someone comes back?', a:[
         {t:'p',v:'People go away and do their research, so every conversation is saved. Come back a week later and it leads with what has changed: what sold, what dropped in price, what is new.'},
         {t:'cards',v:['cfReturn']},
-        {t:'p',v:'A sold car stays in the earlier turn, marked as no longer available, and isn’t recommended again. Signed out, conversations are kept on that device only, and it says so.'}
+        {t:'p',v:'A sold car stays in the earlier turn, marked as no longer available, and isn’t recommended again. Signed out, conversations are kept on that device only, and it says so.'},
+        {t:'p',v:'A conversation like this gets long. Every message you send leaves a mark in a rail down the right; hover it and the list opens, so you can jump straight back to what you said. Answers to the car finder’s questions are listed with the question, “Budget: up to £18,000”, so the list still reads when the reply was a tap. The pattern is borrowed from DeepSeek. On a phone the same list opens from a button in the top bar.'},
+        {t:'cards',v:['cfJump']}
       ]},
       {q:'How did you handle SLT pushback?', a:[
         {t:'p',v:'The commercial pull was toward a system that always recommends, confidently. A model that says “nothing matches” looks like a model that isn’t selling cars.'},
@@ -2132,8 +2140,8 @@ var TOPICS = {
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
       {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','categories']},
-      {t:'note',v:'<b>Most of these are the real thing.</b> Six are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other five are redraws and diagrams. Happy to walk through the actual files in a call.'}
+      {t:'cards',cls:'gallery',v:['cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','cfJump','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','categories']},
+      {t:'note',v:'<b>Most of these are the real thing.</b> Seven are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other five are redraws and diagrams. Happy to walk through the actual files in a call.'}
     ],
     probes:[
       {q:'Are these the real screens?', a:[
@@ -2315,7 +2323,7 @@ var CV = CV_URL
 var INTENTS = [
   {key:'contact',words:['contact','email','hire','hiring','recruit','available','availability','talk','call','chat','reach','cv','resume','linkedin','role','job','vacancy','opportunity','rate','freelance','notice','salary']},
   {key:'agentic',words:['agent','agents','agentic','autonomy','autonomous','human in the loop','oversight','tool use','multi step']},
-  {key:'car-finder',words:['car finder','conversational','proud','proudest','best work','real searches','search terms','registration','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
+  {key:'car-finder',words:['car finder','conversational','deepseek','long conversation','jump to','your messages','proud','proudest','best work','real searches','search terms','registration','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy']},
   {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report']},
