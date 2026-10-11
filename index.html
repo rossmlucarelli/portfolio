@@ -1696,17 +1696,17 @@ var ART = {
    ========================================================= */
 var CASES = [
   {
-    id:'car-finder', topic:'the car finder', nav:'Conversational car finder', navMeta:'cinch · designed, not built', rail:'CF',
+    id:'car-finder', topic:'the car finder', nav:'Conversational car finder', navMeta:'cinch · designed, not yet built', rail:'CF',
     prompt:'What are you most proud of?',
     title:'A conversation to replace the wizard I built', kicker:'Case study 01',
-    meta:['cinch','Designed, not built','Senior UX Designer'],
+    meta:['cinch','Designed, not yet built','Senior UX Designer'],
     triad:{
       challenge:'“Help Me Choose” — a branching wizard I originally built — could answer <em>what do you want</em> but never <em>why this car</em>. An LLM-driven mode could, and immediately raised harder questions than the wizard ever had.',
       solution:'Search stays for people who know what they want. The AI car finder is a separate mode for needs that filters can’t express. It asks before it suggests, shows what it understood, gives its reasons for every car, and says so when something has to give.',
-      impact:'I designed it. It wasn’t built, so it has no numbers of its own. The bar it was designed against is the wizard’s own overhaul: +6.9% journey completion, +8.8% basket additions and +4.5% completed purchases.'
+      impact:'I designed it. It hasn’t been built yet, so it has no numbers of its own. The bar it was designed against is the wizard’s own overhaul: +6.9% journey completion, +8.8% basket additions and +4.5% completed purchases.'
     },
     intro:[
-      {t:'p',cls:'lede',v:'This is the one I’d pick, and it never shipped. It was meant to replace a wizard I had built myself.'},
+      {t:'p',cls:'lede',v:'This is the one I’d pick. It hasn’t been built yet. It’s designed to replace a wizard I had built myself.'},
       {t:'p',v:'Having built the wizard made it easier to be honest about what it was bad at. It collected answers well, it never explained itself, and it couldn’t tell you when your requirements didn’t fit together.'},
       {t:'p',v:'The interesting part wasn’t adding a model. It was deciding how much of the model to show, and what it is allowed to do without asking.'},
       {t:'p',v:'I designed it as a working prototype. The screens here are that prototype, running on sample data.'},
@@ -1727,7 +1727,7 @@ var CASES = [
       {t:'p',v:'Sometimes there is nothing to choose between. Ask for an Evoque under £250 a month and the closest is £8 over. It shows that car rather than nothing, sets the budget aside and says it has. The request stays in the brief, struck through, and the card says where the car misses.'},
       {t:'p',v:'That is the line in this design. It searches and ranks on its own. It can set a request aside, but only in the open, where you can see what was given up. What it never does is drop one quietly and hand back near-misses as if they were matches.'},
       {t:'cards',cls:'two',v:['cfCompromise','cfNearMiss']},
-      {t:'next',key:'help-me-choose',label:'Read the Help Me Choose case study',v:'<b>Where it came from.</b> The wizard it was meant to replace, and the numbers that wizard’s 2022 rebuild moved, are in the next case study, Help Me Choose.'}
+      {t:'next',key:'help-me-choose',label:'Read the Help Me Choose case study',v:'<b>Where it came from.</b> The wizard it is designed to replace, and the numbers that wizard’s 2022 rebuild moved, are in the next case study, Help Me Choose.'}
     ],
     probes:[
       {q:'What was your role, exactly?', a:[
@@ -1775,7 +1775,7 @@ var CASES = [
           '<b>Return to results.</b> Coming back to a saved conversation says more than time-on-page ever will.',
           '<b>Completion to enquiry.</b> The commercial one, and the one SLT asks for first.'
         ]},
-        {t:'p',v:'It wasn’t built, so there are no figures of its own. The previous overhaul of the same tool landed +6.9% on completion and +4.5% on purchases, and that was the number to beat.'}
+        {t:'p',v:'It hasn’t been built yet, so there are no figures of its own. The previous overhaul of the same tool landed +6.9% on completion and +4.5% on purchases, and that was the number to beat.'}
       ]},
       {q:'What would you do differently?', a:[
         {t:'p',v:'Two things. I designed the happy path first and the compromise state second — which is backwards. The failure state is what defines a system’s character, and it should have been the first screen on the wall.'},
@@ -1964,7 +1964,7 @@ var TOPICS = {
     prompt:'How do you design for AI agents?', title:'Designing for agents',
     intro:[
       {t:'p',cls:'lede',v:'An agent is worth as much as the amount of it you can leave alone. The design work is deciding what it does unasked, what it checks first, and what it looks like when it is wrong.'},
-      {t:'p',v:'These are the positions I hold. Each one came out of a decision on the conversational car finder, which I designed and which wasn’t built, rather than out of a framework.'},
+      {t:'p',v:'These are the positions I hold. Each one came out of a decision on the conversational car finder, which I designed and which hasn’t been built yet, rather than out of a framework.'},
       {t:'decisions',v:[
         {k:'Keep the brief within reach',v:'The results say how many things they are based on, and what the system thinks you asked for is one tap away, editable. If people can’t see its understanding of the job they can’t correct it, and they stop trusting everything downstream.'},
         {k:'Act inside the brief, never change it quietly',v:'Searching and ranking need no permission. Where there is a choice about what to give up, it asks. Where only one thing can give, it sets that aside, says so, and leaves it struck through in the brief so you can see what was given up.'},
@@ -2094,7 +2094,7 @@ var TOPICS = {
     ],
     probes:[
       {q:'Are these the real screens?', a:[
-        {t:'p',v:'Most of them. The Help Me Choose images are the real files. The car finder was designed as a working prototype and wasn’t built, so the prototype is the real thing, and those screens are it running on sample data.'},
+        {t:'p',v:'Most of them. The Help Me Choose images are the real files. The car finder was designed as a working prototype and hasn’t been built yet, so the prototype is the real thing, and those screens are it running on sample data.'},
         {t:'p',v:'The rest of my work is behind a login, and some of it involves a partner’s data. Putting that on a public URL would be a poor way to demonstrate judgement.'},
         {t:'p',v:'In a portfolio review I’ll walk through the real files, including the versions that didn’t work — which are usually the more interesting half.'}
       ]},
