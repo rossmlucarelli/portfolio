@@ -333,11 +333,12 @@ canvas.sophon{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;di
 
 .w{opacity:0;}
 .w.on{opacity:1;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
-.stream-caret{display:inline-block;width:2px;height:1.02em;vertical-align:-.16em;background:var(--accent-bright);margin-left:var(--sp-2);border-radius:1px;}
-.chunk .cards,.chunk .chips-block,.chunk .note,.chunk .case-head .meta{opacity:0;transform:translateY(8px);}
-.chunk.done .cards,.chunk.done .chips-block,.chunk.done .note,.chunk.done .case-head .meta{
-  opacity:1;transform:none;transition:opacity .34s ease, transform .34s cubic-bezier(.32,.72,0,1);
-}
+/* Blocks held out of the word reveal fade in where they sit, in reading
+   order, and nothing rises: the page scrolling is the only movement. */
+.chunk .cards,.chunk .chips-block,.chunk .note,.chunk .case-head .meta{opacity:0;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
+.chunk .blk-on,.chunk.done .cards,.chunk.done .chips-block,.chunk.done .note,.chunk.done .case-head .meta{opacity:1;}
+.tail-in{animation:fade-in .34s cubic-bezier(.45,0,.25,1) both;}
+@keyframes fade-in{from{opacity:0;}to{opacity:1;}}
 
 /* --- composer --- */
 .composer{flex:none;position:relative;z-index:2;text-align:left;}
@@ -512,7 +513,7 @@ a.chip{text-decoration:none;}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
-  .caret,.stream-caret{display:none;}
+  .caret{display:none;}
   .w{opacity:1;}
   /* The hero's entrance starts each piece at opacity 0. Squeezed to .001ms
      it sometimes never painted its end state, leaving the greeting blank,
@@ -2568,7 +2569,6 @@ function wrapWords(root){
   });
   return spans;
 }
-function nearBottom(){ return stage.scrollHeight - stage.scrollTop - stage.clientHeight < 140; }
 
 /* The message wrapper holds the avatar, so the state lives there: 'working'
    while it looks, 'answering' while words land, nothing once it's done. */
@@ -2582,45 +2582,174 @@ function avState(bodyEl, state){
   Edge.pace(state==='working' ? 3.5 : state==='answering' ? 1.8 : 1);
 }
 
+/* --- how an answer arrives ---------------------------------------
+   Talk, then settle. The first paragraph comes in a word at a time at an
+   even pace, about 31 words a second: that is the part that reads as being
+   answered. Everything after it settles a sentence at a time, a quarter of
+   a second apart, so someone can start reading the second paragraph while
+   it lands instead of waiting for it. A case study's kicker, title and
+   challenge / solution / impact panel settle the same way, before the
+   first paragraph. Cards, notes, chip sets and the meta line fade in where
+   they sit, in reading order, and nothing rises: the page scrolling is the
+   only movement. Only what is on screen is paced. Anything below the
+   bottom of the view is already there when the reader scrolls to it, so a
+   long answer takes about as long as a short one. A click or a key while an
+   answer is arriving finishes it at once. There is no caret: the answers
+   are written, and the reveal doesn't pretend they are being generated. */
+var WORD_MS = 32;      /* the talking pace */
+var SENT_MS = 260;     /* the beat between sentences and blocks */
+var activeReveal = null;
+
+document.addEventListener('pointerdown', function(){ if(activeReveal) activeReveal.finish(); }, true);
+document.addEventListener('keydown', function(e){
+  if(!activeReveal) return;
+  if(e.key === 'Shift' || e.key === 'Control' || e.key === 'Alt' || e.key === 'Meta') return;
+  activeReveal.finish();
+}, true);
+
+/* Which block a word belongs to, so a sentence never runs across two. */
+function blockOf(s){ return s.closest('p,li,h2,h3,dt,dd,.k,.v,.kicker,figcaption,blockquote,td,th') || s.parentNode; }
+
+/* Group words into sentences: a group ends at . ? ! … (with any closing
+   quote or bracket after it), or where the next word is in another block. */
+function sentences(spans){
+  var groups = [], cur = [];
+  for(var i=0;i<spans.length;i++){
+    cur.push(spans[i]);
+    var end = /[.!?…][”’"')\]]*$/.test(spans[i].textContent);
+    var next = spans[i+1];
+    if(end || !next || blockOf(next) !== blockOf(spans[i])){ groups.push(cur); cur = []; }
+  }
+  if(cur.length) groups.push(cur);
+  return groups;
+}
+
+/* Where the talking part ends: the end of the first paragraph. */
+function talkLength(chunk, spans){
+  var p = chunk.querySelector('p');
+  if(!p) return Math.min(spans.length, 40);
+  for(var i=spans.length-1;i>=0;i--){ if(p.contains(spans[i])) return i+1; }
+  return Math.min(spans.length, 40);
+}
+
+/* --- where the page sits while an answer arrives -------------------
+   The page moves up so the question just sent sits near the top, with a
+   band of the conversation above it for context (96px, 64px on a short
+   screen), and the answer gets the rest of the screen. It moves down only,
+   and never past that point. A short answer that can't fill the screen
+   stops where the page ends. If the reader scrolls themselves, it leaves
+   them alone until they ask the next question. */
+var anchorQ = null, userMoved = false, glideRaf = 0;
+
+function contextBand(){ return stage.clientHeight >= 640 ? 96 : 64; }
+
+function anchorTarget(){
+  if(!anchorQ || !anchorQ.isConnected) return null;
+  var top = anchorQ.getBoundingClientRect().top - stage.getBoundingClientRect().top + stage.scrollTop - contextBand();
+  return Math.max(0, Math.min(stage.scrollHeight - stage.clientHeight, Math.round(top)));
+}
+
+function glide(to){
+  cancelAnimationFrame(glideRaf);
+  var from = stage.scrollTop, d = to - from;
+  if(REDUCED || Math.abs(d) < 2){ stage.scrollTop = to; return; }
+  var dur = Math.max(320, Math.min(640, Math.abs(d) * 0.8)), t0 = performance.now();
+  function step(now){
+    var p = Math.min(1, (now - t0) / dur);
+    var e = p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2;   /* ease in and out */
+    stage.scrollTop = from + d * e;
+    if(p < 1 && !userMoved) glideRaf = requestAnimationFrame(step);
+  }
+  glideRaf = requestAnimationFrame(step);
+}
+
+/* Move toward the anchor. Returns where the page will come to rest. */
+function anchor(){
+  var to = anchorTarget();
+  if(to === null || userMoved || to <= stage.scrollTop) return stage.scrollTop;
+  glide(to);
+  return to;
+}
+
+function readerMoved(){ if(anchorQ){ userMoved = true; cancelAnimationFrame(glideRaf); } }
+stage.addEventListener('wheel', readerMoved, {passive:true});
+stage.addEventListener('touchmove', readerMoved, {passive:true});
+document.addEventListener('keydown', function(e){
+  if(/^(ArrowUp|ArrowDown|PageUp|PageDown|Home|End| )$/.test(e.key) && !(e.target.closest && e.target.closest('textarea,input'))) readerMoved();
+});
+
+function onQuestion(wrap){ anchorQ = wrap; userMoved = false; anchor(); }
+/* the chips under an answer add height; a short answer may now be able to
+   move the rest of the way up */
+function onAnswered(){ requestAnimationFrame(anchor); }
+
 function streamInto(bodyEl, html, done){
   var chunk=document.createElement('div');
   chunk.className='chunk';
   chunk.innerHTML=html;
   bodyEl.appendChild(chunk);
-  var spans=wrapWords(chunk);
+  var spans=wrapWords(chunk), all=spans;
   avState(bodyEl, 'answering');
-  if(REDUCED || !spans.length){
-    spans.forEach(function(s){ s.classList.add('on'); });
+
+  var finished=false, timers=[];
+  function finish(){
+    if(finished) return;
+    finished=true;
+    timers.forEach(clearTimeout);
+    all.forEach(function(s){ s.classList.add('on'); });
     chunk.classList.add('done');
     avState(bodyEl, null);
+    if(activeReveal && activeReveal.chunk===chunk) activeReveal=null;
+    /* whatever the answer adds under itself fades in as well */
+    var had = bodyEl.children.length;
     if(done) done();
-    return;
+    if(!REDUCED) [].slice.call(bodyEl.children, had).forEach(function(el){ el.classList.add('tail-in'); });
   }
-  var caret=document.createElement('span');
-  caret.className='stream-caret';
-  var i=0, total=spans.length;
-  /* Pace the reveal on a sine curve: it eases in from a standstill, runs
-     quickest through the middle, and eases out as it lands on the last word. */
-  var BASE=16;      /* ms per burst at full pace */
-  var FLOOR=0.42;   /* slowest pace, at either end */
-  function pace(p){ return FLOOR + (1-FLOOR)*Math.sin(Math.PI*p); }
-  function tick(){
-    var burst=2+Math.floor(Math.random()*2);
-    for(var k=0;k<burst && i<total;k++,i++) spans[i].classList.add('on');
-    if(i<total){
-      var last=spans[i-1];
-      if(last && last.parentNode) last.parentNode.insertBefore(caret,last.nextSibling);
-      if(nearBottom()) stage.scrollTop=stage.scrollHeight;
-      setTimeout(tick, BASE/pace(i/total));
-    }else{
-      if(caret.parentNode) caret.parentNode.removeChild(caret);
-      chunk.classList.add('done');
-      avState(bodyEl, null);
-      if(nearBottom()) requestAnimationFrame(function(){ stage.scrollTop=stage.scrollHeight; });
-      if(done) done();
-    }
-  }
-  tick();
+  /* the page moves up as the answer starts; work out where it will stop */
+  var rest = anchor();
+  if(REDUCED || !spans.length){ finish(); return; }
+  if(activeReveal) activeReveal.finish();
+  activeReveal={chunk:chunk, finish:finish};
+  chunk.classList.add('settling');
+
+  var sTop = stage.getBoundingClientRect().top, fold = rest + stage.clientHeight;
+  var yOf = function(el){ return el.getBoundingClientRect().top - sTop + stage.scrollTop; };
+  /* the blocks held out of the word reveal; words inside one come with it */
+  var blocks = [].slice.call(chunk.querySelectorAll('.cards,.chips-block,.note,.case-head .meta'));
+  blocks = blocks.filter(function(b){ return !blocks.some(function(o){ return o!==b && o.contains(b); }); });
+  var inBlock = function(s){ return blocks.some(function(b){ return b.contains(s); }); };
+  spans.filter(inBlock).forEach(function(s){ s.classList.add('on'); });
+  spans = spans.filter(function(s){ return !inBlock(s); });
+  blocks.forEach(function(b){ if(yOf(b) > fold) b.classList.add('blk-on'); });
+  blocks = blocks.filter(function(b){ return yOf(b) <= fold; });
+  var below = spans.filter(function(s){ return yOf(s) > fold; });
+  below.forEach(function(s){ s.classList.add('on'); });
+  spans = spans.filter(function(s){ return below.indexOf(s) < 0; });
+
+  /* the talking part is the first paragraph; a case study's heading and
+     panel come before it and settle like everything after it */
+  var n = talkLength(chunk, spans), units = [], i;
+  var head = function(s){ return !!s.closest('.case-head,.triad'); };
+  var pre = [], talk = [];
+  for(i=0;i<n;i++){ (head(spans[i]) ? pre : talk).push(spans[i]); }
+  sentences(pre).forEach(function(g){ units.push({els:g}); });
+  talk.forEach(function(s){ units.push({els:[s], word:true}); });
+  sentences(spans.slice(n)).forEach(function(g){ units.push({els:g}); });
+  blocks.forEach(function(b){ units.push({els:[b], block:true}); });
+  units.sort(function(a,b){ return a.els[0].compareDocumentPosition(b.els[0]) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1; });
+
+  /* a word follows a word at the talking pace; anything else takes a beat */
+  var t = 0;
+  units.forEach(function(u, k){
+    var at = t;
+    timers.push(setTimeout(function(){
+      u.els.forEach(function(el){ el.classList.add(u.block ? 'blk-on' : 'on'); });
+    }, at));
+    var next = units[k+1];
+    t += (u.word && next && next.word) ? WORD_MS : SENT_MS;
+  });
+  /* let the last fade land before the chips under the answer come in */
+  timers.push(setTimeout(finish, t + 100));
 }
 
 /* --- messages --- */
@@ -2629,7 +2758,7 @@ function addUser(text){
   wrap.className='msg user reveal';
   wrap.innerHTML='<div class="bubble">'+esc(text)+'</div>';
   inner.appendChild(wrap);
-  stage.scrollTop=stage.scrollHeight;
+  onQuestion(wrap);
 }
 function newAssistant(){
   var wrap=document.createElement('div');
@@ -2681,7 +2810,7 @@ function think(bodyEl, kind, topic){
     }, steps[i][1]);
   }
   show();
-  stage.scrollTop=stage.scrollHeight;
+  anchor();
 
   /* every beat, the fades between them, then a short silence before the
      first word lands — the pause is doing work, so let it finish */
@@ -2782,7 +2911,7 @@ function deliver(key, entry, firstLabel, kind){
         box.innerHTML=tail;
         body.appendChild(box);
       }
-      if(nearBottom()) stage.scrollTop=stage.scrollHeight;
+      onAnswered();
     });
   }, t.totalMs);
 }
@@ -2837,7 +2966,7 @@ function runProbe(key, idx){
       box.className='chunk done';
       box.innerHTML=tailFor(key, e, 'Anything else?');
       body.appendChild(box);
-      if(nearBottom()) stage.scrollTop=stage.scrollHeight;
+      onAnswered();
     });
   }, t.totalMs);
 }
@@ -2879,7 +3008,7 @@ function deliverQA(x, kind){
     streamInto(body, blocksHTML(x.a), function(){
       appendChunk(body, followHTML(x.follow, 'More on this'));
       appendChunk(body, otherQuestionsHTML('Other questions'));
-      if(nearBottom()) stage.scrollTop=stage.scrollHeight;
+      onAnswered();
     });
   }, t.totalMs);
 }
@@ -2908,7 +3037,7 @@ function deliverFallback(text){
         near.map(askChip).join('')+
         '<a class="chip" href="'+mail+'">Email me this question</a></div></div>');
       appendChunk(body, followHTML(FALLBACK.follow.filter(function(k){ return !have[k]; }), 'Or pick a thread'));
-      if(nearBottom()) stage.scrollTop=stage.scrollHeight;
+      onAnswered();
     });
   }, t.totalMs);
 }
