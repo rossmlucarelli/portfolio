@@ -1601,6 +1601,18 @@ var ART = {
     alt:'The question “What’s most important to you for your next car?” with six options, each a line illustration: a car between parking bays, a car on a winding road, an open boot with a box, a car on a slope, a car beside trees with a heart, and a car with speed lines.',
     img:'img/hmc-illustrated.webp', w:1600, h:1035, shot:true
   },
+  corbyBoots:{
+    title:'Open boots across the rows',
+    caption:'An open boot tells drivers that admin has cleared a car’s paperwork and it’s ready for MOT. Number plates blurred.',
+    alt:'Rows of used cars in the Corby yard on a sunny day. Behind the front row, several cars have their boots standing open.',
+    img:'img/corby-open-boots.webp', w:1200, h:750
+  },
+  corbyEmail:{
+    title:'A move request, read off a phone',
+    caption:'Move requests arrived as emails, read on a phone at the wheel. Names, phone numbers and registrations blurred.',
+    alt:'A phone held over a steering wheel showing an email headed “Re: urgent cars to be pulled”, asking for two cars to be moved to the urgent lane, with a small table of make, model and colour.',
+    img:'img/corby-email-zoom.webp', w:1104, h:690
+  },
   hmcPrice:{
     title:'A price range with the stock behind it',
     caption:'The bars show how many cars there are at each price, and the ones inside your range light up. Designed, never shipped.',
@@ -1985,6 +1997,7 @@ var CASES = [
       {t:'p',v:'I went to the Corby preparation centre in July 2026, a week after cinchPro went live. The target turnaround from intake to photography was 10 days, down from a historical 14, but cars were taking 30 to 40 days.'},
       {t:'p',v:'On site, I shadowed booking-in staff on the handheld app and rode round the yard with a supervisor and movement drivers. Recording on a Plaud Note Pro let me stay in the moment and ask questions as they occurred to me.'},
       {t:'p',v:'The yard team worked hard under tools that slowed them down. Staff cross-referenced cinchPro with a legacy system still holding 1,300 older cars. Drivers walked rows pressing key fobs to hear a horn because the map’s GPS lagged, zoomed in on WhatsApp screenshots of emails to read their next job, and looked for open boots to tell which cars were cleared for MOT.'},
+      {t:'cards',v:['corbyBoots']},
       {t:'p',v:'I paired those observations with public Google reviews of the Corby site and wrote up a two-phase plan for Product and Design: fix the drivers’ task screens and status updates first, then pair vehicle moves across the site.'}
     ],
     probes:[
@@ -2000,7 +2013,8 @@ var CASES = [
           {k:'Two systems at once',v:'Staff cross-referenced cinchPro with 1,300 older cars left on Evolution. As the site lead put it: “We’ve just flipped over to a new system as of last Monday… we’re running our old system and the new system because you can’t migrate.”'},
           {k:'The open-boot signal',v:'When admin upstairs cleared a car’s paperwork, they left the boot open so drivers could see by eye that it was ready for MOT. It worked on the ground, but left no digital record for supervisors.'},
           {k:'The email zoom',v:'Move requests arrived by email, which agency drivers, about 70% of the movement team, couldn’t access. Leads screenshotted the lists to WhatsApp, so drivers zoomed in on phones at windscreen distance while switching to a tablet.'}
-        ]}
+        ]},
+        {t:'cards',v:['corbyEmail']}
       ]},
       {q:'How did this affect customers?', a:[
         {t:'p',v:'Delays and blind spots in the yard didn’t stay in the yard.'},
@@ -2159,8 +2173,8 @@ var TOPICS = {
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
       {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','cfJump','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','categories']},
-      {t:'note',v:'<b>Most of these are the real thing.</b> Seven are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other five are redraws and diagrams. Happy to walk through the actual files in a call.'}
+      {t:'cards',cls:'gallery',v:['corbyBoots','corbyEmail','cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','cfJump','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','categories']},
+      {t:'note',v:'<b>Most of these are the real thing.</b> Two are photos from my visit to the Corby yard. Seven are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other five are redraws and diagrams. Happy to walk through the actual files in a call.'}
     ],
     probes:[
       {q:'Are these the real screens?', a:[
