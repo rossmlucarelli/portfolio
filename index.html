@@ -1722,30 +1722,6 @@ var ART = {
     caption:'The same logic stacked. The comparative line survives the narrow layout because it is a sentence rather than a table of specs.',
     img:IMG_REC_MOBILE, w:360, h:4763, shot:true
   },
-  categories:{
-    title:'Competitors grouped by business model',
-    caption:'Five categories instead of one scorecard. Compare within a column, and across columns only where the comparison actually holds — otherwise you get findings that are true and useless.',
-    svg:function(){
-      var s='',cols=[['Direct retail',['cinch','Motorpoint','Big Motoring World']],['Marketplace',['Auto Trader','CarGurus']],['Reverse marketplace',['Motorway','Carwow']],['Specialist trade-in',['WeBuyAnyCar']],['Modernised dealer',['Arnold Clark','Vertu']]];
-      var x=26,w=116;
-      for(var c=0;c<cols.length;c++){
-        var cx=x+c*(w+7);
-        s+=box(cx,64,w,300,10,c===0?P.tint:P.bg)+txt(cx+12,88,'0'+(c+1),9.5,c===0?P.acc:P.ink3,500);
-        cols[c][0].split(' ').forEach(function(word,wi){
-          s+='<text x="'+(cx+12)+'" y="'+(110+wi*15)+'" font-family="Instrument Sans, sans-serif" font-size="12" font-weight="600" fill="'+(c===0?P.acc:P.ink)+'">'+word+'</text>';
-        });
-        var yy=152;
-        for(var b=0;b<cols[c][1].length;b++){
-          s+='<rect x="'+(cx+12)+'" y="'+yy+'" width="'+(w-24)+'" height="34" rx="7" fill="'+P.panel+'" stroke="'+P.faint+'" stroke-width="1.1"/>'+txt(cx+21,yy+22,cols[c][1][b],9.5,P.ink2);
-          yy+=42;
-        }
-      }
-      s+=txt(26,40,'COMPARE INSIDE A COLUMN FIRST',10,P.ink3,500);
-      s+='<line x1="26" y1="50" x2="614" y2="50" stroke="'+P.faint+'" stroke-width="1.2"/>';
-      s+=txt(26,388,'“Most end-to-end online journey” is meaningless against a lead-gen marketplace that never wanted one.',10,P.ink3);
-      return svgWrap(s);
-    }
-  }
 };
 
 /* =========================================================
@@ -1941,43 +1917,38 @@ var CASES = [
   {
     id:'competitors', topic:'the competitor landscape', nav:'Competitor landscape', navMeta:'UK used-car market · 2026', rail:'CL',
     prompt:'What was the competitor analysis about?',
-    title:'A finding that was true and useless', kicker:'Case study 03',
-    meta:['cinch','Strategic research','Rebuild of a prior analysis'],
+    title:'Building a repeatable competitor benchmark with AI', kicker:'Case study 03',
+    meta:['cinch','Competitive benchmark','Planned in Gemini, run in Claude'],
     triad:{
-      challenge:'The previous year’s analysis scored every UK competitor against one criteria set. It produced findings like “cinch has the most end-to-end online journey”: true, and useless, because a lead-generation marketplace was never trying to have one.',
-      solution:'Group competitors by business model first — direct retail, marketplace / lead gen, reverse marketplace, specialist trade-in, modernised dealer group — then compare inside a category, and across categories only where the comparison holds.',
-      impact:'SLT can see which competitors we are actually competing with and which ones we only look like we are.'
+      challenge:'An earlier benchmark scored every UK competitor against one shared checklist. It produced headlines like cinch being the only place to buy a car online end to end: true, but not something a squad can act on when marketplaces aren’t trying to sell cars directly.',
+      solution:'Group competitors by business model first, write the questions as a designer in Miro, sharpen them into strict test scripts in Gemini, and run the live mystery shops in Claude.',
+      impact:'A one-off subjective review replaced by a repeatable benchmark across six journey stages and 106 criteria, with screenshot-backed evidence of where we lead and where we fall behind.'
     },
     intro:[
-      {t:'p',cls:'lede',v:'Continuing someone else’s research means deciding what to keep. The data collection was sound. The frame around it was what produced the empty findings.'},
-      {t:'cards',v:['categories']}
+      {t:'p',cls:'lede',v:'Using two different AI models to turn a subjective design review into a structured, evidence-backed mystery shop.'},
+      {t:'p',v:'Last year, another UX designer and a service designer put together a thorough competitive benchmark for cinch. It gave us a strong foundation. But scoring every site against a single set of criteria, whatever its business model, meant penalising companies for jobs they weren’t trying to do. It let us say cinch was the only place to buy a car entirely online, end to end, which is more of a marketing line than a finding a product team can act on.'},
+      {t:'p',v:'When I picked the work up in September 2026, I grouped competitors by how they make money (retailers, marketplaces, brokers and car buyers) so we only compared like with like. To scale the testing without losing rigour, I split my AI workflow in two. I mapped my first questions in Miro, worked back and forth with Gemini to sharpen them into strict test scripts and pre-mortem where they might break, and handed those scripts to Claude to run cold against the live sites.'},
+      {t:'p',v:'One finding from the wider set, in the September 2026 snapshot, stood out: on AI discovery, cinch leads the other retailers, but the marketplaces still lead us.'}
     ],
     probes:[
-      {q:'How do you tell colleagues their research was wrong?', a:[
-        {t:'p',v:'You don’t, because it mostly wasn’t. The designer and service designer who ran it last year gathered good material — the problem was the frame around it, and a frame is a much easier thing to discuss than someone’s competence.'},
-        {t:'p',v:'So I kept their data, changed the structure, and said so explicitly in the write-up. Credited version: “this builds on last year’s landscape, re-cut by business model.” That sentence costs nothing and buys you the next collaboration.'}
+      {q:'How did you decide what to look at?', a:[
+        {t:'p',v:'It started with me in Miro, without AI. I sliced the car-buying journey into six stages (homepage, AI discovery, search results, vehicle page, reservation and basket, and part-exchange) and wrote sticky notes for the questions I wanted answered as a designer.'},
+        {t:'p',v:'Once the stickies were down, I brought them into Gemini. We went back and forth to group them into pillars, define what a 1 to 5 score looked like against the best execution seen, and add checks I hadn’t thought of on my own, like how the homepage footer handled FCA Consumer Duty disclosures, PCP end-of-term options and mobile accordions. Only once the questions were solid did they become a test script.'}
       ]},
-      {q:'Why business model rather than features?', a:[
-        {t:'p',v:'Because a scorecard invites the reader to rank everything on one axis, and the axis is usually ours. Once you do that, you get findings that flatter the company and tell it nothing.'},
-        {t:'p',v:'Categories force the more useful question first: <em>is this business even trying to do the thing we’re measuring?</em> Motorway isn’t failing at end-to-end online retail. It’s a reverse marketplace. It’s winning at something else entirely.'}
+      {q:'Why plan in Gemini and run it in Claude?', a:[
+        {t:'p',v:'LLMs drift and get confused the longer a conversation runs. Ask an agent to review a whole website top to bottom, or to plan and execute in one thread, and it loses context. Splitting the work kept each model focused.'},
+        {t:'p',v:'In Gemini, we iterated on the wording and pre-mortemed the technical traps before a browser was opened: cookie pop-ups, slow finance calculators in iframes, SMS verification walls, and hard ethical stops so the agent never submitted a credit application or messaged live staff.'},
+        {t:'p',v:'Gemini produced a cold, standalone script with a fixed 1440px desktop viewport and identical test data: one dummy registration, 12,000 miles, one postcode and a £300-a-month family brief. Claude just had to run it, one site at a time.'}
       ]},
-      {q:'How did you pick the five categories?', a:[
-        {t:'p',v:'From how the money moves, not from what the sites look like. Who holds the stock, who takes the margin, who the customer is actually transacting with.'},
-        {t:'list',v:[
-          '<b>Direct retail</b> — owns the stock, sells to the consumer. Motorpoint, Big Motoring World.',
-          '<b>Marketplace / lead gen</b> — sells attention to dealers. Auto Trader, CarGurus.',
-          '<b>Reverse marketplace</b> — dealers bid for the consumer’s car. Motorway, Carwow.',
-          '<b>Specialist trade-in</b> — buys, doesn’t really sell. WeBuyAnyCar.',
-          '<b>Modernised dealer group</b> — forecourts with a good website. Arnold Clark, Vertu.'
-        ]},
-        {t:'p',v:'Cazoo sits in the analysis as a cautionary tale rather than a live competitor, which is its own kind of finding.'}
+      {q:'How did you keep your own bias out of it?', a:[
+        {t:'p',v:'I work at cinch and I built Help Me Choose, our assisted discovery tool, so I came into that audit with an obvious bias. To keep it in check, the process separated who wrote the questions from who judged the answers.'},
+        {t:'p',v:'I wrote the questions in Miro before any site was tested, and Claude scored every site against the fixed brief, with two to four screenshots behind every call. I reviewed every score afterwards, but only changed one if Claude had misread a screen or missed a feature, never because I disagreed with an opinion.'},
+        {t:'p',v:'It reduced bias rather than removing it. The questions still reflect one designer’s idea of good. But the scoring didn’t flatter us.'}
       ]},
-      {q:'What did SLT actually do with it?', a:[
-        {t:'p',v:'The honest answer is that a landscape document’s value shows up months later, in which comparisons stop being made in meetings.'},
-        {t:'p',v:'What I can say is that the framing travelled. Once people have the category in their heads, “are we losing to Auto Trader?” becomes a question someone can actually answer.'}
-      ]},
-      {q:'What’s the risk with research like this?', a:[
-        {t:'p',v:'That it becomes a beautiful deck nobody opens twice. The antidote is writing for the decision rather than for the archive — short, categorical, and willing to say which comparisons are invalid.'}
+      {q:'What would you do differently, and what next?', a:[
+        {t:'p',v:'If I ran it again from scratch, I’d bring a product owner, a researcher and someone from outside design into Miro early to widen the questions, pilot each script on one site before fanning out, and test on mobile as well as 1440px desktop.'},
+        {t:'p',v:'Looking ahead, I want to change how findings get shared. Big Confluence pages and general decks often get ignored. The structured evidence could go through AI and come out tailored to each reader: specific squads, DaCRO or Heads of Product.'},
+        {t:'p',v:'Beyond that is an idea I want to pitch, and a pivot from this work: turning the captured screens into a searchable library, a personal Mobbin of our competitors that teams can ask questions of directly.'}
       ]}
     ],
     follow:['car-finder','yard','philosophy']
@@ -2173,8 +2144,8 @@ var TOPICS = {
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
       {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['corbyBoots','corbyEmail','cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','cfJump','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','categories']},
-      {t:'note',v:'<b>Most of these are the real thing.</b> Two are photos from my visit to the Corby yard. Seven are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other five are redraws and diagrams. Happy to walk through the actual files in a call.'}
+      {t:'cards',cls:'gallery',v:['corbyBoots','corbyEmail','cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','cfJump','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel']},
+      {t:'note',v:'<b>Most of these are the real thing.</b> Two are photos from my visit to the Corby yard. Seven are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other four are redraws and diagrams. Happy to walk through the actual files in a call.'}
     ],
     probes:[
       {q:'Are these the real screens?', a:[
@@ -2358,7 +2329,7 @@ var INTENTS = [
   {key:'agentic',words:['agent','agents','agentic','autonomy','autonomous','human in the loop','oversight','tool use','multi step']},
   {key:'car-finder',words:['car finder','conversational','deepseek','long conversation','jump to','your messages','proud','proudest','best work','real searches','search terms','registration','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
-  {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy']},
+  {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy','mystery shop','gemini','bias','mobbin','audit']},
   {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report','plaud','shadowing','lyssna']},
   {key:'ai',words:['ai','artificial intelligence','claude','copilot','gpt','llm','prompt','automate','automation','tooling','guardrail','workflow','this site','this page','built this','how was this made','ai generated','generated']},
   {key:'philosophy',words:['philosophy','principle','believe','approach','process','method','values','opinion','style','overruled','disagree']},
