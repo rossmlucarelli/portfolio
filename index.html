@@ -265,6 +265,10 @@ canvas.sophon{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;di
 
 .note{border-left:2px solid var(--accent);background:var(--accent-tint);padding:var(--sp-12) var(--sp-16);border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:var(--fs-14);line-height:var(--lh-20);margin:0 0 var(--sp-16);}
 .note b{font-family:var(--font-ui);font-weight:600;}
+/* a pull quote, as a newspaper sets one: a line the reader can't miss */
+.pullquote{margin:var(--sp-24) 0;padding:var(--sp-4) 0 var(--sp-4) var(--sp-24);border-left:4px solid var(--accent);}
+.pullquote p{font-family:var(--font-display);font-weight:400;font-size:var(--fs-24);line-height:var(--lh-32);letter-spacing:-.01em;color:var(--ink);margin:0 0 var(--sp-12);text-wrap:pretty;}
+.pullquote footer{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);}
 .note.next{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-12);}
 .note.next p{margin:0;}
 
@@ -2000,16 +2004,19 @@ var CASES = [
       {q:'How did this affect customers?', a:[
         {t:'p',v:'Delays and blind spots in the yard didn’t stay in the yard.'},
         {t:'p',v:'Public Google reviews for the Corby site showed the same problems at customer handover: buyers arriving for pre-booked slots to wait 45 minutes or more for unvaleted cars, missing second keys, and electric cars handed over with 1% to 17% charge.'},
-        {t:'p',v:'One review: “When I went to collect the car, it had 31 miles of charge... I decided not to waste any more time with Cinch and cancelled the order.”'}
+        {t:'pullquote',v:'“When I went to collect the car, it had 31 miles of charge... I decided not to waste any more time with Cinch and cancelled the order.”',by:'Google review of the Corby site'}
       ]},
       {q:'What did you recommend?', a:[
         {t:'p',v:'I wrote the report for Product and Design, because the fixes lived in the software, and set out a two-phase plan:'},
         {t:'decisions',v:[
           {k:'One-task driver view',v:'A high-contrast screen showing the registration, grid location and key box ID, sent straight to handheld devices so agency drivers don’t need company email.'},
           {k:'A zero-tap open boot',v:'An automatic “Ready for MOT” status when admin clears the paperwork, so drivers don’t trade a one-second visual check for a form.'},
-          {k:'Paired moves and RFID',v:'In phase two, a nearby return car assigned whenever a driver drops one off, with audio driving prompts and RFID updating a car’s location when it’s parked.'},
-          {k:'Site-wide validation',v:'A Lyssna survey across all shifts and roles, to check how widely those patterns hold.'}
+          {k:'Paired moves and RFID',v:'In phase two, a nearby return car assigned whenever a driver drops one off, with audio driving prompts and RFID updating a car’s location when it’s parked.'}
         ]}
+      ]},
+      {q:'What would you do next?', a:[
+        {t:'p',v:'Check the findings across the whole site. What I saw is how the yard works for the people I shadowed. A survey across every shift and role, in a tool like Lyssna, would show how widely it holds before anyone builds on it.'},
+        {t:'p',v:'I set that out in the report as the next step. I’ve since moved off the project, so it hasn’t run.'}
       ]},
       {q:'How did you handle consent and privacy?', a:[
         {t:'p',v:'I told the people I shadowed that I was there to look at the process and the software, not at how well anyone was doing their job. When I met people, I asked if they were happy for me to record our conversation.'},
@@ -2337,7 +2344,7 @@ var INTENTS = [
   {key:'car-finder',words:['car finder','conversational','deepseek','long conversation','jump to','your messages','proud','proudest','best work','real searches','search terms','registration','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy']},
-  {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report','plaud','shadowing']},
+  {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report','plaud','shadowing','lyssna']},
   {key:'ai',words:['ai','artificial intelligence','claude','copilot','gpt','llm','prompt','automate','automation','tooling','guardrail','workflow','this site','this page','built this','how was this made','ai generated','generated']},
   {key:'philosophy',words:['philosophy','principle','believe','approach','process','method','values','opinion','style','overruled','disagree']},
   {key:'gallery',words:['visual','image','picture','screenshot','portfolio','sample','wireframe','mockup','flows','designed','show me']},
@@ -2484,6 +2491,7 @@ function blocksHTML(blocks){
       out+='</ul>';
     }
     else if(b.t==='note') out += '<div class="note">'+b.v+'</div>';
+    else if(b.t==='pullquote') out += '<blockquote class="pullquote"><p>'+b.v+'</p>'+(b.by?'<footer>'+b.by+'</footer>':'')+'</blockquote>';
     /* a link between two case studies that belong together: a line saying
        why, and a chip. The chip navigates, like the sidebar: the other case
        study opens as a conversation of its own, not underneath this one. */
