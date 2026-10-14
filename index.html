@@ -1971,38 +1971,49 @@ var CASES = [
     title:'Going to where the friction actually is', kicker:'Case study 04',
     meta:['cinch','Site visit & report','Product + Design audience'],
     triad:{
-      challenge:'The cinchPro yard management system was rolling out at the vehicle preparation yard in Corby. The friction it created was entirely visible on the ground and entirely invisible from a product backlog.',
-      solution:'A site visit — observation and interviews with yard staff — written up as a research report aimed at Product and Design, then put through a critique and a full revision.',
-      impact:'Operational friction named in terms a product team can act on.'
+      challenge:'The cinchPro yard system had gone live at Corby a week before my visit, running alongside a legacy system still holding about 1,300 cars. The friction that created was obvious on the tarmac and invisible from a product backlog.',
+      solution:'On-site shadowing with booking-in staff, a site supervisor and movement drivers, written up as a research report for Product and Design.',
+      impact:'Operational friction named in terms a product team can act on, and a two-phase plan for task dispatch and yard visibility.'
     },
     intro:[
-      {t:'p',cls:'lede',v:'The unglamorous version of user-centred design: the users were staff in a yard in Northamptonshire, and the software assumed a sequence the work doesn’t follow.'},
-      {t:'p',v:'The revision was as much of the work as the visit.'}
+      {t:'p',cls:'lede',v:'The unglamorous version of user-centred design: the users were staff in a vast yard in Northamptonshire, and the software assumed a sequence the work could not follow.'},
+      {t:'p',v:'I went to the Corby preparation centre in July 2026, a week after cinchPro went live. The target turnaround from intake to photography was 10 days, down from a historical 14, but cars were taking 30 to 40 days.'},
+      {t:'p',v:'On site, I shadowed booking-in staff on the handheld app and rode round the yard with a supervisor and movement drivers. Recording on a Plaud Note Pro let me stay in the moment and ask questions as they occurred to me.'},
+      {t:'p',v:'The yard team worked hard under tools that slowed them down. Staff cross-referenced cinchPro with a legacy system still holding 1,300 older cars. Drivers walked rows pressing key fobs to hear a horn because the map’s GPS lagged, zoomed in on WhatsApp screenshots of emails to read their next job, and looked for open boots to tell which cars were cleared for MOT.'},
+      {t:'p',v:'I paired those observations with public Google reviews of the Corby site and wrote up a two-phase plan for Product and Design: fix the drivers’ task screens and status updates first, then pair vehicle moves across the site.'}
     ],
     probes:[
       {q:'Why go to a yard at all?', a:[
-        {t:'p',v:'Because operational friction doesn’t appear in a backlog. It appears as a workaround someone invented in week two and never told anyone about, and you only see it by standing next to the person doing it.'},
-        {t:'p',v:'An afternoon in Corby told me more about the rollout than a quarter of usage analytics would have. Analytics tell you what happened; they don’t tell you that the scanner doesn’t work in the rain.'}
-      ]},
-      {q:'Why did the report need a rewrite?', a:[
-        {t:'p',v:'Because the first draft was persuasive when it should have been auditable. Four things changed, and all four were about whether a reader could trust it:'},
-        {t:'decisions',v:[
-          {k:'Methodology up front',v:'How long I was there, who I spoke to, and what I saw versus what I was told. A reader who can’t audit the method has to take the findings on faith, and senior readers won’t.'},
-          {k:'Staff anonymised',v:'People described friction created by a system their managers had bought. Naming them would have made the next visit useless, and possibly made their week worse.'},
-          {k:'Figures sourced',v:'Every financial figure traced to a primary source or removed. One unsourced number contaminates every finding near it.'},
-          {k:'Headings de-escalated',v:'Directive headings rewritten as observations. “Fix the scan step” is a decision that wasn’t mine to make; “the scan step is done twice” is the finding that lets the team make it.'}
-        ]}
+        {t:'p',v:'Because operational friction doesn’t appear in a backlog. It appears as a practical workaround on the tarmac, and you only see it by standing next to the person doing the job.'},
+        {t:'p',v:'My time at the yard told me more about the rollout than a quarter of usage analytics would have. Analytics tell you how long a move took. They don’t tell you that a driver walked across the site to an electric car on a charger, found it locked with the keys missing, and had to abandon the move.'},
+        {t:'p',v:'Recording on a Plaud Note Pro let me keep my eyes up while climbing in and out of shuttle vans. It picked up seven different languages across the site.'}
       ]},
       {q:'What did you actually find?', a:[
-        {t:'p',v:'The headline was a sequencing mismatch: the system modelled preparation as a clean linear pipeline, and the yard doesn’t work that way — cars move out of order, get pulled for a viewing, come back, and the software had no comfortable way to express that.'}
+        {t:'p',v:'Four things stood out where the software and the yard parted ways:'},
+        {t:'decisions',v:[
+          {k:'The key and location hunt',v:'The biggest time sink on site. Because the location GPS lagged, drivers walked rows pressing fobs to listen for the horn, or reached a locked car on a charger with its keys missing.'},
+          {k:'Two systems at once',v:'Staff cross-referenced cinchPro with 1,300 older cars left on Evolution. As the site lead put it: “We’ve just flipped over to a new system as of last Monday… we’re running our old system and the new system because you can’t migrate.”'},
+          {k:'The open-boot signal',v:'When admin upstairs cleared a car’s paperwork, they left the boot open so drivers could see by eye that it was ready for MOT. It worked on the ground, but left no digital record for supervisors.'},
+          {k:'The email zoom',v:'Move requests arrived by email, which agency drivers, about 70% of the movement team, couldn’t access. Leads screenshotted the lists to WhatsApp, so drivers zoomed in on phones at windscreen distance while switching to a tablet.'}
+        ]}
       ]},
-      {q:'How did you handle anonymity?', a:[
-        {t:'p',v:'Roles rather than names, and no detail specific enough to identify someone by their shift or their patch. I also told people at the start what the report was for and who would read it, because consent you get afterwards isn’t consent.'},
-        {t:'p',v:'It costs a little vividness. It buys the ability to go back.'}
+      {q:'How did this affect customers?', a:[
+        {t:'p',v:'Delays and blind spots in the yard didn’t stay in the yard.'},
+        {t:'p',v:'Public Google reviews for the Corby site showed the same problems at customer handover: buyers arriving for pre-booked slots to wait 45 minutes or more for unvaleted cars, missing second keys, and electric cars handed over with 1% to 17% charge.'},
+        {t:'p',v:'One review: “When I went to collect the car, it had 31 miles of charge... I decided not to waste any more time with Cinch and cancelled the order.”'}
       ]},
-      {q:'What do you do with research nobody asked for?', a:[
-        {t:'p',v:'Write it for the audience that can act on it, and keep it short enough that they will. This one was aimed at Product and Design rather than at operations, because the fix lived in the software.'},
-        {t:'p',v:'The failure mode for this kind of work isn’t being wrong. It’s being filed.'}
+      {q:'What did you recommend?', a:[
+        {t:'p',v:'I wrote the report for Product and Design, because the fixes lived in the software, and set out a two-phase plan:'},
+        {t:'decisions',v:[
+          {k:'One-task driver view',v:'A high-contrast screen showing the registration, grid location and key box ID, sent straight to handheld devices so agency drivers don’t need company email.'},
+          {k:'A zero-tap open boot',v:'An automatic “Ready for MOT” status when admin clears the paperwork, so drivers don’t trade a one-second visual check for a form.'},
+          {k:'Paired moves and RFID',v:'In phase two, a nearby return car assigned whenever a driver drops one off, with audio driving prompts and RFID updating a car’s location when it’s parked.'},
+          {k:'Site-wide validation',v:'A Lyssna survey across all shifts and roles, to check how widely those patterns hold.'}
+        ]}
+      ]},
+      {q:'How did you handle consent and privacy?', a:[
+        {t:'p',v:'I told the people I shadowed that I was there to look at the process and the software, not at how well anyone was doing their job. When I met people, I asked if they were happy for me to record our conversation.'},
+        {t:'p',v:'On this page, everyone I shadowed is referred to by role rather than name, with nothing specific enough to identify someone by their shift or their patch of the yard. It costs a little vividness, and buys the trust needed to go back.'}
       ]}
     ],
     follow:['competitors','ai','contact']
@@ -2326,7 +2337,7 @@ var INTENTS = [
   {key:'car-finder',words:['car finder','conversational','deepseek','long conversation','jump to','your messages','proud','proudest','best work','real searches','search terms','registration','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy']},
-  {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report']},
+  {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report','plaud','shadowing']},
   {key:'ai',words:['ai','artificial intelligence','claude','copilot','gpt','llm','prompt','automate','automation','tooling','guardrail','workflow','this site','this page','built this','how was this made','ai generated','generated']},
   {key:'philosophy',words:['philosophy','principle','believe','approach','process','method','values','opinion','style','overruled','disagree']},
   {key:'gallery',words:['visual','image','picture','screenshot','portfolio','sample','wireframe','mockup','flows','designed','show me']},
