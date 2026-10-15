@@ -1493,19 +1493,20 @@ var ART = {
   },
   bizStages:{
     title:'Who was tested at each stage',
-    caption:'Five journey stages, four business models, 11 sites. Each group was only tested at the stages where it does the same job as cinch, so a car buyer is never marked down for having no search results page. Each dot is one site; the solid one is cinch. September 2026.',
-    alt:'A grid. Columns are five journey stages with their criteria: homepage 16, AI discovery 11, search results 22, vehicle page 20, part-exchange 19. Rows are business models. Retailers (cinch, Motorpoint, Arnold Clark, Big Motoring World, Vertu) were tested at all five stages. Marketplaces (Auto Trader, CarGurus, Cazoo) at AI discovery only. Brokers (carwow, Motorway) at AI discovery and part-exchange. Car buyers (webuyanycar) at part-exchange only. 88 criteria in total.',
+    caption:'cinch was tested at all five stages, and at each one it was compared only with the groups that do the same job there, so a car buyer is never marked down for having no search results page. Each dot is one site. September 2026.',
+    alt:'A grid. Columns are five journey stages with their criteria: homepage 16, AI discovery 11, search results 22, vehicle page 20, part-exchange 19. cinch was tested at all five stages. Below it, rows are business models. Retailers (Motorpoint, Arnold Clark, Big Motoring World, Vertu) were tested at all five stages too. Marketplaces (Auto Trader, CarGurus, Cazoo) at AI discovery only. Brokers (carwow, Motorway) at AI discovery and part-exchange. Car buyers (webuyanycar) at part-exchange only. 88 criteria in total.',
     svg:function(){
       /* Animated: plays once when the card scrolls into view (bmWatch below),
          and again when it is opened large. Reduced motion shows the end state. */
       var stages=[['Homepage','',16],['AI','discovery',11],['Search','results',22],['Vehicle','page',20],['Part-','exchange',19]];
       var rows=[
-        ['Retailers',['cinch, Motorpoint, Arnold Clark,','Big Motoring World, Vertu'],[5,5,5,5,5]],
+        ['cinch',['Tested at every stage'],[1,1,1,1,1]],
+        ['Retailers',['Motorpoint, Arnold Clark,','Big Motoring World, Vertu'],[4,4,4,4,4]],
         ['Marketplaces',['Auto Trader, CarGurus, Cazoo'],[0,3,0,0,0]],
         ['Brokers',['carwow, Motorway'],[0,1,0,0,2]],
         ['Car buyers',['webuyanycar'],[0,0,0,0,1]]
       ];
-      var SANS='Instrument Sans, sans-serif', x0=212, cw=82, y0=158, rh=52;
+      var SANS='Instrument Sans, sans-serif', x0=212, cw=82, y0=146, rh=44;
       var s='<style>'+
         '.bm .bm-a{animation-duration:.5s;animation-timing-function:cubic-bezier(.2,.8,.3,1);animation-fill-mode:both;animation-delay:var(--d,0s);animation-play-state:paused}'+
         '.bm.bm-play .bm-a{animation-play-state:running}'+
@@ -1520,22 +1521,22 @@ var ART = {
         '@media (prefers-reduced-motion:reduce){.bm .bm-a{animation:none!important}.bm .bm-ring{display:none}}'+
         '</style>';
       s+='<rect x="0" y="0" width="640" height="400" fill="'+P.bg+'"/>';
-      s+='<g class="bm-a bm-fade" style="--d:0s"><text x="24" y="38" font-family="'+SANS+'" font-size="16" font-weight="600" fill="'+P.ink+'">Compare like with like</text>'+
-         txt(24,58,'WHO WAS TESTED AT EACH STAGE · SEPTEMBER 2026',10,P.ink3,500)+'</g>';
+      s+='<g class="bm-a bm-fade" style="--d:0s"><text x="24" y="34" font-family="'+SANS+'" font-size="16" font-weight="600" fill="'+P.ink+'">Compare like with like</text>'+
+         txt(24,54,'WHO WAS TESTED AT EACH STAGE · SEPTEMBER 2026',10,P.ink3,500)+'</g>';
       stages.forEach(function(st,i){
         var cx=x0+i*cw+cw/2-4, d=(.15+i*.09).toFixed(2);
         s+='<g class="bm-a bm-up" style="--d:'+d+'s">'+
-          '<text class="bm-count" data-to="'+st[2]+'" x="'+cx+'" y="102" font-family="'+SANS+'" font-size="24" font-weight="700" fill="'+P.acc+'" text-anchor="middle">'+st[2]+'</text>'+
-          txt(cx,116,'CRITERIA',8.5,P.ink3,500,'middle')+
-          '<text x="'+cx+'" y="134" font-family="'+SANS+'" font-size="11.5" font-weight="600" fill="'+P.ink+'" text-anchor="middle">'+st[0]+'</text>'+
-          (st[1]?'<text x="'+cx+'" y="148" font-family="'+SANS+'" font-size="11.5" font-weight="600" fill="'+P.ink+'" text-anchor="middle">'+st[1]+'</text>':'')+
+          '<text class="bm-count" data-to="'+st[2]+'" x="'+cx+'" y="90" font-family="'+SANS+'" font-size="24" font-weight="700" fill="'+P.acc+'" text-anchor="middle">'+st[2]+'</text>'+
+          txt(cx,103,'CRITERIA',8.5,P.ink3,500,'middle')+
+          '<text x="'+cx+'" y="120" font-family="'+SANS+'" font-size="11.5" font-weight="600" fill="'+P.ink+'" text-anchor="middle">'+st[0]+'</text>'+
+          (st[1]?'<text x="'+cx+'" y="133" font-family="'+SANS+'" font-size="11.5" font-weight="600" fill="'+P.ink+'" text-anchor="middle">'+st[1]+'</text>':'')+
           '</g>';
       });
       rows.forEach(function(r,ri){
         var y=y0+ri*rh, d=(.6+ri*.12).toFixed(2);
         s+='<g class="bm-a bm-left" style="--d:'+d+'s">'+
-          '<text x="24" y="'+(y+18)+'" font-family="'+SANS+'" font-size="13" font-weight="600" fill="'+P.ink+'">'+r[0]+'</text>';
-        r[1].forEach(function(line,li){ s+=txt(24,y+32+li*12,line,9.5,P.ink3); });
+          '<text x="24" y="'+(y+15)+'" font-family="'+SANS+'" font-size="13" font-weight="600" fill="'+(ri===0?P.acc:P.ink)+'">'+r[0]+'</text>';
+        r[1].forEach(function(line,li){ s+=txt(24,y+28+li*11,line,9.5,P.ink3); });
         s+='</g>';
         r[2].forEach(function(n,ci){
           var cx=x0+ci*cw, cd=(1.05+ci*.22+ri*.06);
@@ -1544,19 +1545,19 @@ var ART = {
                '<line x1="'+(cx+cw/2-10)+'" y1="'+(y+rh/2-2)+'" x2="'+(cx+cw/2+2)+'" y2="'+(y+rh/2-2)+'" stroke="'+P.faint+'" stroke-width="1.6" stroke-linecap="round"/></g>';
             return;
           }
-          s+='<rect class="bm-a bm-fade" style="--d:'+cd.toFixed(2)+'s" x="'+(cx+2)+'" y="'+(y+4)+'" width="'+(cw-12)+'" height="'+(rh-12)+'" rx="8" fill="'+P.tint+'"/>';
+          s+='<rect class="bm-a bm-fade" style="--d:'+cd.toFixed(2)+'s" x="'+(cx+2)+'" y="'+(y+4)+'" width="'+(cw-12)+'" height="'+(rh-12)+'" rx="8" fill="'+P.tint+'"'+(ri===0?' stroke="'+P.acc+'" stroke-width="1.4"':'')+'/>';
           var gap=11, start=cx+2+(cw-12)/2-(n-1)*gap/2, cyy=y+rh/2-2;
           for(var k=0;k<n;k++){
-            var dx=start+k*gap, dd=(cd+.12+k*.06).toFixed(2), isC=(ri===0&&k===0);
+            var dx=start+k*gap, dd=(cd+.12+k*.06).toFixed(2), isC=(ri===0);
             if(isC) s+='<circle class="bm-a bm-ring" style="--d:'+(cd+.5+ci*.05).toFixed(2)+'s" cx="'+dx+'" cy="'+cyy+'" r="4.5" fill="none" stroke="'+P.acc+'" stroke-width="1.4"/>';
             s+='<circle class="bm-a bm-pop" style="--d:'+dd+'s" cx="'+dx+'" cy="'+cyy+'" r="'+(isC?4.5:4)+'" fill="'+P.acc+'"'+(isC?'':' fill-opacity=".45"')+'/>';
           }
         });
       });
       s+='<g class="bm-a bm-up" style="--d:2.7s">'+
-         '<text x="24" y="384" font-family="'+SANS+'" font-size="13" font-weight="600" fill="'+P.ink+'"><tspan class="bm-count" data-to="88">88</tspan> criteria · 5 stages · <tspan class="bm-count" data-to="11">11</tspan> sites</text>'+
-         '<circle cx="508" cy="380" r="4.5" fill="'+P.acc+'"/>'+txt(518,384,'CINCH',9,P.ink3,500)+
-         '<circle cx="566" cy="380" r="4" fill="'+P.acc+'" fill-opacity=".45"/>'+txt(576,384,'OTHERS',9,P.ink3,500)+'</g>';
+         '<text x="24" y="386" font-family="'+SANS+'" font-size="13" font-weight="600" fill="'+P.ink+'"><tspan class="bm-count" data-to="88">88</tspan> criteria · 5 stages · <tspan class="bm-count" data-to="11">11</tspan> sites</text>'+
+         '<circle cx="508" cy="382" r="4.5" fill="'+P.acc+'"/>'+txt(518,386,'CINCH',9,P.ink3,500)+
+         '<circle cx="566" cy="382" r="4" fill="'+P.acc+'" fill-opacity=".45"/>'+txt(576,386,'OTHERS',9,P.ink3,500)+'</g>';
       return '<svg class="bm" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Who was tested at each stage" xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
     }
   },
