@@ -1827,9 +1827,8 @@ var CASES = [
 
       {t:'h',v:'When it can’t be done, it says so'},
       {t:'p',v:'Ask for an electric car under £12,000 on top of that search and nothing fits. It names the £599 gap and offers two ways round it, 39 cars or 141, and changes nothing until you pick. Ask for an Evoque under £250 a month, where the closest is £8 over, and it sets the budget aside in the open, struck through in the brief.'},
-      {t:'pullquote',v:'It can set a request aside, but only in the open, where you can see what was given up. What it never does is drop one quietly and hand back near-misses as if they were matches.'},
-      {t:'cards',cls:'two',v:['cfCompromise','cfNearMiss']},
-      {t:'next',key:'help-me-choose',label:'Read the Help Me Choose case study',v:'<b>Where it came from.</b> The wizard it is designed to replace, and the numbers that wizard’s 2022 rebuild moved, are in the next case study, Help Me Choose.'}
+      {t:'pullquote',v:'If a user asks for something it can’t find, it sets that request aside in the open, where they can see what was given up. It never drops one quietly and hands back near-misses as if they were matches.'},
+      {t:'cards',cls:'two',v:['cfCompromise','cfNearMiss']}
     ],
     probes:[
       {q:'Where did this project come from?', a:[
@@ -1845,14 +1844,20 @@ var CASES = [
         {t:'p',v:'Since I designed it, cinch’s search box has started taking free text, so I could see what people actually type into it. I sorted the first 997 searches, 616 different terms, by what the car finder’s rules would do with each one.'},
         {t:'cards',v:['cfSearches']},
         {t:'p',v:'<b>Almost all of it is search’s job.</b> Nearly 97% were a make, a model or something a filter already handles. That is the case for keeping search as the front door.'},
+        {t:'p',v:'<b>Short searches don’t mean simple needs.</b> A search box invites search terms. People have spent years learning that typing “Ford Focus” works and typing a sentence doesn’t, and nothing about this box tells them it can take more. So a short search says as much about the box as about what someone wants. That is why the conversation is offered with a reason, rather than waiting to be asked for.'},
         {t:'p',v:'<b>The ones for a conversation read like a brief.</b> Fourteen were searches it would offer the conversation for, like “a quick electric car with a big boot”, “family car large boot” and “best car for towing a caravan”, which it would only answer from confirmed data.'},
         {t:'p',v:'<b>One it wasn’t designed for.</b> “how many dogs can fit in a nissan juke” is a question about one car, not a request for suggestions. It is worth designing for.'},
-        {t:'p',v:'<b>Some weren’t car searches at all.</b> Five were registration plates and one was a postcode; they are shown as X’s here. A reg that is or was on cinch could go straight to its page, and any other reg could offer a valuation.'},
+        {t:'p',v:'<b>Some weren’t car searches at all.</b> Five were registration plates and one was a postcode; they are shown as X’s here. A registration is the most specific thing anyone can type, and search could work out what it most likely means:'},
+        {t:'decisions',v:[
+          {k:'On cinch now',v:'They have probably seen it on cinch and want it back. Go straight to its page.'},
+          {k:'Sold on cinch',v:'They saw it and came back too late. Show its page marked as sold, with similar cars that are in stock.'},
+          {k:'Not a cinch car',v:'Most likely their own car. Offer a valuation, and the part-exchange that goes with it.'}
+        ]},
         {t:'p',v:'It is about a thousand searches from one test, judged against the design’s rules rather than run through the prototype, so it supports the assumptions rather than proving them.'}
       ]},
       {q:'What was the hardest decision?', a:[
         {t:'p',v:'How much reasoning to show. Too little and it’s a black box people don’t trust with an £18,000 purchase. Too much and you’re publishing the model’s homework, which impresses nobody and slows the decision down.'},
-        {t:'p',v:'The test I landed on: <em>a reason earns its place only if it could change what you click</em>. Each car shows up to three, and the rest sit behind “Show more”. “700 litre boot, the biggest here” passes. Listing everything the system weighed does not.'},
+        {t:'p',v:'So each reason has to be one that could change what someone clicks. Each car shows up to three, and the rest sit behind “Show more”. “700 litre boot, the biggest here” passes. Listing everything the system weighed does not.'},
         {t:'p',v:'The related call was match percentages. A Head of Product suggested showing one, and I argued against it. We had designed one for the old Help Me Choose, and I said it wasn’t as useful here: a percentage implies a precision the system doesn’t have, and once it’s on screen people treat it as fact. The card gives a plain count of your own requests instead: “Matches everything except one request”.'}
       ]},
       {q:'Where does it refuse to guess?', a:[
@@ -1867,8 +1872,7 @@ var CASES = [
       ]},
       {q:'How did you handle SLT pushback?', a:[
         {t:'p',v:'The commercial pull was toward a system that always recommends, confidently. A model that says “nothing matches” looks like a model that isn’t selling cars.'},
-        {t:'p',v:'My argument was about trust. If it can never say no, trust erodes, because people have no reason to believe it when it says yes. The compromise state is what makes the confident cases believable.'},
-        {t:'note',v:'<b>What I’d say to a hiring manager.</b> I don’t treat commercial pressure as the enemy. It’s legitimate, it just has to meet the evidence while there’s still time to change something.'}
+        {t:'p',v:'My argument was about trust. If it can never say no, trust erodes, because people have no reason to believe it when it says yes. The compromise state is what makes the confident cases believable.'}
       ]},
       {q:'What happens when someone comes back?', a:[
         {t:'p',v:'People go away and do their research, so every conversation is saved. Come back a week later and it leads with what has changed: which car sold, which dropped in price, and what is new. A sold car stays in the earlier turn, marked as no longer available, and isn’t recommended again. Signed out, conversations stay on that device only, and it says so.'},
@@ -1882,7 +1886,7 @@ var CASES = [
       ]},
       {q:'How did you prototype it with engineering in mind?', a:[
         {t:'p',v:'I came up through front-end engineering, six years as a front-end developer before I moved into UX. I don’t claim to ship production code now, but I can read a codebase and judge what an idea will cost to build in cinch’s Next.js and React Native stack before proposing it.'},
-        {t:'p',v:'I designed the car finder as a working prototype rather than static frames, because the real interaction question, what happens when you remove a constraint mid-conversation, can’t be answered in Figma.'}
+        {t:'p',v:'I designed the car finder as a working prototype rather than static frames, because the real interaction question, what happens when you remove a constraint mid-conversation, can’t be answered as easily in Figma.'}
       ]},
       {q:'What would you measure?', a:[
         {t:'p',v:'Four things, and only one of them is completion rate:'},
@@ -2397,7 +2401,7 @@ var CV = CV_URL
 var INTENTS = [
   {key:'contact',words:['contact','email','hire','hiring','recruit','available','availability','talk','call','chat','reach','cv','resume','linkedin','role','job','vacancy','opportunity','rate','freelance','notice','salary']},
   {key:'agentic',words:['agent','agents','agentic','autonomy','autonomous','human in the loop','oversight','tool use','multi step']},
-  {key:'car-finder',words:['car finder','conversational','deepseek','long conversation','jump to','your messages','proud','proudest','best work','real searches','search terms','registration','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
+  {key:'car-finder',words:['car finder','conversational','deepseek','long conversation','jump to','your messages','proud','proudest','best work','real searches','search terms','registration','number plate','free text','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy','mystery shop','gemini','bias','mobbin','audit']},
   {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report','plaud','shadowing','lyssna']},
