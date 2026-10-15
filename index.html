@@ -3678,7 +3678,12 @@ var Inspect=(function(){
       if(!at){ d.hidden=true; return; }
       shown.push(s.id);
       d.hidden=false;
-      d.style.transform='translate('+Math.round(at.x)+'px,'+Math.round(at.y)+'px)';
+      /* position with translate, not transform: the hover growth is the
+         scale property, and transform is applied after it, so a scale
+         there would scale the position too and throw the dot out from
+         under the pointer. */
+      var pos=Math.round(at.x)+'px '+Math.round(at.y)+'px';
+      if(d.style.translate!==pos) d.style.translate=pos;
     });
     shown.forEach(function(id, i){
       var d=dots[id], s=byIdSpot(id);
@@ -3686,7 +3691,7 @@ var Inspect=(function(){
       d.setAttribute('aria-label', (i+1)+'. '+s.title.replace(/[“”]/g,''));
     });
     var n=shown.length;
-    count.innerHTML=n+'<span class="ins-w"> '+(n===1?'decision':'decisions')+'</span>';
+    if(count.dataset.n!==String(n)){ count.dataset.n=n; count.innerHTML=n+'<span class="ins-w"> '+(n===1?'decision':'decisions')+'</span>'; }
     first.hidden=main.classList.contains('zero');
     if(openId){
       var at=els[openId];
