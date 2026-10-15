@@ -3129,13 +3129,13 @@ input.addEventListener('input', function(){
    than saying "no results", because the router may still place the
    question from its keywords. */
 var suggest=document.getElementById('suggest'), form=document.getElementById('form');
-var SUGGEST_MAX=5, suggestMuted=false;
+var SUGGEST_MAX=5, SUGGEST_MAX_EMPTY=7, suggestMuted=false;
 function suggestItems(){
   var all=askableList(), toks=tokens(input.value,2);
   if(!toks.length){
     var fresh=all.filter(function(c){ return !c.extra && !isAsked(c); });
-    if(fresh.length<SUGGEST_MAX) fresh=fresh.concat(all.filter(function(c){ return c.extra && !isAsked(c); }));
-    return fresh.slice(0,SUGGEST_MAX);
+    if(fresh.length<SUGGEST_MAX_EMPTY) fresh=fresh.concat(all.filter(function(c){ return c.extra && !isAsked(c); }));
+    return fresh.slice(0,SUGGEST_MAX_EMPTY);
   }
   return all.filter(function(c){
     for(var i=0;i<toks.length;i++) if(c.hay.indexOf(' '+toks[i])<0) return false;
