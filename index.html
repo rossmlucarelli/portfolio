@@ -427,6 +427,9 @@ canvas.sophon{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;di
 .suggest-item::before{content:"";width:var(--sp-4);height:var(--sp-4);border-radius:50%;flex:none;background:var(--accent-bright);opacity:.7;}
 .suggest-item:hover,.suggest-item:focus-visible{background:var(--sunk);}
 .suggest-item:focus-visible{outline-offset:calc(var(--sp-2) * -1);}
+/* More questions below: the last row is cut part way and fades, so the list
+   reads as scrollable rather than as a full stop. */
+.suggest.more::after{content:"";display:block;position:sticky;bottom:calc(var(--sp-8) * -1);height:var(--sp-24);margin-top:calc(var(--sp-24) * -1);background:linear-gradient(to bottom, transparent, var(--surface));pointer-events:none;}
 a.chip{text-decoration:none;}
 
 /* --- lightbox --- */
@@ -3154,11 +3157,20 @@ function placeSuggest(){
   var r=form.getBoundingClientRect();
   var below=bottom - r.bottom - 16, above=r.top - top - 16;
   suggest.style.maxHeight='';
-  var need=Math.min(suggest.scrollHeight, 352);
+  var cap=352, rows=suggest.querySelectorAll('.suggest-item');
+  /* Past five rows, the panel stays the height it had with five: it stops
+     most of the way down the fifth row, and the rest scrolls. */
+  if(rows.length>5){ var r5=rows[4]; cap=Math.min(cap, r5.offsetTop + Math.round(r5.offsetHeight*.7)); }
+  var need=Math.min(suggest.scrollHeight, cap);
   var down = zero ? (below>=need || below>=above) : false;
   suggest.className='suggest '+(down?'below':'above');
-  suggest.style.maxHeight=Math.max(96, Math.min(352, down?below:above))+'px';
+  suggest.style.maxHeight=Math.max(96, Math.min(cap, down?below:above))+'px';
+  suggest.scrollTop=0; markMore();
 }
+function markMore(){
+  suggest.classList.toggle('more', suggest.scrollTop + suggest.clientHeight < suggest.scrollHeight - 1);
+}
+suggest.addEventListener('scroll', markMore, {passive:true});
 function openSuggest(){
   var items=suggestItems();
   if(!items.length){ closeSuggest(); return; }
