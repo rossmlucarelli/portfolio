@@ -1491,6 +1491,75 @@ var ART = {
     alt:'The AI car finder adding Takes a folded wheelchair, explaining it never works this out from boot measurements, and showing the three cars where the fit is confirmed.',
     img:'img/cf-verified.webp', w:1600, h:1150, imgSm:'img/cf-verified-sm.webp', wSm:780, hSm:1688, shot:true
   },
+  bizStages:{
+    title:'Who was tested at each stage',
+    caption:'Five journey stages, four business models, 11 sites. Each group was only tested at the stages where it does the same job as cinch, so a car buyer is never marked down for having no search results page. Each dot is one site; the solid one is cinch. September 2026.',
+    alt:'A grid. Columns are five journey stages with their criteria: homepage 16, AI discovery 11, search results 22, vehicle page 20, part-exchange 19. Rows are business models. Retailers (cinch, Motorpoint, Arnold Clark, Big Motoring World, Vertu) were tested at all five stages. Marketplaces (Auto Trader, CarGurus, Cazoo) at AI discovery only. Brokers (carwow, Motorway) at AI discovery and part-exchange. Car buyers (webuyanycar) at part-exchange only. 88 criteria in total.',
+    svg:function(){
+      /* Animated: plays once when the card scrolls into view (bmWatch below),
+         and again when it is opened large. Reduced motion shows the end state. */
+      var stages=[['Homepage','',16],['AI','discovery',11],['Search','results',22],['Vehicle','page',20],['Part-','exchange',19]];
+      var rows=[
+        ['Retailers',['cinch, Motorpoint, Arnold Clark,','Big Motoring World, Vertu'],[5,5,5,5,5]],
+        ['Marketplaces',['Auto Trader, CarGurus, Cazoo'],[0,3,0,0,0]],
+        ['Brokers',['carwow, Motorway'],[0,1,0,0,2]],
+        ['Car buyers',['webuyanycar'],[0,0,0,0,1]]
+      ];
+      var SANS='Instrument Sans, sans-serif', x0=212, cw=82, y0=158, rh=52;
+      var s='<style>'+
+        '.bm .bm-a{animation-duration:.5s;animation-timing-function:cubic-bezier(.2,.8,.3,1);animation-fill-mode:both;animation-delay:var(--d,0s);animation-play-state:paused}'+
+        '.bm.bm-play .bm-a{animation-play-state:running}'+
+        '.bm .bm-up{animation-name:bmUp}.bm .bm-left{animation-name:bmLeft}.bm .bm-fade{animation-name:bmFade}'+
+        '.bm .bm-pop{animation-name:bmPop;animation-duration:.42s;animation-timing-function:cubic-bezier(.3,1.6,.5,1);transform-box:fill-box;transform-origin:center}'+
+        '.bm .bm-ring{animation-name:bmRing;animation-duration:1.4s;animation-timing-function:ease-out;transform-box:fill-box;transform-origin:center}'+
+        '@keyframes bmUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}'+
+        '@keyframes bmLeft{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}'+
+        '@keyframes bmFade{from{opacity:0}to{opacity:1}}'+
+        '@keyframes bmPop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}'+
+        '@keyframes bmRing{0%{opacity:0;transform:scale(.6)}25%{opacity:.9}100%{opacity:0;transform:scale(2.4)}}'+
+        '@media (prefers-reduced-motion:reduce){.bm .bm-a{animation:none!important}.bm .bm-ring{display:none}}'+
+        '</style>';
+      s+='<rect x="0" y="0" width="640" height="400" fill="'+P.bg+'"/>';
+      s+='<g class="bm-a bm-fade" style="--d:0s"><text x="24" y="38" font-family="'+SANS+'" font-size="16" font-weight="600" fill="'+P.ink+'">Compare like with like</text>'+
+         txt(24,58,'WHO WAS TESTED AT EACH STAGE · SEPTEMBER 2026',10,P.ink3,500)+'</g>';
+      stages.forEach(function(st,i){
+        var cx=x0+i*cw+cw/2-4, d=(.15+i*.09).toFixed(2);
+        s+='<g class="bm-a bm-up" style="--d:'+d+'s">'+
+          '<text class="bm-count" data-to="'+st[2]+'" x="'+cx+'" y="102" font-family="'+SANS+'" font-size="24" font-weight="700" fill="'+P.acc+'" text-anchor="middle">'+st[2]+'</text>'+
+          txt(cx,116,'CRITERIA',8.5,P.ink3,500,'middle')+
+          '<text x="'+cx+'" y="134" font-family="'+SANS+'" font-size="11.5" font-weight="600" fill="'+P.ink+'" text-anchor="middle">'+st[0]+'</text>'+
+          (st[1]?'<text x="'+cx+'" y="148" font-family="'+SANS+'" font-size="11.5" font-weight="600" fill="'+P.ink+'" text-anchor="middle">'+st[1]+'</text>':'')+
+          '</g>';
+      });
+      rows.forEach(function(r,ri){
+        var y=y0+ri*rh, d=(.6+ri*.12).toFixed(2);
+        s+='<g class="bm-a bm-left" style="--d:'+d+'s">'+
+          '<text x="24" y="'+(y+18)+'" font-family="'+SANS+'" font-size="13" font-weight="600" fill="'+P.ink+'">'+r[0]+'</text>';
+        r[1].forEach(function(line,li){ s+=txt(24,y+32+li*12,line,9.5,P.ink3); });
+        s+='</g>';
+        r[2].forEach(function(n,ci){
+          var cx=x0+ci*cw, cd=(1.05+ci*.22+ri*.06);
+          if(!n){
+            s+='<g class="bm-a bm-fade" style="--d:'+cd.toFixed(2)+'s"><rect x="'+(cx+2)+'" y="'+(y+4)+'" width="'+(cw-12)+'" height="'+(rh-12)+'" rx="8" fill="none" stroke="'+P.faint+'" stroke-width="1.2" stroke-dasharray="3 4"/>'+
+               '<line x1="'+(cx+cw/2-10)+'" y1="'+(y+rh/2-2)+'" x2="'+(cx+cw/2+2)+'" y2="'+(y+rh/2-2)+'" stroke="'+P.faint+'" stroke-width="1.6" stroke-linecap="round"/></g>';
+            return;
+          }
+          s+='<rect class="bm-a bm-fade" style="--d:'+cd.toFixed(2)+'s" x="'+(cx+2)+'" y="'+(y+4)+'" width="'+(cw-12)+'" height="'+(rh-12)+'" rx="8" fill="'+P.tint+'"/>';
+          var gap=11, start=cx+2+(cw-12)/2-(n-1)*gap/2, cyy=y+rh/2-2;
+          for(var k=0;k<n;k++){
+            var dx=start+k*gap, dd=(cd+.12+k*.06).toFixed(2), isC=(ri===0&&k===0);
+            if(isC) s+='<circle class="bm-a bm-ring" style="--d:'+(cd+.5+ci*.05).toFixed(2)+'s" cx="'+dx+'" cy="'+cyy+'" r="4.5" fill="none" stroke="'+P.acc+'" stroke-width="1.4"/>';
+            s+='<circle class="bm-a bm-pop" style="--d:'+dd+'s" cx="'+dx+'" cy="'+cyy+'" r="'+(isC?4.5:4)+'" fill="'+P.acc+'"'+(isC?'':' fill-opacity=".45"')+'/>';
+          }
+        });
+      });
+      s+='<g class="bm-a bm-up" style="--d:2.7s">'+
+         '<text x="24" y="384" font-family="'+SANS+'" font-size="13" font-weight="600" fill="'+P.ink+'"><tspan class="bm-count" data-to="88">88</tspan> criteria · 5 stages · <tspan class="bm-count" data-to="11">11</tspan> sites</text>'+
+         '<circle cx="508" cy="380" r="4.5" fill="'+P.acc+'"/>'+txt(518,384,'CINCH',9,P.ink3,500)+
+         '<circle cx="566" cy="380" r="4" fill="'+P.acc+'" fill-opacity=".45"/>'+txt(576,384,'OTHERS',9,P.ink3,500)+'</g>';
+      return '<svg class="bm" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Who was tested at each stage" xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
+    }
+  },
   cfSearches:{
     title:'997 real searches, sorted by what the car finder would do',
     caption:'Every term typed into cinch’s search box in one test, sorted against the rules the car finder was designed with. Registration plates and a postcode are shown as X’s. It is about a thousand searches, so it supports the design’s assumptions rather than proving them.',
@@ -1925,17 +1994,18 @@ var CASES = [
     triad:{
       challenge:'An earlier benchmark scored every UK competitor against one shared set of criteria. It gave cinch a good marketing line, the only place to buy a car online end to end, but less for squads to act on, since marketplaces aren’t trying to sell cars directly.',
       solution:'Group competitors by business model first, write the questions as a designer in Miro, sharpen them into strict test scripts in Gemini, and run the live mystery shops in Claude.',
-      impact:'A one-off subjective review replaced by a repeatable benchmark across six journey stages and 106 criteria, with screenshot-backed evidence of where we lead and where we fall behind.'
+      impact:'A one-off subjective review replaced by a repeatable benchmark across five journey stages and 88 criteria, with screenshot-backed evidence of where we lead and where we fall behind.'
     },
     intro:[
       {t:'p',cls:'lede',v:'Using two different AI models to turn a subjective design review into a structured, evidence-backed mystery shop.'},
       {t:'p',v:'Last year, another UX designer and a service designer put together a thorough competitive benchmark for cinch, and it gave me a strong foundation to build on. It scored every site against the same criteria. With such different business models in the market, some comparisons ended up saying more about the model than the experience. It showed cinch as the only place to buy a car entirely online, end to end, which works well as a marketing line but gave product teams less to act on.'},
       {t:'p',v:'When I picked the work up in September 2026, I grouped competitors by how they make money (retailers, marketplaces, brokers and car buyers) so we only compared like with like. To scale the testing without losing rigour, I split my AI workflow in two. I mapped my first questions in Miro, worked back and forth with Gemini to sharpen them into strict test scripts and pre-mortem where they might break, and handed those scripts to Claude to run cold against the live sites.'},
+      {t:'cards',v:['bizStages']},
       {t:'p',v:'One finding from the wider set, in the September 2026 snapshot, stood out: on AI discovery, cinch leads the other retailers, but the marketplaces still lead us.'}
     ],
     probes:[
       {q:'How did you decide what to look at?', a:[
-        {t:'p',v:'It started with me in Miro, without AI. I sliced the car-buying journey into six stages (homepage, AI discovery, search results, vehicle page, reservation and basket, and part-exchange) and wrote sticky notes for the questions I wanted answered as a designer.'},
+        {t:'p',v:'It started with me in Miro, without AI. I sliced the car-buying journey into stages (homepage, AI discovery, search results, vehicle page and part-exchange) and wrote sticky notes for the questions I wanted answered as a designer.'},
         {t:'p',v:'Once the stickies were down, I brought them into Gemini. We went back and forth to group them into pillars, define what a 1 to 5 score looked like against the best execution seen, and add checks I hadn’t thought of on my own, like how the homepage footer handled FCA Consumer Duty disclosures, PCP end-of-term options and mobile accordions. Only once the questions were solid did they become a test script.'}
       ]},
       {q:'Why plan in Gemini and run it in Claude?', a:[
@@ -2151,8 +2221,8 @@ var TOPICS = {
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
       {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['corbyBoots','corbyEmail','cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','cfJump','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel']},
-      {t:'note',v:'<b>Most of these are the real thing.</b> Two are photos from my visit to the Corby yard. Seven are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other four are redraws and diagrams. Happy to walk through the actual files in a call.'}
+      {t:'cards',cls:'gallery',v:['corbyBoots','corbyEmail','cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','cfJump','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','bizStages']},
+      {t:'note',v:'<b>Most of these are the real thing.</b> Two are photos from my visit to the Corby yard. Seven are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other five are redraws and diagrams. Happy to walk through the actual files in a call.'}
     ],
     probes:[
       {q:'Are these the real screens?', a:[
@@ -3372,6 +3442,37 @@ Aurora.wake(true);
 Motes.layout();
 autosize();
 startGhost();
+})();
+
+/* Animated diagrams (svg.bm): each plays once when it comes into view.
+   The criteria and site counts tick up from zero as they appear. */
+(function bmWatch(){
+  var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function count(svg){
+    svg.querySelectorAll('.bm-count').forEach(function(el){
+      var to=+el.getAttribute('data-to'), t0=null, dur=900;
+      var host=el.closest('[style*="--d"]'), delay=host?(parseFloat(getComputedStyle(host).getPropertyValue('--d'))*1000||0):0;
+      el.textContent='0';
+      setTimeout(function(){
+        function step(t){ if(t0===null) t0=t; var p=Math.min(1,(t-t0)/dur); el.textContent=Math.round(to*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(step); }
+        requestAnimationFrame(step);
+      }, delay);
+    });
+  }
+  function play(svg){ if(svg.classList.contains('bm-play')) return; svg.classList.add('bm-play'); if(!REDUCED) count(svg); }
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting && e.intersectionRatio>0.35){ play(e.target); io.unobserve(e.target); } });
+  },{threshold:[0,0.35,0.6]}) : null;
+  function scan(root){
+    if(!root || !root.querySelectorAll) return;
+    root.querySelectorAll('svg.bm:not([data-bm])').forEach(function(svg){
+      svg.setAttribute('data-bm','1');
+      if(REDUCED || !io) svg.classList.add('bm-play'); else io.observe(svg);
+    });
+  }
+  scan(document);
+  new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(n){ if(n.nodeType===1) scan(n.parentNode||n); }); }); })
+    .observe(document.body,{childList:true,subtree:true});
 })();
 </script>
 
