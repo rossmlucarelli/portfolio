@@ -1823,6 +1823,7 @@ var CASES = [
       {t:'h',v:'Every car says why it is there'},
       {t:'p',v:'It picks seven of 316 matches, and each card leads with up to three reasons in the customer’s own terms: “Back row folds flat when there are five of you”. There is no confidence score. The brief stays one tap away as chips you can remove, each showing the rule behind it, and you can tick two cars to compare them side by side.'},
       {t:'cards',cls:'two',v:['cfRecs','cfBrief']},
+      {t:'cards',v:['cfCompare']},
 
       {t:'h',v:'When it can’t be done, it says so'},
       {t:'p',v:'Ask for an electric car under £12,000 on top of that search and nothing fits. It names the £599 gap and offers two ways round it, 39 cars or 141, and changes nothing until you pick. Ask for an Evoque under £250 a month, where the closest is £8 over, and it sets the budget aside in the open, struck through in the brief.'},
@@ -1834,8 +1835,11 @@ var CASES = [
       {q:'Where did this project come from?', a:[
         {t:'p',v:'In 2025 cinch asked for ideas on where AI could help. Mine was smarter recommendations for Help Me Choose: an LLM writing the explanations on its results page, a design we had drawn in 2022 and couldn’t build then.'},
         {t:'p',v:'It went into a deck alongside a bigger idea, a conversational car finder. I thought the conversation would take a while to build, and that smarter recommendations would be useful in the meantime. I was in favour of both.'},
-        {t:'p',v:'Then I designed the conversation, working squadless and directly with the Product Owner.'},
+        {t:'p',v:'Then I designed the conversation.'},
         {t:'next',key:'help-me-choose',label:'Read the Help Me Choose case study',v:'<b>The full story</b> — the original wizard, the numbers its 2022 rebuild moved, the design that was three years early and the prompt I wrote for it — is in the <b>Help Me Choose</b> case study.'}
+      ]},
+      {q:'What was your role, exactly?', a:[
+        {t:'p',v:'Sole designer on the car finder. For a lot of it there was no Product Owner either, so I went to the tech leads of different squads to find out what was possible and what we could deliver.'}
       ]},
       {q:'What did real searches say?', a:[
         {t:'p',v:'Since I designed it, cinch’s search box has started taking free text, so I could see what people actually type into it. I sorted the first 997 searches, 616 different terms, by what the car finder’s rules would do with each one.'},
@@ -1849,7 +1853,7 @@ var CASES = [
       {q:'What was the hardest decision?', a:[
         {t:'p',v:'How much reasoning to show. Too little and it’s a black box people don’t trust with an £18,000 purchase. Too much and you’re publishing the model’s homework, which impresses nobody and slows the decision down.'},
         {t:'p',v:'The test I landed on: <em>a reason earns its place only if it could change what you click</em>. Each car shows up to three, and the rest sit behind “Show more”. “700 litre boot, the biggest here” passes. Listing everything the system weighed does not.'},
-        {t:'p',v:'The card also leaves out confidence scores and match percentages. A percentage implies a precision the system doesn’t have, and once it’s on screen people treat it as fact. The card gives a plain count of your own requests instead: “Matches everything except one request”.'}
+        {t:'p',v:'The related call was match percentages. A Head of Product suggested showing one, and I argued against it. We had designed one for the old Help Me Choose, and I said it wasn’t as useful here: a percentage implies a precision the system doesn’t have, and once it’s on screen people treat it as fact. The card gives a plain count of your own requests instead: “Matches everything except one request”.'}
       ]},
       {q:'Where does it refuse to guess?', a:[
         {t:'p',v:'Where getting it wrong would matter.'},
@@ -1861,14 +1865,23 @@ var CASES = [
         {t:'cards',v:['cfVerified']},
         {t:'p',v:'Where a fit is worked out from measurements rather than verified, it is labelled as likely. Assumptions are said out loud so you can correct them: “I’ve assumed 150 miles a week. Tell me if that’s wrong.”'}
       ]},
+      {q:'How did you handle SLT pushback?', a:[
+        {t:'p',v:'The commercial pull was toward a system that always recommends, confidently. A model that says “nothing matches” looks like a model that isn’t selling cars.'},
+        {t:'p',v:'My argument was about trust. If it can never say no, trust erodes, because people have no reason to believe it when it says yes. The compromise state is what makes the confident cases believable.'},
+        {t:'note',v:'<b>What I’d say to a hiring manager.</b> I don’t treat commercial pressure as the enemy. It’s legitimate, it just has to meet the evidence while there’s still time to change something.'}
+      ]},
       {q:'What happens when someone comes back?', a:[
         {t:'p',v:'People go away and do their research, so every conversation is saved. Come back a week later and it leads with what has changed: which car sold, which dropped in price, and what is new. A sold car stays in the earlier turn, marked as no longer available, and isn’t recommended again. Signed out, conversations stay on that device only, and it says so.'},
         {t:'cards',v:['cfReturn']},
         {t:'p',v:'Conversations get long, so every message you send leaves a mark in a rail down the right, a pattern borrowed from DeepSeek. Hover it and the list opens, so you can jump back to an earlier turn. Replies that were a tap are listed with their question, “Budget: up to £18,000”. On a phone the same list opens from a button in the top bar.'},
         {t:'cards',v:['cfJump']}
       ]},
+      {q:'What would you do differently?', a:[
+        {t:'p',v:'Two things. I designed the happy path first and the compromise state second, which is backwards. The failure state is what defines a system’s character, and it should have been the first screen on the wall.'},
+        {t:'p',v:'And legal never joined. Data retention on a logged-out conversation was never my decision to make, but it shapes what can be designed. Next time I’d bring legal in at the start myself rather than wait to be told.'}
+      ]},
       {q:'How did you prototype it with engineering in mind?', a:[
-        {t:'p',v:'I came up through front-end engineering. I don’t claim to ship production code now, but I can read a codebase and judge what an idea will cost to build in cinch’s Next.js and React Native stack before proposing it.'},
+        {t:'p',v:'I came up through front-end engineering, six years as a front-end developer before I moved into UX. I don’t claim to ship production code now, but I can read a codebase and judge what an idea will cost to build in cinch’s Next.js and React Native stack before proposing it.'},
         {t:'p',v:'I designed the car finder as a working prototype rather than static frames, because the real interaction question, what happens when you remove a constraint mid-conversation, can’t be answered in Figma.'}
       ]},
       {q:'What would you measure?', a:[
