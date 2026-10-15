@@ -3334,9 +3334,41 @@ heroChips.innerHTML=[
 /* =========================================================
    8. Drawer, lightbox, theme, events
    ========================================================= */
+/* Back closes what's on top. The site is one page with no history of its
+   own, so on a phone the back button used to leave the site from inside
+   the enlarged view or the drawer. Opening either now adds a history
+   entry; back removes it and closes the overlay. Closing it any other way
+   (the X, the scrim, Escape, picking a thread) steps back over that entry
+   so it isn't left behind for the next press. */
+var overlayOpen=null, skipPops=0;
+try{ history.scrollRestoration='manual'; }catch(err){}
+function overlayPush(name){
+  overlayOpen=name;
+  try{ history.pushState({rosslmOverlay:name}, ''); }catch(err){}
+}
+function overlayDrop(name){
+  if(overlayOpen!==name) return;
+  overlayOpen=null;
+  if(history.state && history.state.rosslmOverlay===name){ skipPops++; history.back(); }
+}
+window.addEventListener('popstate', function(){
+  if(skipPops>0){ skipPops--; return; }
+  var was=overlayOpen; overlayOpen=null;
+  if(was==='lb') closeLightbox(true);
+  else if(was==='drawer') closeDrawer(true);
+});
+
 var sidebar=document.getElementById('sidebar'), scrim=document.getElementById('scrim'), menuBtn=document.getElementById('menuBtn');
-function openDrawer(){ sidebar.classList.add('open'); scrim.classList.add('on'); menuBtn.setAttribute('aria-expanded','true'); }
-function closeDrawer(){ sidebar.classList.remove('open'); scrim.classList.remove('on'); menuBtn.setAttribute('aria-expanded','false'); }
+function openDrawer(){
+  if(sidebar.classList.contains('open')) return;
+  sidebar.classList.add('open'); scrim.classList.add('on'); menuBtn.setAttribute('aria-expanded','true');
+  overlayPush('drawer');
+}
+function closeDrawer(fromHistory){
+  if(!sidebar.classList.contains('open')) return;
+  sidebar.classList.remove('open'); scrim.classList.remove('on'); menuBtn.setAttribute('aria-expanded','false');
+  if(fromHistory!==true) overlayDrop('drawer');
+}
 menuBtn.addEventListener('click', function(){ sidebar.classList.contains('open')?closeDrawer():openDrawer(); });
 document.getElementById('sbClose').addEventListener('click', closeDrawer);
 scrim.addEventListener('click', closeDrawer);
@@ -3350,12 +3382,16 @@ function openLightbox(key){
   document.getElementById('lbCap').textContent=a.caption;
   lbFig.className = 'lb-fig' + (a.shot ? ' shot' : '');
   lbFig.innerHTML = a.img ? shotHTML(a, true) : a.svg();
+  var wasOpen=lb.classList.contains('on');
   lb.classList.add('on');
+  if(!wasOpen) overlayPush('lb');
   document.getElementById('lbClose').focus();
 }
-function closeLightbox(){
+function closeLightbox(fromHistory){
+  if(!lb.classList.contains('on')) return;
   lb.classList.remove('on'); lbFig.innerHTML='';
   if(lastFocus&&lastFocus.focus) lastFocus.focus();
+  if(fromHistory!==true) overlayDrop('lb');
 }
 document.getElementById('lbClose').addEventListener('click', closeLightbox);
 lb.addEventListener('click', function(e){ if(e.target===lb) closeLightbox(); });
