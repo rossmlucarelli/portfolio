@@ -2661,6 +2661,7 @@ function avState(bodyEl, state){
    are written, and the reveal doesn't pretend they are being generated. */
 var WORD_MS = 32;      /* the talking pace */
 var SENT_MS = 260;     /* the beat between sentences and blocks */
+var HEAD_MS = 100;     /* the beat in a case study's header and panel */
 var activeReveal = null;
 
 document.addEventListener('pointerdown', function(){ if(activeReveal) activeReveal.finish(); }, true);
@@ -2809,7 +2810,10 @@ function streamInto(bodyEl, html, done){
       u.els.forEach(function(el){ el.classList.add(u.block ? 'blk-on' : 'on'); });
     }, at));
     var next = units[k+1];
-    t += (u.word && next && next.word) ? WORD_MS : SENT_MS;
+    /* the header and panel are a summary card the reader wants quickly:
+       their sentences still arrive one at a time, on a quicker beat */
+    var inHead = !u.block && !!u.els[0].closest('.case-head,.triad');
+    t += inHead ? HEAD_MS : (u.word && next && next.word) ? WORD_MS : SENT_MS;
   });
   /* let the last fade land before the chips under the answer come in */
   timers.push(setTimeout(finish, t + 100));
