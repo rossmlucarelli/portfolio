@@ -537,6 +537,10 @@ a.chip{text-decoration:none;}
 .ins-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-8);margin-top:var(--sp-12);padding-top:var(--sp-12);border-top:1px solid var(--line);}
 .ins-foot .n{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-3);}
 .ins-foot .chip{padding:var(--sp-4) var(--sp-12);}
+.ins-btn{display:flex;align-items:center;gap:var(--sp-8);flex:none;font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-2);border:1px solid var(--line);border-radius:var(--r-pill);padding:var(--sp-4) var(--sp-12) var(--sp-4) var(--sp-8);white-space:nowrap;transition:background .14s ease,border-color .14s ease,color .14s ease;}
+.ins-btn svg{width:var(--size-icon);height:var(--size-icon);flex:none;}
+.ins-btn:hover,.ins-btn[aria-pressed="true"]{background:var(--accent-tint);border-color:var(--accent);color:var(--accent);}
+.ins-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
 .ins-bar{display:none;flex:1;min-width:0;align-items:center;gap:var(--sp-8);}
 .inspecting .ins-bar{display:flex;}
 .inspecting .topbar .title{display:none;}
@@ -544,7 +548,8 @@ a.chip{text-decoration:none;}
 .ins-count{flex:none;font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--accent);background:var(--accent-tint);border-radius:var(--r-pill);padding:var(--sp-4) var(--sp-8);}
 .ins-bar .chip{flex:none;padding:var(--sp-4) var(--sp-12);}
 @media (max-width:599px){
-  .inspecting .status,.ins-label,.ins-first,.ins-w{display:none;}
+  .inspecting .status,.ins-label,.ins-first,.ins-w,.ins-btn span{display:none;}
+  .ins-btn{padding:var(--sp-8);border-color:transparent;}
   .ins-card{width:auto;}
 }
 @media (prefers-reduced-motion:reduce){ .ins-dot::after{display:none;} }
@@ -612,6 +617,7 @@ a.chip{text-decoration:none;}
         <button class="chip" type="button" id="insDone">Done</button>
       </div>
       <div class="status" id="statusChip"><span class="dot" aria-hidden="true"></span><span id="clockTop"></span></div>
+      <button class="ins-btn" id="insBtn" type="button" aria-pressed="false" aria-label="Show the decisions behind this page" title="Show the decisions behind this page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>Decisions</span></button>
       <button class="theme-btn" id="themeBtn" aria-label="Switch colour theme">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
       </button>
@@ -2145,7 +2151,7 @@ var CASES = [
       {t:'p',v:'I designed and built it with Claude, on the real page rather than in a design file. Claude writes the code, measures it and checks it. I decide what it should be and judge how it feels.'},
       {t:'p',v:'From the first session I kept a decision log. Every entry says what was decided, who made the call, me or Claude, and whether the reason was analysis or just taste. Each new chat reads it before it starts, so nothing has to be explained twice.'},
       {t:'p',v:'It now holds more than 200 decisions from ten passes over a month. Most are shared: I spot something, Claude finds the cause, and I judge the fix. A dozen or so are marked as taste.'},
-      {t:'inspect',v:'<b>See them in place.</b> The decisions behind what’s on your screen, marked on the page. Turn them on here, then go back to the first screen for the rest.',label:'Show the decisions on this page'}
+      {t:'inspect',v:'<b>See them in place.</b> The decisions behind what’s on your screen, marked on the page. Turn them on here, or any time with Decisions at the top of the page.',label:'Show the decisions on this page'}
     ],
     probes:[
       {q:'Which calls were yours, and which were Claude’s?', a:[
@@ -3407,8 +3413,7 @@ document.getElementById('sbPinned').innerHTML=
     (CV_URL
       ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M9 13h6M9 17h4"/></svg>Read my CV'
       : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M9 13h6M9 17h4"/></svg>Request CV')+
-    '</a></li>'+
-  '<li><button class="sb-link" type="button" data-inspect><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg>Show the decisions</button></li>';
+    '</a></li>';
 
 var railHTML='<div class="tile" aria-hidden="true">'+TILE_MARK+'</div>';
 CASES.forEach(function(c){
@@ -3787,6 +3792,7 @@ var Inspect=(function(){
     }else overlayPush('ins');
     on=true;
     document.body.classList.add('inspecting');
+    btn.setAttribute('aria-pressed','true');
     layer.hidden=false;
     frame();
     document.getElementById('insStep').focus({preventScroll:true});
@@ -3796,11 +3802,14 @@ var Inspect=(function(){
     close(false);
     on=false; cancelAnimationFrame(raf);
     document.body.classList.remove('inspecting');
+    btn.setAttribute('aria-pressed','false');
     layer.hidden=true;
     if(fromHistory!==true) overlayDrop('ins');
   }
   document.getElementById('insStep').addEventListener('click', function(){ step(1); });
   document.getElementById('insDone').addEventListener('click', function(){ stop(); });
+  var btn=document.getElementById('insBtn');
+  btn.addEventListener('click', function(){ on ? stop() : start(); });
   first.addEventListener('click', function(){ close(false); enterZero(); });
   return {
     start:start, stop:stop,
