@@ -1170,6 +1170,7 @@ var Sophon = (function(){
     'uniform vec2 uRes;uniform float uSpin;uniform float uT;uniform float uAmp;uniform float uFine;',
     'uniform vec3 uPoke;uniform float uDent;uniform float uRip;uniform float uRipT;uniform float uSpike;uniform float uShrink;',
     'uniform vec4 uSpk;uniform float uSpkN;uniform float uStep;',
+    'uniform float uEn;uniform float uWebK;uniform float uHaloK;',
     'uniform vec3 uHue[6];uniform vec3 uSky;uniform vec3 uDeep;uniform vec3 uRim;',
     'uniform float uRimK;uniform float uHueK;',
     'const float R=0.5;',
@@ -1241,12 +1242,36 @@ var Sophon = (function(){
     '  float k=max(dot(r,normalize(vec3(-0.55,0.62,0.56))),0.0);',
     '  return col+vec3(pow(k,90.0)*1.2+pow(k,12.0)*0.30);',
     '}',
+    /* thinking, the energy: threads of light in the wash's hues. The web
+       runs over the surface along the lines where three slow waves cross
+       zero; the halo is a few soft filaments arcing just outside the ball.
+       uEn is 0 at rest, and then neither is drawn. */
+    'vec3 hueAt(float a){float x=fract(a/6.2832)*6.0;vec3 c=uHue[0];for(int i=1;i<6;i++){if(x>=float(i))c=uHue[i];}',
+    '  vec3 n=uHue[0];for(int i=0;i<5;i++){if(x>=float(i)&&x<float(i+1))n=uHue[i+1];}return mix(c,n,smoothstep(0.0,1.0,fract(x)));}',
+    'float web(vec3 q,float t){',
+    '  float a=sin(5.0*q.x+1.8*sin(4.0*q.y+t*1.3)+t*0.7)+sin(5.0*q.y+1.6*sin(4.4*q.z-t*1.1)-t*0.5)+sin(5.0*q.z+1.7*sin(4.2*q.x+t*0.9)+t*0.6);',
+    '  float b=sin(7.0*q.y-1.5*sin(5.0*q.x-t*0.8)+t*1.1)+sin(7.0*q.z+1.4*sin(5.5*q.y+t*1.2)-t*0.9);',
+    '  float la=1.0-smoothstep(0.0,0.10,abs(a)),lb=1.0-smoothstep(0.0,0.08,abs(b));',
+    '  return max(la,lb*(0.55+0.45*sin(t*3.1+q.x*4.0)));',
+    '}',
+    'float halo(vec2 uv,float rb,float t,out float ang){',
+    '  float r=length(uv);ang=atan(uv.y,uv.x);float g=0.0;',
+    '  for(int i=0;i<4;i++){',
+    '    float fi=float(i);',
+    '    float off=rb*(0.05+0.16*(0.5+0.5*sin(ang*3.0+fi*2.1+t*(0.7+0.23*fi))*sin(ang*5.0-t*1.1+fi*1.3)));',
+    '    float env=smoothstep(0.1,0.9,sin(ang*2.0+t*(0.45+0.1*fi)+fi*1.9));',
+    '    g+=exp(-abs(r-rb-off)/(rb*0.018))*env;',
+    '  }',
+    '  return g*smoothstep(rb*0.92,rb,r);',
+    '}',
     'void main(){',
     '  vec2 uv=(gl_FragCoord.xy*2.0-uRes)/uRes;',
     /* nothing of the Sophon lies outside this circle, and no ray needs to
        start further back than the ball that bounds it */
     '  float rm=R*uShrink*(1.0+1.15*uAmp+1.05*uFine+abs(uRip)+uSpk.x),r2=dot(uv,uv);',
-    '  if(r2>(rm+0.03)*(rm+0.03)){gl_FragColor=vec4(0.0);return;}',
+    '  float hang=0.0,hg=uEn*uHaloK>0.0?halo(uv,R*uShrink*(1.0+uAmp),uT,hang)*uEn*uHaloK:0.0;',
+    '  vec3 hc=mix(hueAt(hang+uSpin),vec3(1.0),0.35);',
+    '  if(r2>(rm+0.03)*(rm+0.03)){float ha=clamp(hg,0.0,1.0);gl_FragColor=vec4(hc*ha,ha);return;}',
     '  vec3 ro=vec3(uv,1.6),rd=vec3(0.0,0.0,-1.0),p=ro,pm=ro;',
     '  float t=1.6-sqrt(max(rm*rm-r2,0.0)),md=1e9;',
     '  for(int i=0;i<96;i++){',
@@ -1256,10 +1281,16 @@ var Sophon = (function(){
     '    t+=d*mix(0.45,uStep,gNear);',
     '  }',
     '  float a=1.0-smoothstep(0.0,3.0/uRes.x,md);',
-    '  if(a<=0.0){gl_FragColor=vec4(0.0);return;}',
+    '  if(a<=0.0){float ha=clamp(hg,0.0,1.0);gl_FragColor=vec4(hc*ha,ha);return;}',
     '  vec3 n=nrm(pm);',
     '  vec3 col=env(reflect(rd,n));',
     '  col=mix(col,uRim,pow(1.0-clamp(n.z,0.0,1.0),3.0)*uRimK);',
+    '  if(uEn*uWebK>0.0){',
+    '    vec3 v=normalize(pm),q=v;q.xz=rot(uSpin)*q.xz;',
+    '    float w=web(q,uT)*uEn*uWebK*smoothstep(0.0,0.35,n.z);',
+    '    col=mix(col,mix(hueAt(atan(q.z,q.x)*2.0+uT*0.3),vec3(1.0),0.45),clamp(w,0.0,1.0));',
+    '  }',
+    '  col+=hc*hg;',
     '  col=clamp(col,0.0,1.0);',
     '  gl_FragColor=vec4(col*a,a);',
     '}'
@@ -1286,7 +1317,10 @@ var Sophon = (function(){
      for an answer, about a third while the words land. spike: how tall at
      full (a share of the radius). shrink: how much smaller the ball gets at
      full, to leave the spikes room inside the canvas. on: preview switch. */
-  var SPIKE = {on:1, ease:600, n:10, len:0.6, w:0.2, sync:0, attack:1.5, shrink:0.06};
+  var SPIKE = {on:0, ease:600, n:10, len:0.6, w:0.2, sync:0, attack:1.5, shrink:0.06};
+  /* thinking, the energy: how strong the web over the surface and the halo
+     round it are at full. on: preview switch. */
+  var ENERGY = {on:1, web:1, halo:1};
   var think = 0;
 
   var glc = null, gl = null, U = null, ok = false, pal = null;
@@ -1309,7 +1343,7 @@ var Sophon = (function(){
       var loc = gl.getAttribLocation(prog, 'p');
       gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
       U = {};
-      ['uRes','uSpin','uT','uAmp','uFine','uSpike','uShrink','uSpk','uSpkN','uStep','uPoke','uDent','uRip','uRipT','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
+      ['uRes','uSpin','uT','uAmp','uFine','uSpike','uShrink','uSpk','uSpkN','uStep','uEn','uWebK','uHaloK','uPoke','uDent','uRip','uRipT','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
       ok = true;
     }catch(err){ ok = false; }
   }
@@ -1356,10 +1390,12 @@ var Sophon = (function(){
       gl.uniform2f(U.uRes, px, px);
       gl.uniform1f(U.uSpin, s % 62.832); gl.uniform1f(U.uT, w % 6283.2);
       gl.uniform1f(U.uAmp, AMP0 + (AMP1-AMP0)*e);
-      gl.uniform1f(U.uSpike, th); gl.uniform1f(U.uShrink, 1 - SPIKE.shrink*th);
-      gl.uniform4f(U.uSpk, SPIKE.len*th, SPIKE.w, SPIKE.sync, SPIKE.attack); gl.uniform1f(U.uSpkN, SPIKE.n);
+      var sth = SPIKE.on ? th : 0;
+      gl.uniform1f(U.uEn, ENERGY.on ? th : 0); gl.uniform1f(U.uWebK, ENERGY.web); gl.uniform1f(U.uHaloK, ENERGY.halo);
+      gl.uniform1f(U.uSpike, sth); gl.uniform1f(U.uShrink, 1 - SPIKE.shrink*sth);
+      gl.uniform4f(U.uSpk, SPIKE.len*sth, SPIKE.w, SPIKE.sync, SPIKE.attack); gl.uniform1f(U.uSpkN, SPIKE.n);
       /* long thin spikes are steep: the ray takes shorter steps so it can't skip a tip */
-      gl.uniform1f(U.uStep, 0.45 / (1 + 0.9*SPIKE.len*th/SPIKE.w));
+      gl.uniform1f(U.uStep, 0.45 / (1 + 0.9*SPIKE.len*sth/SPIKE.w));
       gl.uniform3f(U.uPoke, poke.x, poke.y, poke.z);
       gl.uniform1f(U.uDent, pk.dent); gl.uniform1f(U.uRip, pk.rip); gl.uniform1f(U.uRipT, pk.ripT);
       gl.uniform1f(U.uFine, (FINE0 + (FINE1-FINE0)*e) * (c.clientWidth < 64 ? SMALL : 1));
@@ -1434,7 +1470,7 @@ var Sophon = (function(){
     spin += dt/1000 * SPIN * rate;
     wob  += dt/1000 * WOB * rate;
     /* thinking follows the pace it was asked for, not a poke's kick */
-    var tg = SPIKE.on ? Math.max(0, Math.min(1, (paceGoal-1)/2.5)) : 0;
+    var tg = Math.max(0, Math.min(1, (paceGoal-1)/2.5));
     think += (tg - think) * (1 - Math.exp(-dt/SPIKE.ease));
     var c = (hero && hero.offsetParent) ? hero : (avatar && avatar.isConnected ? avatar : null);
     if(c) paint(c, spin, wob, amp(), c === hero ? poked(now) : null, think*think*(3-2*think));
