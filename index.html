@@ -1258,25 +1258,32 @@ var Sophon = (function(){
     '  float a=1.0-smoothstep(0.0,3.0/uRes.x,md);',
     '  if(a<=0.0){gl_FragColor=vec4(0.0);return;}',
     '  vec3 n=nrm(pm);',
-    '  float core=0.0,halo=0.0;vec3 glow=vec3(0.0);',
+    '  float core=0.0,halo=0.0,tone=1.0;vec3 glow=vec3(0.0);',
     '  if(uThink>0.001){',
     '    vec3 c=normalize(pm);c.xz=rot(uSpin)*c.xz;c.xy=rot(uRat)*c.xy;',
     '    vor(c*uCell);',
-    '    vec3 fn=normalize(normalize(pt1)+(hash3(c1+7.3)-0.5)*0.5);',
+    /* the cracks draw on first, then the plates tilt: never a half-way smear */
+    '    float crack=smoothstep(0.0,0.45,uThink),plate=smoothstep(0.3,1.0,uThink);',
+    '    vec3 hc=hash3(c1+7.3);',
+    '    vec3 fn=normalize(normalize(pt1)+(hc-0.5)*0.5);',
     '    fn.xy=rot(-uRat)*fn.xy;fn.xz=rot(-uSpin)*fn.xz;',
-    '    n=normalize(mix(n,fn,uThink));',
+    /* each plate keeps some of the ball's curve, so it shades across and never
+       turns into a flat patch of sky; and each is a shade of its own */
+    '    vec3 pn=normalize(fn+0.6*(n-normalize(pm)));',
+    '    n=normalize(mix(n,pn,plate));',
+    '    tone=mix(1.0,0.8+0.2*hc.y,plate);',
     /* thinking, the fissures: the seams between plates light up in the
        wash's hues, flicker cell pair by cell pair, and glints run along them */
     '    float px=2.0/uRes.x*uCell/R,e=f2-f1,h=fract(dot(hash3(c1+c2),vec3(1.0)));',
     '    float flash=smoothstep(0.35,1.0,sin(uTf*2.3+h*40.0));',
     '    float glint=pow(0.5+0.5*sin(dot(c,vec3(13.0,9.0,-11.0))-uTf*7.0),12.0);',
-    '    core=(1.0-smoothstep(0.0,2.4*px,e))*uThink;',
-    '    halo=exp(-e/(10.0*px))*uThink;',
+    '    core=(1.0-smoothstep(0.0,2.4*px,e))*crack;',
+    '    halo=exp(-e/(10.0*px))*crack;',
     '    glow=mix(hueOf(h),vec3(1.0),0.3)*(core*(0.45+0.55*flash+1.4*glint)+halo*0.8*flash);',
     '  }',
     '  vec3 col=env(reflect(rd,n));',
     '  col=mix(col,uRim,pow(1.0-clamp(n.z,0.0,1.0),3.0)*uRimK);',
-    '  col=col*(1.0-0.55*core)+glow;',
+    '  col=col*tone*(1.0-0.55*core)+glow;',
     '  col=clamp(col,0.0,1.0);',
     '  gl_FragColor=vec4(col*a,a);',
     '}'
