@@ -1168,7 +1168,7 @@ var Sophon = (function(){
   var FRAG = [
     'precision highp float;',
     'uniform vec2 uRes;uniform float uSpin;uniform float uT;uniform float uAmp;uniform float uFine;',
-    'uniform vec3 uPoke;uniform float uDent;uniform float uRip;uniform float uRipT;',
+    'uniform vec3 uPoke;uniform float uDent;uniform float uRip;uniform float uRipT;uniform float uSpike;uniform float uShrink;',
     'uniform vec3 uHue[6];uniform vec3 uSky;uniform vec3 uDeep;uniform vec3 uRim;',
     'uniform float uRimK;uniform float uHueK;',
     'const float R=0.8;',
@@ -1195,12 +1195,28 @@ var Sophon = (function(){
        point, as a direction from the centre; it is not turned with the
        surface, so the dent stays under the finger. Both are zero unless it
        has just been poked. */
+    /* thinking, the spikes: six short points in the swell's frame, so they
+       turn with it. Each rises and sinks on its own beat, so two or three are
+       up at a time. Sharp at the tip, smooth at the root. uSpike is 0 at
+       rest, and then there are none. */
+    'float spikes(vec3 q){',
+    '  float s=0.0;',
+    '  for(int i=0;i<6;i++){',
+    '    float fi=float(i),z=1.0-(fi+0.5)/3.0,r=sqrt(1.0-z*z),a=fi*2.39996;',
+    '    vec3 d=vec3(r*cos(a),z,r*sin(a));',
+    '    float h=smoothstep(-0.1,0.9,sin(uT*(0.55+0.13*fi)+fi*1.7));',
+    '    float w=1.0-acos(clamp(dot(q,d),-1.0,1.0))/0.19;',
+    '    s=max(s,h*w*w*step(0.0,w));',
+    '  }',
+    '  return s;',
+    '}',
     'float map(vec3 p){',
     '  float l=length(p);vec3 v=p/max(l,1e-4),q=v,f=v;',
     '  q.xz=rot(uSpin)*q.xz;f.xz=rot(-0.6*uSpin)*f.xz;',
     '  float ang=acos(clamp(dot(v,uPoke),-1.0,1.0));',
     '  float poke=uRip*sin(11.0*ang-uRipT)*exp(-1.5*ang)-uDent*exp(-7.0*ang*ang);',
-    '  return l-R*(1.0+uAmp*bump(q)+uFine*fold(f)+poke);',
+    '  float sp=uSpike>0.0?uSpike*spikes(q):0.0;',
+    '  return l-R*uShrink*(1.0+uAmp*bump(q)+uFine*fold(f)+poke+sp);',
     '}',
     'vec3 nrm(vec3 p){',
     '  vec2 e=vec2(0.006,0.0);',
@@ -1224,7 +1240,7 @@ var Sophon = (function(){
     '  vec2 uv=(gl_FragCoord.xy*2.0-uRes)/uRes;',
     /* nothing of the Sophon lies outside this circle, and no ray needs to
        start further back than the ball that bounds it */
-    '  float rm=R*(1.0+1.15*uAmp+1.05*uFine+abs(uRip)),r2=dot(uv,uv);',
+    '  float rm=R*uShrink*(1.0+1.15*uAmp+1.05*uFine+abs(uRip)+uSpike),r2=dot(uv,uv);',
     '  if(r2>(rm+0.03)*(rm+0.03)){gl_FragColor=vec4(0.0);return;}',
     '  vec3 ro=vec3(uv,1.6),rd=vec3(0.0,0.0,-1.0),p=ro,pm=ro;',
     '  float t=1.6-sqrt(max(rm*rm-r2,0.0)),md=1e9;',
@@ -1261,6 +1277,12 @@ var Sophon = (function(){
   var POKE = {dent:0.12, rip:0.060, kick:0.6};
   var poke = {x:0, y:0, z:1, t:-1e9, k:0, n:0};
   var CALM = {dent:0, rip:0, ripT:0};
+  /* Thinking grows spikes. think is 0 at rest and eases to 1 while it looks
+     for an answer, about a third while the words land. spike: how tall at
+     full (a share of the radius). shrink: how much smaller the ball gets at
+     full, to leave the spikes room inside the canvas. on: preview switch. */
+  var SPIKE = {on:1, ease:600, h:0.17, shrink:0.08};
+  var think = 0;
 
   var glc = null, gl = null, U = null, ok = false, pal = null;
   var spin = POSE.spin, wob = POSE.wob, rate = 1, paceGoal = 1, attending = false, last = 0;
@@ -1282,7 +1304,7 @@ var Sophon = (function(){
       var loc = gl.getAttribLocation(prog, 'p');
       gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
       U = {};
-      ['uRes','uSpin','uT','uAmp','uFine','uPoke','uDent','uRip','uRipT','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
+      ['uRes','uSpin','uT','uAmp','uFine','uSpike','uShrink','uPoke','uDent','uRip','uRipT','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
       ok = true;
     }catch(err){ ok = false; }
   }
@@ -1316,8 +1338,8 @@ var Sophon = (function(){
 
   /* draw one frame of the Sophon into a page canvas */
   /* e is how worked up it is: 0 at rest, 1 at full pace */
-  function paint(c, s, w, e, pk){
-    pk = pk || CALM;
+  function paint(c, s, w, e, pk, th){
+    pk = pk || CALM; th = th || 0;
     var px = Math.round(c.clientWidth * DPR);
     if(!px) return;
     if(c.width !== px){ c.width = px; c.height = px; }
@@ -1329,6 +1351,7 @@ var Sophon = (function(){
       gl.uniform2f(U.uRes, px, px);
       gl.uniform1f(U.uSpin, s % 62.832); gl.uniform1f(U.uT, w % 6283.2);
       gl.uniform1f(U.uAmp, AMP0 + (AMP1-AMP0)*e);
+      gl.uniform1f(U.uSpike, SPIKE.h*th); gl.uniform1f(U.uShrink, 1 - SPIKE.shrink*th);
       gl.uniform3f(U.uPoke, poke.x, poke.y, poke.z);
       gl.uniform1f(U.uDent, pk.dent); gl.uniform1f(U.uRip, pk.rip); gl.uniform1f(U.uRipT, pk.ripT);
       gl.uniform1f(U.uFine, (FINE0 + (FINE1-FINE0)*e) * (c.clientWidth < 64 ? SMALL : 1));
@@ -1402,8 +1425,11 @@ var Sophon = (function(){
     rate += (goal - rate) * (1 - Math.exp(-dt/520));        /* ease toward, never snap */
     spin += dt/1000 * SPIN * rate;
     wob  += dt/1000 * WOB * rate;
+    /* thinking follows the pace it was asked for, not a poke's kick */
+    var tg = SPIKE.on ? Math.max(0, Math.min(1, (paceGoal-1)/2.5)) : 0;
+    think += (tg - think) * (1 - Math.exp(-dt/SPIKE.ease));
     var c = (hero && hero.offsetParent) ? hero : (avatar && avatar.isConnected ? avatar : null);
-    if(c) paint(c, spin, wob, amp(), c === hero ? poked(now) : null);
+    if(c) paint(c, spin, wob, amp(), c === hero ? poked(now) : null, think*think*(3-2*think));
     requestAnimationFrame(frame);
   }
 
