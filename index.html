@@ -1720,6 +1720,39 @@ var ART = {
       return svgWrap(s);
     }
   },
+  cfSearches2:{
+    title:'A second sample, sorted the same way',
+    caption:'Searches from two days in September 2026, counted by visitor per term, so not quite like for like with the first sample. Registration plates are shown as X’s. Supports the design’s assumptions rather than proving them.',
+    alt:'Five bars. Search handles it: 1,218, 90.8%. Offer the conversation: 41, 3.1%. Testing what it can do: 39, 2.9%. Couldn’t tell: 29, 2.2%. Not a car search: 14, 1.0%.',
+    svg:function(){
+      var rows=[
+        ['Search handles it',1218,'“audi” · “tesla” · “cupra formentor” · “suv under £300” · “7 seater”'],
+        ['Offer the conversation',41,'“car for 2 dogs” · “first car cheap to run” · “car for blind driver”'],
+        ['Testing what it can do',39,'“car to rob a bank” · “s tier car” · “cars that are rarely fun to drive”'],
+        ['Couldn’t tell',29,'“momma” · “car i” · “ve automatics”'],
+        ['Not a car search',14,'XX00 XXX (eight registrations) · “help and support” · “nandos”']
+      ];
+      var total=1341, x0=24, maxW=440, y=84;
+      function bar(x,y,w,h,fill){
+        var r=Math.min(4,w);
+        return '<path d="M'+x+' '+y+' h'+(w-r)+' a'+r+' '+r+' 0 0 1 '+r+' '+r+
+               ' v'+(h-2*r)+' a'+r+' '+r+' 0 0 1 '+(-r)+' '+r+' h'+(-(w-r))+' z" fill="'+fill+'"/>';
+      }
+      var s='<text x="24" y="40" font-family="Instrument Sans, sans-serif" font-size="15" font-weight="600" fill="'+P.ink+'">1,341 searches, sorted by what the car finder would do</text>';
+      s+=txt(24,60,'VISITORS PER TERM, CINCH’S SEARCH BOX, SEPTEMBER 2026',9.5,P.ink3,500);
+      rows.forEach(function(r){
+        s+='<text x="'+x0+'" y="'+y+'" font-family="Instrument Sans, sans-serif" font-size="12" font-weight="600" fill="'+P.ink+'">'+r[0]+'</text>';
+        var w=Math.max(4,maxW*r[1]/total);
+        s+='<rect x="'+x0+'" y="'+(y+8)+'" width="'+maxW+'" height="16" rx="4" fill="'+P.panel+'"/>';
+        s+=bar(x0,y+8,w,16,P.acc);
+        s+=txt(x0+maxW+12,y+20,r[1].toLocaleString('en-GB')+' · '+(100*r[1]/total).toFixed(1)+'%',10.5,P.ink,500);
+        s+=txt(x0,y+40,r[2],9.5,P.ink3);
+        y+=60;
+      });
+      s+=txt(24,388,'Registrations shown as X’s. Two days, 793 different terms.',9.5,P.ink3);
+      return svgWrap(s);
+    }
+  },
   hmcFunnel:{
     title:'Where Help Me Choose lost people',
     caption:'Retention at each step of the original wizard. The first transition cost 28.3%. Each of the six after it cost between 0.5% and 7.2%, so the length of the flow wasn’t the problem.',
@@ -1978,7 +2011,9 @@ var CASES = [
           {k:'Sold on cinch',v:'They saw it and came back too late. Show its page marked as sold, with similar cars that are in stock.'},
           {k:'Not a cinch car',v:'Most likely their own car. Offer a valuation, and the part-exchange that goes with it.'}
         ]},
-        {t:'p',v:'It is about a thousand searches from one test, judged against the design’s rules rather than run through the prototype, so it supports the assumptions rather than proving them.'}
+        {t:'p',v:'<b>A second sample.</b> I later got searches from two days in September: 793 different terms, counted by visitor rather than by search, so it isn’t quite like for like. Search still handles 91%. The ones it would offer the conversation for doubled to 3.1%, like “car for 2 dogs”, “first car cheap to run” and “car for blind driver”. And a new group turned up: 2.9% were people seeing what it would do, like “car to rob a bank”. A box that looks like it can talk gets tested, so it needs a sensible answer for those too.'},
+        {t:'cards',v:['cfSearches2']},
+        {t:'p',v:'That is about 2,300 searches from two samples, judged against the design’s rules rather than run through the prototype, so it supports the assumptions rather than proving them.'}
       ]},
       {q:'What was the hardest decision?', a:[
         {t:'p',v:'How much reasoning to show. Too little and it’s a black box people don’t trust with an £18,000 purchase. Too much and you’re publishing the model’s homework, which impresses nobody and slows the decision down.'},
@@ -2034,11 +2069,11 @@ var CASES = [
     triad:{
       challenge:'Help Me Choose converted more than twice as well as the rest of the site — 0.47% against 0.20% — and it was dying. Usage had fallen from 4.45% of visitors to 1.5% in nine months, and of the people who did start it, 42% never reached a recommendation.',
       solution:'A content-first rebuild. Establish what each question was <em>for</em>, write the options in the words people actually use about cars, and test the whole flow as bare wires before anyone drew a screen.',
-      impact:'<b>+6.9%</b> completing, <b>+8.8%</b> adding a recommended car to basket, <b>+4.5%</b> going on to buy. The half we couldn’t build had to wait for an LLM, and in 2025 I proposed building it with one.'
+      impact:'<b>+6.9%</b> completing, <b>+8.8%</b> adding a car to basket after getting a recommendation, <b>+4.5%</b> going on to buy. The half we couldn’t build had to wait for an LLM, and in 2025 I proposed building it with one.'
     },
     intro:[
       {t:'p',cls:'lede',v:'This is where the car finder started. A rebuild in 2022 that shipped and moved the numbers, and three years later a proposal to finish the part we couldn’t build.'},
-      {t:'p',v:'In 2022 the data said two contradictory things at once. For the people who finished Help Me Choose it was the most valuable thing on the site — they converted at 0.47% against 0.20% for everyone else, and looked at 1.92 cars a visit against 1.32. And almost nobody was finishing it. Usage had collapsed from 4.45% of visitors to 1.54% in nine months, and of those who started, 42% never reached a recommendation.'},
+      {t:'p',v:'In 2022 the data said two contradictory things at once. For the people who finished Help Me Choose it was the most valuable thing on the site — they converted at 0.47% against 0.20% for everyone else, and looked at 1.92 cars a visit against 1.32. And almost nobody was finishing it. Usage had collapsed from 4.45% of visitors to 1.5% in nine months, and of those who started, 42% never reached a recommendation.'},
 
       {t:'h',v:'The loss wasn’t where anyone expected'},
       {t:'p',v:'Almost all of it happened in one place. Between the first question and the second, <b>28.3%</b> of people left. Every transition after that cost between 0.5% and 7.2%.'},
@@ -2058,7 +2093,8 @@ var CASES = [
       {t:'cards',v:['recLive']},
 
       {t:'h',v:'What did ship, and what it moved'},
-      {t:'p',v:'Everything that didn’t need generated language went out, and the test came back positive on all three measures: <b>+6.9%</b> completing the journey, <b>+8.8%</b> receiving a recommendation and adding a car to basket, <b>+4.5%</b> going on to purchase.'},
+      {t:'p',v:'Everything that didn’t need generated language went out, and the test came back positive on all three measures: <b>+6.9%</b> completing the journey, <b>+8.8%</b> getting a recommendation and then adding a car to basket, <b>+4.5%</b> going on to purchase.'},
+      {t:'p',v:'The start of the journey holds up better now too. Over recent months, 69% of people who see the first question reach a recommendation, against 58% for the original wizard. Of those who pick an answer to it, 92 to 97% get there, depending on the answer. That is today’s tracking rather than the original test, so it isn’t a clean before and after.'},
 
       {t:'h',v:'Three years later, with a model'},
       {t:'p',v:'In 2025 cinch was asking for ideas on where AI could help. Mine was to finish this page: the same three parts as the 2022 design, with a model writing the lines we couldn’t. The proposal named the old blocker explicitly, manual effort and rules engines, because the argument only lands if you say why it was a bad idea before and isn’t now.'},
@@ -2692,6 +2728,27 @@ function shotHTML(a, eager){
     ? '<picture><source media="(max-width:599px)" srcset="'+a.imgSm+'"'+(a.wSm?' width="'+a.wSm+'" height="'+a.hSm+'"':'')+'>'+img+'</picture>'
     : img;
 }
+/* An answer's screenshots start downloading as soon as it is written, not when
+   they scroll near the screen, so they are there by the time anyone gets to
+   them. Only the copy this screen will show: the phone twin on a phone. */
+var WARMED={};
+function warmArt(key){
+  var a=ART[key]; if(!a||!a.img) return;
+  var src=(a.imgSm && window.matchMedia && matchMedia('(max-width:599px)').matches) ? a.imgSm : a.img;
+  if(WARMED[src]) return; WARMED[src]=1;
+  try{ var im=new Image(); im.decoding='async'; im.src=src; }catch(e){}
+}
+/* A screenshot that fails to load is tried once more, a moment later. */
+document.addEventListener('error', function(e){
+  var im=e.target;
+  if(!im || im.tagName!=='IMG' || im.dataset.retried || !/(^|\/)img\//.test(im.getAttribute('src')||'')) return;
+  im.dataset.retried='1';
+  setTimeout(function(){
+    var q='?r='+Date.now(), pic=im.parentNode;
+    if(pic && pic.tagName==='PICTURE') pic.querySelectorAll('source').forEach(function(so){ so.srcset=so.getAttribute('srcset').split('?')[0]+q; });
+    im.src=im.getAttribute('src').split('?')[0]+q;
+  }, 1500);
+}, true);
 function cardHTML(key){
   var a=ART[key];
   var inner = a.img ? shotHTML(a) : a.svg();
@@ -2739,7 +2796,7 @@ function blocksHTML(blocks){
        why, and a chip. The chip navigates, like the sidebar: the other case
        study opens as a conversation of its own, not underneath this one. */
     else if(b.t==='next' && byId[b.key]) out += '<div class="note next"><p>'+b.v+'</p><button class="chip" type="button" data-go="'+b.key+'">'+esc(b.label)+'</button></div>';
-    else if(b.t==='cards'){ out+='<div class="cards '+(b.cls||'')+'">'; b.v.forEach(function(k){ out+=cardHTML(k); }); out+='</div>'; }
+    else if(b.t==='cards'){ out+='<div class="cards '+(b.cls||'')+'">'; b.v.forEach(function(k){ out+=cardHTML(k); warmArt(k); }); out+='</div>'; }
     else if(b.t==='contact') out += contactHTML();
     /* the way into inspect mode, from the case study that explains it */
     else if(b.t==='inspect') out += '<div class="note next"><p>'+b.v+'</p><button class="chip" type="button" data-inspect>'+esc(b.label)+'</button></div>';
