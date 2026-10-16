@@ -535,7 +535,7 @@ a.chip{text-decoration:none;}
 .ins-card.on{display:block;animation:fade-in .16s ease;}
 .ins-close{position:absolute;top:var(--sp-8);right:var(--sp-8);}
 .ins-close svg{width:var(--size-icon);height:var(--size-icon);}
-.ins-tags{margin:0 var(--sp-40) var(--sp-8) 0;font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);}
+.ins-card .ins-tags{margin:0 var(--sp-40) var(--sp-8) 0;font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);}
 .ins-tags .by{color:var(--ins);}
 .ins-card h3{font-family:var(--font-ui);font-weight:600;font-size:var(--fs-16);line-height:var(--lh-24);letter-spacing:-.01em;margin:0 0 var(--sp-4);color:var(--ink);}
 .ins-card p{font-size:var(--fs-14);line-height:var(--lh-20);color:var(--ink-2);margin:0;}
@@ -2159,13 +2159,14 @@ var CASES = [
       {t:'inspect',v:'<b>See them in place.</b> The decisions behind what’s on your screen, marked on the page. Turn them on here, or any time with Decisions at the top of the page.',label:'Show the decisions on this page'}
     ],
     probes:[
-      {q:'Which calls were yours, and which were Claude’s?', a:[
-        {t:'p',v:'Roughly, I decide what something is for and whether it’s right. Claude decides how it’s made, and finds the cause when something I’ve spotted is wrong.'},
+      {q:'Where did Claude add something you hadn’t asked for?', a:[
+        {t:'p',v:'Most often when I’d had an idea and was still fleshing it out. I’d say what I wanted, and Claude would come back with the part I hadn’t got to yet. In UX terms it’s a little delighter: one more thing dealt with.'},
         {t:'decisions',v:[
-          {k:'Mine',v:'The prompt box answering recruiters’ questions. The mark that thinks. Which case study leads. How fast an answer arrives.'},
-          {k:'Claude’s',v:'Capping follow-ups at six. Mapping 17 text sizes onto seven. Keeping a question near the top of the screen once I’d said the page made you scroll straight away.'},
-          {k:'Claude’s, and kept',v:'No live model. Every answer is written and served from a fixed set, so the site can’t invent an employer or a number. That was Claude’s suggestion on day one, and it’s the rule I’d defend hardest.'}
-        ]}
+          {k:'The clock',v:'I moved the time out of the greeting. Claude made it show my time rather than yours, so it says where I am.'},
+          {k:'The prompt box',v:'I wanted it to answer recruiters’ questions. Claude added the list that shows what has an answer, and the email link that fills in your question when there isn’t one.'},
+          {k:'The glass',v:'I asked for glass. Claude floated the pane in from the edges, because edge to edge it would only have looked tinted.'}
+        ]},
+        {t:'p',v:'It works the other way too. Claude pushes back, and sometimes it’s right: it argued for one text size off my grid, and I agreed. When it isn’t, I overrule it. The decisions on the page are marked with which of those it was.'}
       ]},
       {q:'Which decisions were just taste?', a:[
         {t:'p',v:'The teal, for one. I like teal, and there’s no research behind it. When Claude first wrote that decision up, it gave it a rationale. I took it out.'},
@@ -3582,52 +3583,40 @@ var Inspect=(function(){
   /* sel: where it sits, first match that is on screen wins (the newest
      message, the sidebar or the menu button). text: anchor to the words,
      not the box. ax/ay: the point on the box, 0 to 1. dx/dy: a nudge. */
+  /* tag: what kind of collaboration it was, then the second half of it.
+     The cards lead with the pattern, not a scoreboard of who called what;
+     the text still says plainly who did which part. */
   var SPOTS=[
     {id:'sidebar', sel:[{s:'.sidebar .sb-brand', ax:1, ay:.5, dx:-24},{s:'#rail .tile', ax:1, ay:0},{s:'#menuBtn', ax:1, ay:1, dx:2, dy:2}],
-     title:'Frosted glass', by:'Ross and Claude', kind:'Taste',
-     text:'Claude offered three styles for the sidebar and recommended one with icons. I chose the tinted one, then asked for glass. Floating it in from the edges was Claude’s idea, so it reads as glass rather than a tint.'},
+     title:'Frosted glass', tag:['My idea','Claude took it further'],
+     text:'I asked for the sidebar as glass. Claude saw that, edge to edge, glass would just look tinted, so it floated the pane in from the edges, where the gap round it makes it read as glass. It also kept the phone menu nearly solid, where glass looked murky.'},
     {id:'clock', sel:['#statusChip'], ax:0, ay:.5,
-     title:'UK time', by:'Ross and Claude', kind:'Reasoned',
-     text:'Claude first put the time of day in the greeting, on your clock. It told you nothing about me, so I moved it here. Showing my time rather than yours was Claude’s idea: it says where I am.'},
-    {id:'question', sel:['.msg.user .bubble'], ax:0, ay:.5, dx:-16,
-     title:'Your question near the top', by:'Ross and Claude', kind:'Reasoned',
-     text:'Answers used to start low on the screen, so you had to scroll straight away. I asked for the page to settle where it’s natural to read, with a little of the conversation still above. Claude worked out how: the question lands near the top, and the page never scrolls past it.'},
+     title:'My time, not yours', tag:['My idea','Claude took it further'],
+     text:'I moved the time out of the greeting, because a greeting on your clock told you nothing about me. Claude’s idea was to show my time instead, so it says where I am and when I’m likely to reply.'},
     {id:'mark', sel:['#heroMark','.msg:not(.user) .av'], ax:.85, ay:.15,
-     title:'The mark that thinks', by:'Ross and Claude', kind:'Taste',
-     text:'My idea: a ball of liquid mirror that speeds up while it finds an answer. Claude’s first version kept the old logo and added a small ball, which wasn’t what I’d pictured. I chose its movement from four. Only the newest one moves. Try poking it.'},
-    {id:'greet', sel:['#greeting'], text:true, ax:1, ay:.5, dx:16,
-     title:'“You’ve reached RossLM”', by:'Ross', kind:'Reasoned',
-     text:'Claude first suggested a greeting from your clock, “Good evening”. Charming, but it tells a stranger nothing. This one names what you’re talking to.'},
+     title:'The mark that thinks', tag:['My idea','Claude took it further'],
+     text:'My idea: a ball of liquid mirror that speeds up while it finds an answer, and reacts when you poke it. Claude made the dent stay under your finger, made quick pokes count for more, and kept it a hidden extra that nothing on the page points at. Try it.'},
     {id:'type', sel:['.hero .sub'], text:true, ax:1, ay:0, dx:8,
-     title:'Seven text sizes', by:'Ross and Claude', kind:'Reasoned',
-     text:'Type sits on the same 8pt grid as the spacing: my rule. The site had 17 sizes and now has seven. Claude argued for one size off the grid, 14, so a third of the text didn’t shrink on a phone. I agreed.'},
-    {id:'reveal', sel:['.msg:not(.user) .who'], text:true, ax:1, ay:.5, dx:16,
-     title:'Talk, then settle', by:'Ross and Claude', kind:'Reasoned',
-     text:'I said answers started slow and then galloped. Claude measured it, built three alternatives and recommended this one: the first paragraph arrives word by word, the rest a sentence at a time. A click or a key finishes it.'},
-    {id:'header', sel:['.case-head .kicker'], text:true, ax:1, ay:.5, dx:16,
-     title:'The header’s pace', by:'Ross', kind:'Taste',
-     text:'Opening a case study felt laborious. Claude’s fix measured fastest: fade the header in all at once. It also lost the conversational feel the site exists to show, so I kept that and asked for it quicker. 100 milliseconds a line.'},
-    {id:'probes', sel:['.probe-block .sb-label'], text:true, ax:1, ay:.5, dx:16,
-     title:'Six follow-ups, then more', by:'Claude', kind:'Reasoned',
-     text:'When the car finder reached ten follow-ups, Claude capped the list at six and put the rest behind “more”. The six that show are the ones that carry the story.'},
+     title:'Seven text sizes', tag:['Claude pushed back','I agreed'],
+     text:'My rule: type sits on the same 8pt grid as the spacing. Claude pushed back on one size. With nothing between 12 and 16, a third of the text would have shrunk on a phone, so it argued for 14 on a 20px line. I agreed, and the site went from 17 sizes to seven.'},
     {id:'box', sel:['#form'], ax:0, ay:0, dx:24,
-     title:'A box for recruiters’ questions', by:'Ross', kind:'Reasoned',
-     text:'The box looks like free text, so it answers the questions recruiters and hiring managers ask first. Claude drafted 25. I kept seven and left the rest for an interview. Click into it to see them.'},
+     title:'A box for recruiters’ questions', tag:['My idea','Claude took it further'],
+     text:'My idea: the box answers the questions recruiters ask first. Claude drafted 25 and I kept seven. It then added the list that opens when you click in, so you can see what has an answer, and an email link with your question already filled in when there isn’t one.'},
     {id:'colour', sel:['#form .send'], ax:1, ay:0, dx:6, dy:-6,
-     title:'Teal', by:'Ross', kind:'Taste',
-     text:'I like teal. There’s no research behind it. When Claude first wrote this decision up it gave it a rationale, and I took that out. The rest of the palette is built around it.'},
-    {id:'edge', sel:['#form'], ax:.5, ay:1,
-     title:'The border', by:'Ross', kind:'Taste',
-     text:'Claude built three borders on one clock so I could switch between them, and leaned towards a different one. I liked this one best. It speeds up while an answer is found, and settles as it lands.'},
+     title:'Teal', tag:['Taste','Mine'],
+     text:'I like teal. There’s no research behind it. When Claude first wrote this decision up it gave it a rationale, and I took that out. Taste is marked as taste here.'},
     {id:'fine', sel:['.fineprint'], text:true, ax:1, ay:.5, dx:16,
-     title:'No live model', by:'Claude', kind:'Reasoned',
-     text:'Every answer is written by me and served from a fixed set, so the site can’t invent an employer or a number. That was Claude’s suggestion on day one, and I kept it. It’s the rule I’d defend hardest.'},
-    {id:'lead', sel:['.hero-chips .chip.lead'], ax:.92, ay:0, dy:-10,
-     title:'The work I’m proudest of', by:'Ross', kind:'Reasoned',
-     text:'Help Me Choose used to lead, because it has the figures. I moved the car finder first: it’s the better design, and the work I’m proudest of. Claude agreed for its own reason: it answers “has he designed an AI product?” straight away.'},
+     title:'No live model', tag:['Claude’s idea','I kept it'],
+     text:'Every answer is written by me and served from a fixed set, so the site can’t invent an employer or a number. That was Claude’s suggestion on day one, and it’s the rule I’d defend hardest.'},
     {id:'icons', sel:['.zero #hero'], ax:0, ay:.25, dx:-40,
-     title:'The icons in the background', by:'Ross', kind:'Taste',
-     text:'My idea, from an effect I’d seen and couldn’t place. They’re about me: dogs, Lego, cooking, gaming, the outdoors, and an object for each place I’ve worked, never a logo. Claude drew 90 and I cut it to 67.'}
+     title:'The icons in the background', tag:['My idea','Claude took it further'],
+     text:'My idea, and my subjects: dogs, Lego, cooking, gaming, the outdoors, and an object for each place I’ve worked. Claude dealt them so no icon sits beside its twin, and kept them out from behind the heading and the prompt box.'},
+    {id:'reveal', sel:['.msg:not(.user) .who'], text:true, ax:1, ay:.5, dx:16,
+     title:'Talk, then settle', tag:['I spotted it','Claude found why'],
+     text:'I said answers started slow and then galloped. Claude measured it: about 70 words a second at the ends and 130 in the middle. It built three alternatives and recommended this one, the first paragraph word by word and the rest a sentence at a time.'},
+    {id:'header', sel:['.case-head .kicker'], text:true, ax:1, ay:.5, dx:16,
+     title:'The header’s pace', tag:['Claude’s fix','I overruled it'],
+     text:'Opening a case study felt laborious. Claude’s fix measured fastest: fade the header in all at once. It also lost the conversational feel the site exists to show, so I kept that and asked for it quicker. 100 milliseconds a line.'}
   ];
 
   var on=false, raf=0, openId=null, shown=[], els={}, dots={};
@@ -3743,7 +3732,7 @@ var Inspect=(function(){
     dots[id].setAttribute('aria-expanded','true');
     card.innerHTML=
       '<button class="icon-btn ins-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>'+
-      '<p class="ins-tags"><span class="by">Called by '+s.by+'</span> · '+s.kind+'</p>'+
+      '<p class="ins-tags"><span class="by">'+s.tag[0]+'</span> · '+s.tag[1]+'</p>'+
       '<h3 id="insTitle">'+s.title+'</h3><p>'+s.text+'</p>'+
       '<div class="ins-foot"><button class="chip" type="button" data-step="-1">Previous</button><span class="n"></span><button class="chip" type="button" data-step="1">Next</button></div>';
     card.classList.add('on');
