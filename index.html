@@ -1723,14 +1723,14 @@ var ART = {
   cfSearches2:{
     title:'A second sample, sorted the same way',
     caption:'Searches from two days in September 2026, counted by visitor per term, so not quite like for like with the first sample. Registration plates are shown as X’s. Supports the design’s assumptions rather than proving them.',
-    alt:'Five bars. Search handles it: 1,218, 90.8%. Offer the conversation: 41, 3.1%. Testing what it can do: 39, 2.9%. Couldn’t tell: 29, 2.2%. Not a car search: 14, 1.0%.',
+    alt:'Five bars. Search handles it: 1,234, 92.0%. Offer the conversation: 41, 3.1%. Testing what it can do: 39, 2.9%. Not a car search: 14, 1.0%. Couldn’t tell: 13, 1.0%.',
     svg:function(){
       var rows=[
-        ['Search handles it',1218,'“audi” · “tesla” · “cupra formentor” · “suv under £300” · “7 seater”'],
+        ['Search handles it',1234,'“audi” · “tesla” · “cupra formentor” · “suv under £300” · “7 seater”'],
         ['Offer the conversation',41,'“car for 2 dogs” · “first car cheap to run” · “car for blind driver”'],
         ['Testing what it can do',39,'“car to rob a bank” · “s tier car” · “cars that are rarely fun to drive”'],
-        ['Couldn’t tell',29,'“momma” · “car i” · “ve automatics”'],
-        ['Not a car search',14,'XX00 XXX (eight registrations) · “help and support” · “nandos”']
+        ['Not a car search',14,'XX00 XXX (eight registrations) · “help and support” · “nandos”'],
+        ['Couldn’t tell',13,'“car i” · “ford pin” · “n30”']
       ];
       var total=1341, x0=24, maxW=440, y=84;
       function bar(x,y,w,h,fill){
@@ -2011,7 +2011,7 @@ var CASES = [
           {k:'Sold on cinch',v:'They saw it and came back too late. Show its page marked as sold, with similar cars that are in stock.'},
           {k:'Not a cinch car',v:'Most likely their own car. Offer a valuation, and the part-exchange that goes with it.'}
         ]},
-        {t:'p',v:'<b>A second sample.</b> I later got searches from two days in September: 793 different terms, counted by visitor rather than by search, so it isn’t quite like for like. Search still handles 91%. The ones it would offer the conversation for doubled to 3.1%, like “car for 2 dogs”, “first car cheap to run” and “car for blind driver”. And a new group turned up: 2.9% were people seeing what it would do, like “car to rob a bank”. A box that looks like it can talk gets tested, so it needs a sensible answer for those too.'},
+        {t:'p',v:'<b>A second sample.</b> I later got searches from two days in September: 793 different terms, counted by visitor rather than by search, so it isn’t quite like for like. Search still handles 92%. The ones it would offer the conversation for doubled to 3.1%, like “car for 2 dogs”, “first car cheap to run” and “car for blind driver”. And a new group turned up: 2.9% were people seeing what it would do, like “car to rob a bank”. A box that looks like it can talk gets tested, so it needs a sensible answer for those too.'},
         {t:'cards',v:['cfSearches2']},
         {t:'p',v:'That is about 2,300 searches from two samples, judged against the design’s rules rather than run through the prototype, so it supports the assumptions rather than proving them.'}
       ]},
