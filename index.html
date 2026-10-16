@@ -1169,6 +1169,7 @@ var Sophon = (function(){
     'precision highp float;',
     'uniform vec2 uRes;uniform float uSpin;uniform float uT;uniform float uAmp;uniform float uFine;',
     'uniform vec3 uPoke;uniform float uDent;uniform float uRip;uniform float uRipT;',
+    'uniform float uThink;uniform float uRat;uniform float uTf;uniform vec3 uLobe;uniform float uCell;',
     'uniform vec3 uHue[6];uniform vec3 uSky;uniform vec3 uDeep;uniform vec3 uRim;',
     'uniform float uRimK;uniform float uHueK;',
     'const float R=0.8;',
@@ -1185,9 +1186,9 @@ var Sophon = (function(){
        turns the other way, so the two layers slide across each other and the
        surface keeps folding into new shapes instead of repeating one */
     'float fold(vec3 q){',
-    '  float a=sin(7.1*q.x-uT*1.70+1.9*sin(5.3*q.z+uT*1.10));',
-    '  float b=sin(6.3*q.y+uT*1.45+1.7*sin(6.7*q.x-uT*0.95));',
-    '  float c=sin(7.7*q.z-uT*1.25+1.5*sin(5.9*q.y+uT*1.30));',
+    '  float a=sin(7.1*q.x-uTf*1.70+1.9*sin(5.3*q.z+uTf*1.10));',
+    '  float b=sin(6.3*q.y+uTf*1.45+1.7*sin(6.7*q.x-uTf*0.95));',
+    '  float c=sin(7.7*q.z-uTf*1.25+1.5*sin(5.9*q.y+uTf*1.30));',
     '  return a*0.40+b*0.34+c*0.30;',
     '}',
     /* a poke: the surface dents where it was touched (uDent), and a ripple
@@ -1195,12 +1196,18 @@ var Sophon = (function(){
        point, as a direction from the centre; it is not turned with the
        surface, so the dent stays under the finger. Both are zero unless it
        has just been poked. */
+    /* thinking, the lobes: for a moment the Sophon pulls apart into two
+       overlapping balls along uLobe and snaps back. Each is smaller by as
+       much as they part, so it never grows past its canvas. uLobe is zero
+       at rest, and then this is the plain ball, exactly. */
     'float map(vec3 p){',
-    '  float l=length(p);vec3 v=p/max(l,1e-4),q=v,f=v;',
+    '  float l=length(p),L=l,s=length(uLobe);',
+    '  if(s>1e-4){float a=length(p-uLobe),b=length(p+uLobe),h=clamp(0.5+0.5*(b-a)/0.08,0.0,1.0);L=mix(b,a,h)-0.08*h*(1.0-h);}',
+    '  vec3 v=p/max(l,1e-4),q=v,f=v;',
     '  q.xz=rot(uSpin)*q.xz;f.xz=rot(-0.6*uSpin)*f.xz;',
     '  float ang=acos(clamp(dot(v,uPoke),-1.0,1.0));',
     '  float poke=uRip*sin(11.0*ang-uRipT)*exp(-1.5*ang)-uDent*exp(-7.0*ang*ang);',
-    '  return l-R*(1.0+uAmp*bump(q)+uFine*fold(f)+poke);',
+    '  return L-(R-s)*(1.0+uAmp*bump(q)+uFine*fold(f)+poke);',
     '}',
     'vec3 nrm(vec3 p){',
     '  vec2 e=vec2(0.006,0.0);',
@@ -1220,11 +1227,25 @@ var Sophon = (function(){
     '  float k=max(dot(r,normalize(vec3(-0.55,0.62,0.56))),0.0);',
     '  return col+vec3(pow(k,90.0)*1.2+pow(k,12.0)*0.30);',
     '}',
+    /* thinking, the shards: the surface is cut into cells (Voronoi, on the
+       ball in its own frame). Each cell is a flat plate tilted its own way,
+       so reflections break hard at the seams. The frame turns with the
+       spin and ratchets round a second axis (uRat). */
+    'vec3 hash3(vec3 p){p=vec3(dot(p,vec3(127.1,311.7,74.7)),dot(p,vec3(269.5,183.3,246.1)),dot(p,vec3(113.5,271.9,124.6)));return fract(sin(p)*43758.5453);}',
+    'vec3 c1,c2,pt1;float f1,f2;',
+    'void vor(vec3 x){',
+    '  vec3 g0=floor(x);f1=9.0;f2=9.0;',
+    '  for(int i=-1;i<=1;i++)for(int j=-1;j<=1;j++)for(int k=-1;k<=1;k++){',
+    '    vec3 g=g0+vec3(float(i),float(j),float(k)),pt=g+0.15+0.7*hash3(g);float d=length(pt-x);',
+    '    if(d<f1){f2=f1;c2=c1;f1=d;c1=g;pt1=pt;}else if(d<f2){f2=d;c2=g;}',
+    '  }',
+    '}',
+    'vec3 hueOf(float h){vec3 c=uHue[0];for(int i=1;i<6;i++){if(h*6.0>=float(i))c=uHue[i];}return c;}',
     'void main(){',
     '  vec2 uv=(gl_FragCoord.xy*2.0-uRes)/uRes;',
     /* nothing of the Sophon lies outside this circle, and no ray needs to
        start further back than the ball that bounds it */
-    '  float rm=R*(1.0+1.15*uAmp+1.05*uFine+abs(uRip)),r2=dot(uv,uv);',
+    '  float rm=R*(1.0+1.15*uAmp+1.05*uFine+abs(uRip))+(length(uLobe)>1e-4?0.02:0.0),r2=dot(uv,uv);',
     '  if(r2>(rm+0.03)*(rm+0.03)){gl_FragColor=vec4(0.0);return;}',
     '  vec3 ro=vec3(uv,1.6),rd=vec3(0.0,0.0,-1.0),p=ro,pm=ro;',
     '  float t=1.6-sqrt(max(rm*rm-r2,0.0)),md=1e9;',
@@ -1237,8 +1258,25 @@ var Sophon = (function(){
     '  float a=1.0-smoothstep(0.0,3.0/uRes.x,md);',
     '  if(a<=0.0){gl_FragColor=vec4(0.0);return;}',
     '  vec3 n=nrm(pm);',
+    '  float core=0.0,halo=0.0;vec3 glow=vec3(0.0);',
+    '  if(uThink>0.001){',
+    '    vec3 c=normalize(pm);c.xz=rot(uSpin)*c.xz;c.xy=rot(uRat)*c.xy;',
+    '    vor(c*uCell);',
+    '    vec3 fn=normalize(normalize(pt1)+(hash3(c1+7.3)-0.5)*0.5);',
+    '    fn.xy=rot(-uRat)*fn.xy;fn.xz=rot(-uSpin)*fn.xz;',
+    '    n=normalize(mix(n,fn,uThink));',
+    /* thinking, the fissures: the seams between plates light up in the
+       wash's hues, flicker cell pair by cell pair, and glints run along them */
+    '    float px=2.0/uRes.x*uCell/R,e=f2-f1,h=fract(dot(hash3(c1+c2),vec3(1.0)));',
+    '    float flash=smoothstep(0.35,1.0,sin(uTf*2.3+h*40.0));',
+    '    float glint=pow(0.5+0.5*sin(dot(c,vec3(13.0,9.0,-11.0))-uTf*7.0),12.0);',
+    '    core=(1.0-smoothstep(0.0,2.4*px,e))*uThink;',
+    '    halo=exp(-e/(10.0*px))*uThink;',
+    '    glow=mix(hueOf(h),vec3(1.0),0.3)*(core*(0.45+0.55*flash+1.4*glint)+halo*0.8*flash);',
+    '  }',
     '  vec3 col=env(reflect(rd,n));',
     '  col=mix(col,uRim,pow(1.0-clamp(n.z,0.0,1.0),3.0)*uRimK);',
+    '  col=col*(1.0-0.55*core)+glow;',
     '  col=clamp(col,0.0,1.0);',
     '  gl_FragColor=vec4(col*a,a);',
     '}'
@@ -1259,6 +1297,19 @@ var Sophon = (function(){
      Poking it again within a couple of seconds counts for more, up to a
      limit. */
   var POKE = {dent:0.12, rip:0.060, kick:0.6};
+  /* Thinking, in the manner of the sophons in the series. All of it rides
+     on one value, think: 0 at rest, easing to 1 while it looks for an
+     answer and to about a third while the words land. At 0 nothing here
+     touches the picture. on: whether it happens at all. cell: how many
+     plates across the ball (fewer at avatar size). rat: the ratchet, steps
+     a second and how far each step turns. fold: the folds ratchet too, in
+     steps of this much of their clock. lobe: how far the two lobes part,
+     how long one pull lasts, and the gap between pulls. */
+  var FX = {on:1, ease:600, cell:2.1, cellSmall:1.5,
+            rat:{rate:2.4, step:0.55}, fold:1.2,
+            lobe:{s:0.11, dur:560, gap0:1600, gapR:1800}};
+  var think = 0, ratX = 0, lobe = {t:-1e9, x:1, y:0, z:0, next:0};
+  var IDLE = {th:0, rat:0, lobe:[0,0,0]};
   var poke = {x:0, y:0, z:1, t:-1e9, k:0, n:0};
   var CALM = {dent:0, rip:0, ripT:0};
 
@@ -1282,7 +1333,7 @@ var Sophon = (function(){
       var loc = gl.getAttribLocation(prog, 'p');
       gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
       U = {};
-      ['uRes','uSpin','uT','uAmp','uFine','uPoke','uDent','uRip','uRipT','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
+      ['uRes','uSpin','uT','uAmp','uFine','uThink','uRat','uTf','uLobe','uCell','uPoke','uDent','uRip','uRipT','uHue','uSky','uDeep','uRim','uRimK','uHueK'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
       ok = true;
     }catch(err){ ok = false; }
   }
@@ -1316,8 +1367,8 @@ var Sophon = (function(){
 
   /* draw one frame of the Sophon into a page canvas */
   /* e is how worked up it is: 0 at rest, 1 at full pace */
-  function paint(c, s, w, e, pk){
-    pk = pk || CALM;
+  function paint(c, s, w, e, pk, fx){
+    pk = pk || CALM; fx = fx || IDLE;
     var px = Math.round(c.clientWidth * DPR);
     if(!px) return;
     if(c.width !== px){ c.width = px; c.height = px; }
@@ -1328,6 +1379,13 @@ var Sophon = (function(){
       gl.viewport(0, 0, px, px);
       gl.uniform2f(U.uRes, px, px);
       gl.uniform1f(U.uSpin, s % 62.832); gl.uniform1f(U.uT, w % 6283.2);
+      /* the folds' clock, ratcheted as far as it is thinking: it holds, then
+         snaps on to the next step, instead of drifting */
+      var fw = w/FX.fold, ff = Math.floor(fw);
+      gl.uniform1f(U.uTf, (w + fx.th*((ff + Math.pow(fw-ff, 6))*FX.fold - w)) % 6283.2);
+      gl.uniform1f(U.uThink, fx.th); gl.uniform1f(U.uRat, fx.rat % 62.832);
+      gl.uniform3f(U.uLobe, fx.lobe[0], fx.lobe[1], fx.lobe[2]);
+      gl.uniform1f(U.uCell, c.clientWidth < 64 ? FX.cellSmall : FX.cell);
       gl.uniform1f(U.uAmp, AMP0 + (AMP1-AMP0)*e);
       gl.uniform3f(U.uPoke, poke.x, poke.y, poke.z);
       gl.uniform1f(U.uDent, pk.dent); gl.uniform1f(U.uRip, pk.rip); gl.uniform1f(U.uRipT, pk.ripT);
@@ -1386,6 +1444,23 @@ var Sophon = (function(){
       ripT: t*15
     };
   }
+  /* the lobes: while it is thinking hard, every two to three and a half
+     seconds it pulls apart along a new line, mostly across and never far
+     from level, holds, and snaps back */
+  function lobed(now, th){
+    if(th > 0.4 && now > lobe.next){
+      var a = (Math.random()*1.6 - 0.8) + (Math.random() < 0.5 ? 0 : Math.PI), z = 0.35*(Math.random()-0.5);
+      var n = Math.sqrt(1 + z*z);
+      lobe.x = Math.cos(a)/n; lobe.y = Math.sin(a)/n; lobe.z = z/n; lobe.t = now;
+      lobe.next = now + FX.lobe.gap0 + Math.random()*FX.lobe.gapR;
+    }
+    var t = (now - lobe.t)/FX.lobe.dur, k;
+    if(t < 0 || t > 1) return [0,0,0];
+    if(t < 0.72){ k = t/0.72; k = k*k*(3-2*k); }
+    else { k = Math.min(1, (t-0.72)/0.12); k = 1 - k*k*(3-2*k); }
+    k *= FX.lobe.s * th;
+    return [lobe.x*k, lobe.y*k, lobe.z*k];
+  }
   /* how worked up it is right now: it follows the pace */
   function amp(){
     var e = Math.max(0, Math.min(1, (rate-1)/(TOP-1)));
@@ -1402,8 +1477,15 @@ var Sophon = (function(){
     rate += (goal - rate) * (1 - Math.exp(-dt/520));        /* ease toward, never snap */
     spin += dt/1000 * SPIN * rate;
     wob  += dt/1000 * WOB * rate;
+    /* thinking follows the pace it was asked for, not a poke's kick */
+    var tg = FX.on ? Math.max(0, Math.min(1, (paceGoal-1)/2.5)) : 0;
+    think += (tg - think) * (1 - Math.exp(-dt/FX.ease));
+    var th = think*think*(3-2*think);
+    /* the ratchet: a turn that holds, then snaps on a step */
+    ratX += dt/1000 * FX.rat.rate * th;
+    var rf = Math.floor(ratX), fx = {th:th, rat:(rf + Math.pow(ratX-rf, 6))*FX.rat.step, lobe:lobed(now, th)};
     var c = (hero && hero.offsetParent) ? hero : (avatar && avatar.isConnected ? avatar : null);
-    if(c) paint(c, spin, wob, amp(), c === hero ? poked(now) : null);
+    if(c) paint(c, spin, wob, amp(), c === hero ? poked(now) : null, fx);
     requestAnimationFrame(frame);
   }
 
