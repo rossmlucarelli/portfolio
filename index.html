@@ -524,6 +524,8 @@ a.chip{text-decoration:none;}
    about; it opens a card saying what was decided, who called it, and
    whether the reason was taste. */
 .ins-layer{position:fixed;inset:0;z-index:60;pointer-events:none;}
+/* while the spots look for what is on top, they and the card step aside */
+.ins-probe .ins-dot,.ins-probe .ins-card{pointer-events:none !important;}
 .ins-dot{position:absolute;left:0;top:0;width:var(--sp-24);height:var(--sp-24);margin:calc(var(--sp-12) * -1) 0 0 calc(var(--sp-12) * -1);border-radius:50%;background:var(--ins);color:var(--ins-ink);font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);font-weight:600;display:flex;align-items:center;justify-content:center;pointer-events:auto;box-shadow:0 0 0 2px var(--surface),var(--shadow-card);transition:background .16s ease,scale .16s ease;}
 .ins-dot::after{content:"";position:absolute;inset:calc(var(--sp-4) * -1);border-radius:50%;border:2px solid var(--ins);opacity:0;animation:insPulse 2.4s ease-out infinite;pointer-events:none;}
 .ins-dot:hover,.ins-dot[aria-expanded="true"]{background:var(--ins-hover);scale:1.16;}
@@ -3583,20 +3585,33 @@ heroChips.innerHTML=[
    entry; back removes it and closes the overlay. Closing it any other way
    (the X, the scrim, Escape, picking a thread) steps back over that entry
    so it isn't left behind for the next press. */
-var overlayOpen=null, skipPops=0;
+/* A stack, so one layer can open over another (the phone menu over the
+   decisions, say) and back still closes them one at a time, top first. */
+var overlayStack=[], skipPops=0;
 try{ history.scrollRestoration='manual'; }catch(err){}
 function overlayPush(name){
-  overlayOpen=name;
+  overlayStack.push(name);
   try{ history.pushState({rosslmOverlay:name}, ''); }catch(err){}
 }
 function overlayDrop(name){
-  if(overlayOpen!==name) return;
-  overlayOpen=null;
-  if(history.state && history.state.rosslmOverlay===name){ skipPops++; history.back(); }
+  var i=overlayStack.lastIndexOf(name);
+  if(i<0) return;
+  if(i===overlayStack.length-1 && history.state && history.state.rosslmOverlay===name){
+    overlayStack.pop(); skipPops++; history.back();
+  }else{
+    /* not on top: its history entry stays, and back steps over it later */
+    overlayStack.splice(i,1, null);
+  }
+}
+function overlayDrain(){
+  if(overlayStack.length && overlayStack[overlayStack.length-1]===null){
+    overlayStack.pop(); skipPops++; history.back();
+  }
 }
 window.addEventListener('popstate', function(){
-  if(skipPops>0){ skipPops--; return; }
-  var was=overlayOpen; overlayOpen=null;
+  if(skipPops>0){ skipPops--; overlayDrain(); return; }
+  var was=overlayStack.pop();
+  setTimeout(overlayDrain, 0);
   if(was==='lb') closeLightbox(true);
   else if(was==='drawer') closeDrawer(true);
   else if(was==='ins') Inspect.stop(true);
@@ -3780,6 +3795,17 @@ var Inspect=(function(){
     return el.getBoundingClientRect();
   }
   /* Where a spot sits right now, or null if its part of the page isn't on screen. */
+  /* The page's own layers win. If something the page has opened (the
+     question list, the phone menu) sits over the point a spot is about,
+     the spot hides until it closes. What is under the point has to be the
+     thing itself, something inside it, or something it sits inside. */
+  function covered(el, b, ax, ay){
+    var x=Math.min(Math.max(b.left+b.width*ax, b.left+2), b.right-2),
+        y=Math.min(Math.max(b.top+b.height*ay, b.top+2), b.bottom-2);
+    var hit=document.elementFromPoint(x, y);
+    if(!hit) return false;
+    return !(hit===el || el.contains(hit) || hit.contains(el));
+  }
   function locate(s){
     for(var i=0;i<s.sel.length;i++){
       var a=typeof s.sel[i]==='string' ? {s:s.sel[i]} : s.sel[i];
@@ -3792,6 +3818,7 @@ var Inspect=(function(){
         if(b.width<1 || b.height<1) continue;
         var x=b.left+b.width*ax+dx, y=b.top+b.height*ay+dy;
         if(!onScreen(el, b.left+b.width*ax, b.top+b.height*ay)) continue;
+        if(covered(el, b, ax, ay)) continue;
         x=Math.max(16, Math.min(innerWidth-16, x));
         return {el:el, box:b, x:x, y:y};
       }
@@ -3800,8 +3827,12 @@ var Inspect=(function(){
   }
   function place(){
     shown=[];
+    document.body.classList.add('ins-probe');
+    var found={};
+    SPOTS.forEach(function(s){ found[s.id]=locate(s); });
+    document.body.classList.remove('ins-probe');
     SPOTS.forEach(function(s){
-      var at=locate(s), d=dots[s.id];
+      var at=found[s.id], d=dots[s.id];
       els[s.id]=at;
       if(!at){ d.hidden=true; return; }
       shown.push(s.id);
@@ -3910,7 +3941,7 @@ var Inspect=(function(){
       /* Picked from the phone drawer: the drawer's history entry becomes
          this one, so back still closes what is on top. */
       closeDrawer(true);
-      overlayOpen='ins';
+      overlayStack[overlayStack.lastIndexOf('drawer')]='ins';
       try{ history.replaceState({rosslmOverlay:'ins'}, ''); }catch(err){}
     }else overlayPush('ins');
     on=true;
