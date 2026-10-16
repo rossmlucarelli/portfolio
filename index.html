@@ -548,6 +548,7 @@ a.chip{text-decoration:none;}
 .ins-btn svg{width:var(--size-icon);height:var(--size-icon);flex:none;}
 .ins-btn:hover,.ins-btn[aria-pressed="true"]{background:var(--ins-tint);border-color:var(--ins);color:var(--ins);}
 .ins-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+.ins-inline{display:inline-flex;margin-top:var(--sp-12);}
 .ins-bar{display:none;flex:1;min-width:0;align-items:center;gap:var(--sp-8);}
 .inspecting .ins-bar{display:flex;}
 .inspecting .topbar .title{display:none;}
@@ -555,8 +556,8 @@ a.chip{text-decoration:none;}
 .ins-count{flex:none;font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ins);background:var(--ins-tint);border-radius:var(--r-pill);padding:var(--sp-4) var(--sp-8);}
 .ins-bar .chip{flex:none;padding:var(--sp-4) var(--sp-12);}
 @media (max-width:599px){
-  .inspecting .status,.ins-label,.ins-first,.ins-w,.ins-btn span{display:none;}
-  .ins-btn{padding:var(--sp-8);border-color:transparent;}
+  .inspecting .status,.ins-label,.ins-first,.ins-w,#insBtn span{display:none;}
+  #insBtn{padding:var(--sp-8);border-color:transparent;}
   .ins-card{width:auto;}
 }
 @media (prefers-reduced-motion:reduce){ .ins-dot::after{display:none;} }
@@ -2259,13 +2260,13 @@ var CASES = [
     triad:{
       challenge:'A portfolio for AI-focused roles has to answer one question well: how do I use AI? A list of tools doesn’t answer it.',
       solution:'I built the site with Claude, in the browser rather than in Figma, and logged every decision: what was decided, who made the call, and whether the reason was analysis or taste.',
-      impact:'More than 200 decisions logged over ten passes in a month. Some of them are marked on the page itself.'
+      impact:'More than 200 decisions logged over a month of building, each with who made it and why. Ten of them are marked on the page itself.<br><button class="ins-btn ins-inline" type="button" data-inspect><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>Show them</span></button>'
     },
     intro:[
       {t:'p',cls:'lede',v:'This site is the worked example of how I use AI. What tells you most about that is how the decisions were split, so I wrote them all down.'},
       {t:'p',v:'I designed and built it with Claude, on the real page rather than in a design file. Claude writes the code, measures it and checks it. I decide what it should be and judge how it feels.'},
       {t:'p',v:'From the first session I kept a decision log. Every entry says what was decided, who made the call, me or Claude, and whether the reason was analysis or just taste. Each new chat reads it before it starts, so nothing has to be explained twice.'},
-      {t:'p',v:'It now holds more than 200 decisions from ten passes over a month. Most are shared: I spot something, Claude finds the cause, and I judge the fix. A dozen or so are marked as taste.'},
+      {t:'p',v:'It now holds more than 200 decisions from a month of building. Most are shared: I spot something, Claude finds the cause, and I judge the fix. A dozen or so are marked as taste.'},
       {t:'inspect',v:'<b>See them in place.</b> The decisions behind what’s on your screen, marked on the page. Turn them on here, or any time with Decisions at the top of the page.',label:'Show the decisions on this page'}
     ],
     probes:[
