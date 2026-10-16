@@ -1553,6 +1553,20 @@ function box(x,y,w,h,r,f){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height
 function txt(x,y,s,sz,f,wt,an){return '<text x="'+x+'" y="'+y+'" font-family="IBM Plex Mono, monospace" font-size="'+(sz||11)+'" fill="'+(f||P.ink2)+'" font-weight="'+(wt||400)+'" text-anchor="'+(an||'start')+'">'+s+'</text>';}
 function pill(x,y,w,l,a){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="24" rx="12" fill="'+(a?P.tint:P.panel)+'" stroke="'+(a?P.acc:P.line)+'" stroke-width="1.2"/>'+txt(x+11,y+16,l,10.5,a?P.acc:P.ink2,500);}
 
+/* CSS for the animated diagrams (svg.bm), shared by each of them. */
+var BM_CSS='<style>'+
+        '.bm .bm-a{animation-duration:.5s;animation-timing-function:cubic-bezier(.2,.8,.3,1);animation-fill-mode:both;animation-delay:var(--d,0s);animation-play-state:paused}'+
+        '.bm.bm-play .bm-a{animation-play-state:running}'+
+        '.bm .bm-up{animation-name:bmUp}.bm .bm-left{animation-name:bmLeft}.bm .bm-fade{animation-name:bmFade}'+
+        '.bm .bm-pop{animation-name:bmPop;animation-duration:.42s;animation-timing-function:cubic-bezier(.3,1.6,.5,1);transform-box:fill-box;transform-origin:center}'+
+        '.bm .bm-ring{animation-name:bmRing;animation-duration:1.4s;animation-timing-function:ease-out;transform-box:fill-box;transform-origin:center}'+
+        '@keyframes bmUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}'+
+        '@keyframes bmLeft{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}'+
+        '@keyframes bmFade{from{opacity:0}to{opacity:1}}'+
+        '@keyframes bmPop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}'+
+        '@keyframes bmRing{0%{opacity:0;transform:scale(.6)}25%{opacity:.9}100%{opacity:0;transform:scale(2.4)}}'+
+        '@media (prefers-reduced-motion:reduce){.bm .bm-a{animation:none!important}.bm .bm-ring{display:none}}'+
+        '</style>';
 var ART = {
   /* The car finder screens are captures of the working prototype, each at a
      desktop and a phone width. */
@@ -1632,19 +1646,7 @@ var ART = {
         ['Car buyers',['webuyanycar'],[0,0,0,0,1]]
       ];
       var SANS='Instrument Sans, sans-serif', x0=212, cw=82, y0=146, rh=44;
-      var s='<style>'+
-        '.bm .bm-a{animation-duration:.5s;animation-timing-function:cubic-bezier(.2,.8,.3,1);animation-fill-mode:both;animation-delay:var(--d,0s);animation-play-state:paused}'+
-        '.bm.bm-play .bm-a{animation-play-state:running}'+
-        '.bm .bm-up{animation-name:bmUp}.bm .bm-left{animation-name:bmLeft}.bm .bm-fade{animation-name:bmFade}'+
-        '.bm .bm-pop{animation-name:bmPop;animation-duration:.42s;animation-timing-function:cubic-bezier(.3,1.6,.5,1);transform-box:fill-box;transform-origin:center}'+
-        '.bm .bm-ring{animation-name:bmRing;animation-duration:1.4s;animation-timing-function:ease-out;transform-box:fill-box;transform-origin:center}'+
-        '@keyframes bmUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}'+
-        '@keyframes bmLeft{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}'+
-        '@keyframes bmFade{from{opacity:0}to{opacity:1}}'+
-        '@keyframes bmPop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}'+
-        '@keyframes bmRing{0%{opacity:0;transform:scale(.6)}25%{opacity:.9}100%{opacity:0;transform:scale(2.4)}}'+
-        '@media (prefers-reduced-motion:reduce){.bm .bm-a{animation:none!important}.bm .bm-ring{display:none}}'+
-        '</style>';
+      var s=BM_CSS;
       s+='<rect x="0" y="0" width="640" height="400" fill="'+P.bg+'"/>';
       s+='<g class="bm-a bm-fade" style="--d:0s"><text x="24" y="34" font-family="'+SANS+'" font-size="16" font-weight="600" fill="'+P.ink+'">Compare like with like</text>'+
          txt(24,54,'WHO WAS TESTED AT EACH STAGE · SEPTEMBER 2026',10,P.ink3,500)+'</g>';
@@ -1718,6 +1720,66 @@ var ART = {
       });
       s+=txt(24,388,'Registrations and a postcode shown as X’s. One test, 616 different terms.',9.5,P.ink3);
       return svgWrap(s);
+    }
+  },
+  cfMeant:{
+    title:'What people typed, and what they meant',
+    caption:'From the second sample, 1,341 visitors in September 2026. Every term was read for what the person most likely meant, then checked. A model with no make, a misspelling or a single word is the normal search, not the exception.',
+    alt:'Three figures: 16% typed a model with no make, 9% misspelt or shortened it, 38% typed a single word. Below, six searches and what they meant: polo, Volkswagen Polo; a class, Mercedes-Benz A-Class; bmx x3, BMW X3; kia shortage, Kia Sportage; momma, Vauxhall Mokka; car suner 200 a motnh, cars under £200 a month.',
+    svg:function(){
+      var SANS='Instrument Sans, sans-serif', MONO='IBM Plex Mono, monospace';
+      var s=BM_CSS+'<rect x="0" y="0" width="640" height="400" fill="'+P.bg+'"/>';
+      s+='<g class="bm-a bm-fade" style="--d:0s"><text x="24" y="34" font-family="'+SANS+'" font-size="16" font-weight="600" fill="'+P.ink+'">What people typed, and what they meant</text>'+
+         '<text x="24" y="54" font-family="'+MONO+'" font-size="9.5" letter-spacing=".06em" fill="'+P.ink3+'">SECOND SAMPLE · 1,341 VISITORS · SEPTEMBER 2026</text></g>';
+      [[16,'typed a model','with no make'],[9,'misspelt or','shortened it'],[38,'typed a','single word']].forEach(function(st,i){
+        var x=24+i*204, d=(.25+i*.15).toFixed(2);
+        s+='<g class="bm-a bm-up" style="--d:'+d+'s"><rect x="'+x+'" y="72" width="188" height="84" rx="12" fill="'+P.tint+'"/>'+
+           '<text x="'+(x+16)+'" y="110" font-family="'+SANS+'" font-size="28" font-weight="700" fill="'+P.acc+'"><tspan class="bm-count" data-to="'+st[0]+'">'+st[0]+'</tspan>%</text>'+
+           '<text x="'+(x+16)+'" y="132" font-family="'+SANS+'" font-size="12" fill="'+P.ink2+'">'+st[1]+'</text>'+
+           '<text x="'+(x+16)+'" y="147" font-family="'+SANS+'" font-size="12" fill="'+P.ink2+'">'+st[2]+'</text></g>';
+      });
+      var rows=[['polo','Volkswagen Polo'],['a class','Mercedes-Benz A-Class'],['bmx x3','BMW X3'],['kia shortage','Kia Sportage'],['momma','Vauxhall Mokka'],['car suner 200 a motnh','Cars under £200 a month']];
+      rows.forEach(function(r,i){
+        var y=180+i*34, d=(.9+i*.16).toFixed(2);
+        s+='<g class="bm-a bm-left" style="--d:'+d+'s">'+
+           '<rect x="24" y="'+y+'" width="248" height="26" rx="13" fill="'+P.panel+'"/>'+
+           '<text x="40" y="'+(y+17)+'" font-family="'+MONO+'" font-size="12" fill="'+P.ink2+'">'+r[0]+'</text>'+
+           '<path d="M286 '+(y+13)+' h34 m-6 -5 l6 5 l-6 5" fill="none" stroke="'+P.acc+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'+
+           '<text x="334" y="'+(y+18)+'" font-family="'+SANS+'" font-size="13" font-weight="600" fill="'+P.ink+'">'+r[1]+'</text></g>';
+      });
+      return '<svg class="bm" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="What people typed, and what they meant" xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
+    }
+  },
+  cfSkill:{
+    title:'From a correction to a tool',
+    caption:'How the search sorting became a reusable skill, and who did each step. The skill isn’t about cars: it takes any list of searches and the context they come from.',
+    alt:'Five steps. Claude sorts the searches. I spot bmx x3 and ionic in couldn’t tell. Both: the fix becomes a rule and the whole group is re-sorted. I ask for it as a skill for any search box. Claude runs it on 793 new terms, giving meanings, a spelling map and ten ranked fixes.',
+    svg:function(){
+      var SANS='Instrument Sans, sans-serif', MONO='IBM Plex Mono, monospace';
+      var s=BM_CSS+'<rect x="0" y="0" width="640" height="400" fill="'+P.bg+'"/>';
+      s+='<g class="bm-a bm-fade" style="--d:0s"><text x="24" y="34" font-family="'+SANS+'" font-size="16" font-weight="600" fill="'+P.ink+'">From a correction to a tool</text>'+
+         '<text x="24" y="54" font-family="'+MONO+'" font-size="9.5" letter-spacing=".06em" fill="'+P.ink3+'">ONE AFTERNOON, OCTOBER 2026</text></g>';
+      var steps=[
+        ['Claude','Sorts the searches','Every term judged against the car finder’s rules'],
+        ['Me','Spots two in the wrong group','“bmx x3” and “ionic” under couldn’t tell'],
+        ['Both','Fixes the method, not the rows','Read typos as what was meant, then re-sort it all'],
+        ['Me','Asks for it as a skill','Any search box, any list, not just cars'],
+        ['Claude','Runs it on 793 new terms','Meanings, a spelling map and ten ranked fixes']
+      ];
+      s+='<line class="bm-a bm-fade" style="--d:.2s" x1="40" y1="92" x2="40" y2="348" stroke="'+P.line+'" stroke-width="1.5"/>';
+      steps.forEach(function(st,i){
+        var y=92+i*64, d=(.3+i*.3).toFixed(2), me=(st[0]!=='Claude');
+        var bw=st[0].length*7+24;
+        s+='<g class="bm-a bm-up" style="--d:'+d+'s">'+
+           '<circle cx="40" cy="'+y+'" r="13" fill="'+(me?P.acc:P.bg)+'" stroke="'+P.acc+'" stroke-width="1.6"/>'+
+           '<text x="40" y="'+(y+4)+'" font-family="'+SANS+'" font-size="12" font-weight="700" text-anchor="middle" fill="'+(me?P.bg:P.acc)+'">'+(i+1)+'</text>'+
+           '<text x="68" y="'+(y-2)+'" font-family="'+SANS+'" font-size="14" font-weight="600" fill="'+P.ink+'">'+st[1]+'</text>'+
+           '<text x="68" y="'+(y+16)+'" font-family="'+SANS+'" font-size="12" fill="'+P.ink2+'">'+st[2]+'</text>'+
+           '<rect x="'+(616-bw)+'" y="'+(y-11)+'" width="'+bw+'" height="22" rx="11" fill="'+(me?P.tint:P.panel)+'"/>'+
+           '<text x="'+(616-bw/2)+'" y="'+(y+4)+'" font-family="'+MONO+'" font-size="11" text-anchor="middle" fill="'+(me?P.acc:P.ink2)+'">'+st[0]+'</text></g>';
+      });
+      s+='<text class="bm-a bm-fade" style="--d:2s" x="24" y="388" font-family="'+MONO+'" font-size="9.5" fill="'+P.ink3+'">Filled circles are steps I took or shared. Open ones are Claude’s.</text>';
+      return '<svg class="bm" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="From a correction to a tool" xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
     }
   },
   cfSearches2:{
@@ -2013,7 +2075,16 @@ var CASES = [
         ]},
         {t:'p',v:'<b>A second sample.</b> I later got searches from two days in September: 793 different terms, counted by visitor rather than by search, so it isn’t quite like for like. Search still handles 92%. The ones it would offer the conversation for doubled to 3.1%, like “car for 2 dogs”, “first car cheap to run” and “car for blind driver”. And a new group turned up: 2.9% were people seeing what it would do, like “car to rob a bank”. A box that looks like it can talk gets tested, so it needs a sensible answer for those too.'},
         {t:'cards',v:['cfSearches2']},
+        {t:'p',v:'<b>What people meant.</b> Reading every term for what someone meant, not just what they typed, says more than the split. 16% typed a model with no make, like “polo” or “defender”. 9% misspelt or shortened one, like “bmx x3” or “kia shortage”. 38% typed a single word. Before an AI can do anything clever with a search, its first job is understanding the one people actually type.'},
+        {t:'cards',v:['cfMeant']},
         {t:'p',v:'That is about 2,300 searches from two samples, judged against the design’s rules rather than run through the prototype, so it supports the assumptions rather than proving them.'}
+      ]},
+      {q:'How did you sort 2,300 searches?', a:[
+        {t:'p',v:'With Claude, and the interesting part was a mistake. Its first sort put “bmx x3” and “ionic” under couldn’t tell. They’re a BMW X3 and a Hyundai Ioniq, and other misspellings had already gone to search.'},
+        {t:'p',v:'Fixing those two rows would have hidden the problem. The fix was a rule: read a misspelling as what was meant, and only give up once the typo, autocorrect and shorthand readings have all failed. Then re-sort the whole group, not just the terms I spotted. Sixteen moved.'},
+        {t:'p',v:'Then I asked Claude to turn the method into a skill, a set of instructions it follows every time, and to make it work for any search box, not just cars. You give it a list and the context, and it returns what each person likely meant, the groups, and suggestions for improving search. It masks registrations and other personal details in anything meant to be shared.'},
+        {t:'cards',v:['cfSkill']},
+        {t:'p',v:'It ran on the September sample the same afternoon and produced a spelling map and ten ranked suggestions, which went back to the Product Owner who shared the data. That’s how I like to work with AI: when it gets something wrong, I fix the method, not just the answer.'}
       ]},
       {q:'What was the hardest decision?', a:[
         {t:'p',v:'How much reasoning to show. Too little and it’s a black box people don’t trust with an £18,000 purchase. Too much and you’re publishing the model’s homework, which impresses nobody and slows the decision down.'},
@@ -2619,7 +2690,7 @@ var CV = CV_URL
 var INTENTS = [
   {key:'contact',words:['contact','email','hire','hiring','recruit','available','availability','talk','call','chat','reach','cv','resume','linkedin','role','job','vacancy','opportunity','rate','freelance','notice','salary']},
   {key:'agentic',words:['agent','agents','agentic','autonomy','autonomous','human in the loop','oversight','tool use','multi step']},
-  {key:'car-finder',words:['car finder','conversational','deepseek','long conversation','jump to','your messages','proud','proudest','best work','real searches','search terms','registration','number plate','free text','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
+  {key:'car-finder',words:['car finder','skill','misspell','typo','what people meant','conversational','deepseek','long conversation','jump to','your messages','proud','proudest','best work','real searches','search terms','registration','number plate','free text','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy','mystery shop','gemini','bias','mobbin','audit']},
   {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report','plaud','shadowing','lyssna']},
