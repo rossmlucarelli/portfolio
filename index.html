@@ -2259,50 +2259,60 @@ var CASES = [
     meta:['RossLM','September–October 2026','Built with Claude'],
     triad:{
       challenge:'A portfolio for AI-focused roles has to answer one question well: how do I use AI? A list of tools doesn’t answer it.',
-      solution:'I built the site with Claude, in the browser rather than in Figma, and logged every decision: what was decided, who made the call, and whether the reason was analysis or taste.',
-      impact:'More than 200 decisions logged over a month of building, each with who made it and why. Ten of them are marked on the page itself.<br><button class="ins-btn ins-inline" type="button" data-inspect><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>Show them</span></button>'
+      solution:'I built the site with Claude in the browser rather than in Figma, and logged every decision. I recorded what was decided, who made the call, and whether the reason was analysis or taste. Later I brought in a second model, Gemini, to reword the case studies, with Claude checking every line.',
+      impact:'More than 250 decisions logged over a month of building, each showing who made it and why. Ten of them are marked on the page itself.<br><button class="ins-btn ins-inline" type="button" data-inspect><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>Show them</span></button>'
     },
     intro:[
-      {t:'p',cls:'lede',v:'This site is the worked example of how I use AI. What tells you most about that is how the decisions were split, so I wrote them all down.'},
-      {t:'p',v:'I designed and built it with Claude, on the real page rather than in a design file. Claude writes the code, measures it and checks it. I decide what it should be and judge how it feels.'},
-      {t:'p',v:'From the first session I kept a decision log. Every entry says what was decided, who made the call, me or Claude, and whether the reason was analysis or just taste. Each new chat reads it before it starts, so nothing has to be explained twice.'},
-      {t:'p',v:'It now holds more than 200 decisions from a month of building. Most are shared: I spot something, Claude finds the cause, and I judge the fix. A dozen or so are marked as taste.'},
+      {t:'p',cls:'lede',v:'This site is the worked example of how I use AI. The best way to show that is to show how the decisions were split, so I wrote them all down.'},
+      {t:'p',v:'I designed and built the site with Claude, working on the real page rather than in a design file. Claude writes the code, measures it and checks it. I decide what it should be and judge how it feels.'},
+      {t:'p',v:'From the first session I kept a decision log. Every entry says what was decided, whether me or Claude made the call, and whether the reason was analysis or just taste. Each new chat reads the log before we start, so nothing has to be explained twice.'},
+      {t:'p',v:'It now holds more than 250 decisions from a month of building. Most are shared: I spot something, Claude finds the cause, and I judge the fix. 17 are marked as taste.'},
+      {t:'p',v:'A month in, I brought in Gemini. I found its newest model sounded more natural, so it rewords the case studies. Claude checks every line Gemini writes against my sources, and nothing that can’t be confirmed goes on the page.'},
       {t:'inspect',v:'<b>See them in place.</b> The decisions behind what’s on your screen, marked on the page. Turn them on here, or any time with Decisions at the top of the page.',label:'Show the decisions on this page'}
     ],
     probes:[
       {q:'Where did Claude add something you hadn’t asked for?', a:[
-        {t:'p',v:'Most often when I’d had an idea and was still fleshing it out. I’d say what I wanted, and Claude would come back with the part I hadn’t got to yet. In UX terms it’s a little delighter: one more thing dealt with.'},
+        {t:'p',v:'Mostly when I’d had an idea and was still fleshing it out. I’d say what I wanted, and Claude would come back with the part I hadn’t got to yet. It’s a little delighter for me in UX terms, as it’s one more thing dealt with.'},
         {t:'decisions',v:[
           {k:'The clock',v:'I moved the time out of the greeting. Claude made it show my time rather than yours, so it says where I am.'},
-          {k:'The prompt box',v:'I wanted it to answer recruiters’ questions. Claude added the list that shows what has an answer, and the email link that fills in your question when there isn’t one.'},
-          {k:'The glass',v:'I asked for glass. Claude floated the pane in from the edges, because edge to edge it would only have looked tinted.'}
+          {k:'The prompt box',v:'I wanted it to answer recruiters’ questions. Claude added the list showing what has an answer, plus an email link that fills in your question when there isn’t one.'},
+          {k:'The glass',v:'I asked for a glass effect. Claude floated the pane in from the edges, because going edge to edge would only have looked tinted.'}
         ]},
-        {t:'p',v:'It works the other way too. Claude pushes back, and sometimes it’s right: it argued for one text size off my grid, and I agreed. When it isn’t, I overrule it. The decisions on the page are marked with which of those it was.'}
+        {t:'p',v:'It works the other way too. Claude pushes back, and sometimes it’s right. It argued for one text size off my grid, and I agreed. When it isn’t right, I overrule it. The decisions on the page are marked to show which way each one went.'}
       ]},
       {q:'Which decisions were just taste?', a:[
-        {t:'p',v:'The teal, for one. I like teal, and there’s no research behind it. When Claude first wrote that decision up, it gave it a rationale. I took it out.'},
-        {t:'p',v:'A model asked to record a decision will justify it, because that’s what decision records usually contain. That’s how you get the case study where every colour conveys trust.'},
-        {t:'p',v:'So the log marks which calls were taste and which were reasoned. When someone challenges one, I know whether I’m defending evidence or a preference. Both are fine on a personal project. Mixing them up isn’t.'}
+        {t:'p',v:'The teal, for one. I like teal, and there’s no research behind it. When Claude first wrote that decision up, it invented a rationale. I took it out.'},
+        {t:'p',v:'Others are the amber that marks the decisions on the page, and the way the mark behaves while it thinks. I tried two other versions of that animation. One looked less coherent than the original, and the other had spikes that looked violent. The one that went live keeps the original and adds a web of light round it.'},
+        {t:'p',v:'If you ask a model to record a decision, it will try to justify it, because that’s what decision records usually look like. That’s how you get a case study where every colour supposedly conveys trust.'},
+        {t:'p',v:'So the log marks which calls were taste and which had a reason behind them. If someone challenges one, I know whether I’m defending evidence or just a preference. Both are fine on a personal project, so long as you don’t mix them up.'}
       ]},
       {q:'Why build it in the browser rather than in Figma?', a:[
-        {t:'p',v:'Because the mistakes that matter on a site like this can’t exist in a design file: follow-up chips that wiped the conversation above them, spacing a block inherited from its neighbour, an answer revealed at the wrong pace. A design file draws every frame once, correctly, so an accident looks like a decision.'},
-        {t:'p',v:'The cost is variety. Working on the finished thing pulls you towards whatever renders first. So for the choices that mattered, Claude built the options side by side on a private page with a switch: three borders for the prompt box, four movements for the mark, four ways for it to react when you poke it. I picked by looking.'},
-        {t:'p',v:'Figma isn’t finished for me. It’s where I go wide. It just can’t tell you how something behaves.'}
+        {t:'p',v:'Because the mistakes that matter on a site like this don’t show up in a design file. I had follow-up chips that wiped the conversation above them, a block that inherited spacing from its neighbour, and an answer that revealed itself at the wrong pace. A design file draws every frame once, cleanly, so an accident looks like a decision.'},
+        {t:'p',v:'The drawback is variety. Working on the finished thing pulls you towards whatever renders first. So for the choices that mattered, Claude built the options side by side on a private page with a switch: three borders for the prompt box, four movements for the mark, four ways for it to react when you poke it, and three ways for it to look while it thinks. I picked by looking at them working.'},
+        {t:'p',v:'I’m not done with Figma. It’s still where I go wide. It just can’t tell you how something behaves.'}
       ]},
       {q:'When did you overrule it?', a:[
-        {t:'p',v:'Often, and usually on feel. Opening a case study felt laborious. Claude’s fix measured fastest: fade the whole header in at once. It also removed the conversational effect the site exists to show. I kept the effect and asked for it quicker, at 100 milliseconds a line.'},
-        {t:'p',v:'For the sidebar, Claude recommended a style with icons. I chose a tinted one, then asked for glass. For the prompt box border it leaned one way and I liked another.'},
-        {t:'p',v:'Claude can measure a pace, but it can’t feel one. Its test browser draws a handful of frames a second. So it gives me the numbers and a preview, and I make the call.'}
+        {t:'p',v:'Often, and usually on feel. Opening a case study felt laborious at first. Claude’s fix was the fastest to measure: fade the whole header in at once. That also killed the conversational effect the site is built to show. I kept the effect and asked for it quicker, at 100 milliseconds a line.'},
+        {t:'p',v:'For the sidebar, Claude recommended a style with icons. I chose a tinted one, then asked for glass. For the decision markers on the page, it recommended coral, the exact opposite of my teal on the colour wheel. I preferred the amber.'},
+        {t:'p',v:'Claude can measure a pace, but it can’t feel one. Its test browser only draws a handful of frames a second. So it gives me the numbers and a preview, and I make the call.'}
+      ]},
+      {q:'Why use a second model for the words?', a:[
+        {t:'p',v:'I found Gemini’s newest model sounded natural, so I tried it on the Corby yard visit case study. It worked well, and all four case studies have been through it since.'},
+        {t:'p',v:'Gemini only supplies the words. It never touches the site. Claude writes the brief for it, makes the changes on the page, and checks every line against the original sources: the report, the deck, the recordings and the real screens.'},
+        {t:'p',v:'The brief includes everything I’ve already corrected, so old mistakes don’t creep back in. Lines I haven’t confirmed are marked. Gemini leaves those out and lists them as questions for me.'},
+        {t:'p',v:'The yard recordings never went to Gemini. The people in them agreed to be recorded for my research, not to have their voices sent to another company’s model. Claude checked the text against those recordings itself.'}
       ]},
       {q:'How do you check what it writes?', a:[
-        {t:'p',v:'Nothing goes on the page without a source: a recording, a deck, a real screen. The model’s job is to point at where a claim comes from. Mine is to go and read it.'},
-        {t:'p',v:'A source makes a claim checkable, not true. Pointed at the page, the claim sometimes turns out narrower than the sentence written about it.'},
-        {t:'p',v:'Real screens beat redraws for the same reason. A redraw is made from the words beside it, so it always agrees with them. A real screen doesn’t have to, and more than once it caught a caption that was wrong.'}
+        {t:'p',v:'Nothing goes on the page without a source, whether that’s a recording, a deck or a real screen. The model’s job is to point to where a claim comes from. Mine is to go and check it.'},
+        {t:'p',v:'Having a source makes a claim checkable, rather than automatically true. When you look at the source, the fact sometimes turns out to be narrower than the sentence written about it.'},
+        {t:'p',v:'The same goes for a model’s account of its own work. Gemini once told me a draft came in at 395 words when it was nearer 590. And the rule that keeps Gemini honest applies to Claude too. When I answered Gemini’s questions, Claude’s first rewrite added a line of its own to two of my answers. Neither line was wrong, and neither was mine.'},
+        {t:'p',v:'Real screens beat redraws for a similar reason. A redraw is built from the words beside it, so it always agrees with them. A real screen doesn’t have to, and more than once a screenshot caught a caption that was wrong.'},
+        {t:'p',v:'Some checks need someone outside. My old Product Owner checked the Help Me Choose figures, and one of them now states more accurately what we actually measured.'}
       ]},
       {q:'Why keep a log at all?', a:[
-        {t:'p',v:'Continuity, first. Every chat starts cold, and the log is the fastest way to get one up to speed without explaining the whole build again.'},
-        {t:'p',v:'It also goes stale faster than the thing it describes. More than once a chat asked me a question the live page had already answered. The fix is to read the page before the log.'},
-        {t:'p',v:'And it’s honest in a way a write-up after the event never is. It records the calls that were reversed, the options I didn’t pick, and which ones were just taste.'}
+        {t:'p',v:'For continuity, mostly. Every chat starts cold, and the log is the fastest way to get a new session up to speed without explaining the whole build again.'},
+        {t:'p',v:'A log also goes stale faster than the thing it describes. More than once a chat asked me a question the live page had already answered, and once it mentioned a case study that was no longer on the site. The fix is to read the page before the log.'},
+        {t:'p',v:'It’s also honest in a way a write-up after the event never is. It records the calls that were reversed, the options I didn’t pick, and which ones were just taste.'}
       ]}
     ],
     follow:['ai','agentic','contact']
@@ -2627,7 +2637,7 @@ var INTENTS = [
   {key:'help-me-choose',words:['help me choose','hmc','wizard','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy','mystery shop','gemini','bias','mobbin','audit']},
   {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report','plaud','shadowing','lyssna']},
-  {key:'making',words:['this site','this page','built this','made this','how was this made','how this was made','how did you make','how did you build','decision log','decisions','who decided','inspect','taste','behind the scenes','built with claude']},
+  {key:'making',words:['this site','this page','built this','made this','how was this made','how this was made','how did you make','how did you build','decision log','decisions','who decided','inspect','taste','behind the scenes','built with claude','argon','second model','reword','two models']},
   {key:'ai',words:['ai','artificial intelligence','claude','copilot','gpt','llm','prompt','automate','automation','tooling','guardrail','workflow','ai generated','generated']},
   {key:'philosophy',words:['philosophy','principle','believe','approach','process','method','values','opinion','style','overruled','disagree']},
   {key:'gallery',words:['visual','image','picture','screenshot','portfolio','sample','wireframe','mockup','flows','designed','show me']},
