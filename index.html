@@ -2067,71 +2067,71 @@ var CASES = [
     title:'A design that waited three years for a model', kicker:'Case study 02 · 2022 and 2025',
     meta:['cinch','Rebuild, 2022','LLM proposal, 2025'],
     triad:{
-      challenge:'Help Me Choose converted more than twice as well as the rest of the site — 0.47% against 0.20% — and it was dying. Usage had fallen from 4.45% of visitors to 1.5% in nine months, and of the people who did start it, 42% never reached a recommendation.',
+      challenge:'Help Me Choose converted more than twice as well as the rest of the site (0.47% against 0.20%), and it was dying. Usage had fallen from 4.45% of visitors to 1.5% in nine months. Of the people who did start it, 42% never reached a recommendation.',
       solution:'A content-first rebuild. Establish what each question was <em>for</em>, write the options in the words people actually use about cars, and test the whole flow as bare wires before anyone drew a screen.',
-      impact:'<b>+6.9%</b> completing, <b>+8.8%</b> adding a car to basket after getting a recommendation, <b>+4.5%</b> going on to buy. The half we couldn’t build had to wait for an LLM, and in 2025 I proposed building it with one.'
+      impact:'<b>+6.9%</b> completing the journey, <b>+8.8%</b> adding a car to basket after getting a recommendation, <b>+4.5%</b> going on to buy. The half we couldn’t build had to wait for an LLM, and in 2025 I proposed building it with one.'
     },
     intro:[
       {t:'p',cls:'lede',v:'This is where the car finder started. A rebuild in 2022 that shipped and moved the numbers, and three years later a proposal to finish the part we couldn’t build.'},
-      {t:'p',v:'In 2022 the data said two contradictory things at once. For the people who finished Help Me Choose it was the most valuable thing on the site — they converted at 0.47% against 0.20% for everyone else, and looked at 1.92 cars a visit against 1.32. And almost nobody was finishing it. Usage had collapsed from 4.45% of visitors to 1.5% in nine months, and of those who started, 42% never reached a recommendation.'},
+      {t:'p',v:'In 2022 the data said two contradictory things. People who finished Help Me Choose converted at 0.47% against 0.20% for everyone else, and looked at 1.92 cars a visit against 1.32. It was the most valuable thing on the site. And almost nobody was finishing it. Usage had dropped from 4.45% of visitors to 1.5% in nine months, and 42% of people who started never reached a recommendation.'},
 
       {t:'h',v:'The loss wasn’t where anyone expected'},
-      {t:'p',v:'Almost all of it happened in one place. Between the first question and the second, <b>28.3%</b> of people left. Every transition after that cost between 0.5% and 7.2%.'},
-      {t:'p',v:'That killed the obvious brief. “The flow is too long, cut some questions” would have trimmed the middle — which is exactly where nothing was being lost.'},
+      {t:'p',v:'Almost all of it happened in one place. Between the first question and the second, <b>28.3%</b> of people left. Every step after that lost between 0.5% and 7.2%.'},
+      {t:'p',v:'That killed the obvious brief. “The flow is too long, cut some questions” would have trimmed the middle, where nothing was being lost.'},
       {t:'cards',v:['hmcFunnel']},
 
       {t:'h',v:'What we designed'},
-      {t:'p',v:'A content-first rebuild, with the questions written in plain terms. Body types come with a seat count and a line on what each is good for, so no one has to know what an MPV is to answer.'},
+      {t:'p',v:'We did a content-first rebuild, with the questions written in plain terms. Body types came with a seat count and a line on what each is good for, so no one had to know what an MPV was to answer.'},
       {t:'cards',v:['hmcBodyTypes']},
-      {t:'p',v:'And a results page that explained itself. It stopped simply presenting a car and started saying which of your answers it satisfied, in your terms — “driver legroom, for those long drives”.'},
-      {t:'p',v:'The harder idea was underneath it. Every alternative was written as a trade-off against your top pick rather than as another card in a grid: <em>“Scored better than the Volkswagen Touareg for driver legroom, but less for lower CO2 emissions.”</em> That turns a list into the comparison people are actually trying to make.'},
+      {t:'p',v:'We also designed a results page that explained itself. Instead of just showing a car, it said which of your answers it matched, in your terms: “driver legroom, for those long drives”.'},
+      {t:'p',v:'Underneath that was a harder idea. Every alternative was written as a trade-off against your top pick, rather than just another card in a grid: <em>“Scored better than the Volkswagen Touareg for driver legroom, but less for lower CO2 emissions.”</em> That turns a list into the comparison people are actually trying to make.'},
       {t:'cards',cls:'two',v:['recDesktop','recMobile']},
 
       {t:'h',v:'And then it couldn’t be built'},
-      {t:'p',v:'That comparative line has to be generated per car, per comparison, against stock that changes daily. In 2022 that meant hand-written templates, or a rules engine that ranks attribute differences and phrases them, which is months of work for one sentence.'},
-      {t:'p',v:'So the design was right and unbuildable. It stayed in Figma, and this is what a visitor still sees today: a winner named, and nothing about why.'},
+      {t:'p',v:'That comparison line had to be generated per car, per comparison, against stock that changes daily. In 2022 that meant hand-written templates, or a rules engine to rank attribute differences and phrase them. Months of work for one sentence.'},
+      {t:'p',v:'So the design stayed in Figma, and this is what a visitor still sees today: a winner named, and nothing about why.'},
       {t:'cards',v:['recLive']},
 
       {t:'h',v:'What did ship, and what it moved'},
-      {t:'p',v:'Everything that didn’t need generated language went out, and the test came back positive on all three measures: <b>+6.9%</b> completing the journey, <b>+8.8%</b> getting a recommendation and then adding a car to basket, <b>+4.5%</b> going on to purchase.'},
-      {t:'p',v:'The start of the journey holds up better now too. Over recent months, 69% of people who see the first question reach a recommendation, against 58% for the original wizard. Of those who pick an answer to it, 92 to 97% get there, depending on the answer. That is today’s tracking rather than the original test, so it isn’t a clean before and after.'},
+      {t:'p',v:'Everything that didn’t need generated language went live. The test came back positive on all three measures: <b>+6.9%</b> completing the journey, <b>+8.8%</b> adding a car to basket after getting a recommendation, and <b>+4.5%</b> going on to purchase.'},
+      {t:'p',v:'The start of the flow holds up better now too. Over recent months, 69% of people who see the first question reach a recommendation, against 58% for the original wizard. Of those who pick an answer to it, 92 to 97% get there, depending on the answer. That is today’s tracking rather than the original test, so it isn’t a clean before and after.'},
 
       {t:'h',v:'Three years later, with a model'},
-      {t:'p',v:'In 2025 cinch was asking for ideas on where AI could help. Mine was to finish this page: the same three parts as the 2022 design, with a model writing the lines we couldn’t. The proposal named the old blocker explicitly, manual effort and rules engines, because the argument only lands if you say why it was a bad idea before and isn’t now.'},
-      {t:'p',v:'It went into a deck alongside a bigger idea, a conversational car finder. I thought the conversation would take a while to build, and that smarter recommendations would be useful in the meantime.'},
+      {t:'p',v:'In 2025 cinch asked for ideas on where AI could help. Mine was to finish this page: the same three parts as the 2022 design, with a model writing the lines we couldn’t. The proposal named the old blocker directly (manual effort and rules engines), because you have to say why it was a bad idea before and isn’t now.'},
+      {t:'p',v:'It went into a deck alongside a bigger idea for a conversational car finder. I thought the conversation would take a while to build, and that smarter recommendations would help in the meantime.'},
       {t:'p',v:'The proposal wasn’t taken forward.'},
       {t:'next',key:'car-finder',label:'Read the car finder case study',v:'<b>What happened next.</b> I went on to design the conversational car finder, the work I’m proudest of.'}
     ],
     probes:[
       {q:'What was your role, exactly?', a:[
-        {t:'p',v:'Design lead on the rebuild. Four disciplines had to agree before a question earned a place in the flow — data, content design, UX and user research — and most of my job was holding that group to the standard rather than producing screens.'},
-        {t:'p',v:'I worked on the content with our content designer, built the prototype myself, and sat in the interviews alongside the researcher.'},
+        {t:'p',v:'Design lead on the rebuild. Four disciplines had to agree before a question earned a place in the flow: data, content design, UX and user research. Most of my job was holding that group to that standard rather than drawing screens.'},
+        {t:'p',v:'I worked on the content with our content designer, built the prototype myself, and sat in the interviews with the researcher.'},
         {t:'p',v:'The 2025 proposal was mine: the argument, the prompt, the worked examples and the deck.'}
       ]},
       {q:'How did you approach the rebuild?', a:[
-        {t:'p',v:'Content first, and I mean before any visual design at all. Three things had to be true of a question before it earned a place: a stated purpose, data behind the answer for it to filter on, and wording a person would actually use.'},
-        {t:'p',v:'That last one came from a grouping exercise. Take the statements someone might genuinely make — “I want a car big and safe enough for my family” — and ask real people which cars and which attributes belong under each. What came back was their vocabulary rather than ours: boot space, Isofix points, a banger, a city runner, running costs. Someone thinking “something for the school run” shouldn’t have to translate it into “MPV” before the tool can help.'},
+        {t:'p',v:'Content first, before any visual design at all. A question needed three things before it earned a place: a clear purpose, data behind the answer to filter on, and wording a person would actually use.'},
+        {t:'p',v:'That last part came from a grouping exercise. We took statements someone might genuinely make, like “I want a car big and safe enough for my family”, and asked real people which cars and attributes belonged under each. What came back was their vocabulary, not ours: boot space, Isofix points, a banger, a city runner, running costs. Someone thinking “something for the school run” shouldn’t have to translate that into “MPV” before the tool can help.'},
         {t:'cards',v:['hmcGrouping']},
         {t:'p',v:'Those statements became the options in the question itself: “Safe for my family”, “Space for all my stuff”.'},
         {t:'cards',v:['hmcQuestion']},
-        {t:'p',v:'Before any screen was drawn, we built the whole flow as bare wires and tested that — deliberately plain, deliberately early, so the flow problems surfaced while they were still cheap to fix.'}
+        {t:'p',v:'Before drawing any screens, we built the whole flow as bare wires and tested that. We kept it plain and early, so flow problems showed up while they were still cheap to fix.'}
       ]},
       {q:'Why Axure rather than Figma?', a:[
-        {t:'p',v:'Because everything we were worried about was stateful, and a Figma prototype is a sequence of linked pictures.'},
+        {t:'p',v:'Because everything we were worried about needed state, and a Figma prototype is just a string of linked pictures.'},
         {t:'list',v:[
-          '<b>Non-linear movement.</b> People could go back and across questions without losing their answers — which is where a real flow gets messy.',
+          '<b>Non-linear movement.</b> People could go back and across questions without losing their answers, which is where a real flow gets messy.',
           '<b>Real validation.</b> “Choose between 1 and 3 options” has to actually count and stop you. A picture of a disabled button proves nothing.',
-          '<b>A soft-check question</b> on body types. Given the previous answers, we pre-selected what we thought the best body types were, so that question had to know what had been answered before it.'
+          '<b>A soft-check question</b> on body types. Based on the previous answers, we pre-selected what we thought the best body types were, so that question had to know what had come before it.'
         ]},
-        {t:'p',v:'The test changed that last one. People said they missed the pre-selection and didn’t understand it, even after we told them directly, so it was removed.'},
+        {t:'p',v:'The test changed that last one. People missed the pre-selection and didn’t understand it, even after we told them directly, so we cut it.'},
         {t:'cards',cls:'two',v:['hmcAxure','hmcPreselected']},
-        {t:'p',v:'A linear click-through would have produced a clean test result and told us nothing about the parts most likely to break. I use whichever tool answers the question in front of me; that isn’t always the fashionable one.'}
+        {t:'p',v:'A linear click-through would have given us a clean test result and told us nothing about the parts most likely to break. I use whichever tool answers the question in front of me.'}
       ]},
       {q:'What was the prompt in the 2025 proposal?', a:[
-        {t:'p',v:'The 2025 proposal was to have an LLM write the explanations on the results page: a short line for each of your priorities, naming the feature of the car that meets it. That was the part of the 2022 design we couldn’t build. The prompt is the set of instructions that tells the model how to write them.'},
-        {t:'p',v:'The idea wasn’t the hard part. Anyone can suggest using an LLM. The work was specifying what it should say and how — content design with an unusual reader.'},
-        {t:'p',v:'I wrote the spec: the role it plays, what it gets handed, what to produce, how long. Then the rule that carries the whole thing — <em>instead of “the car has a large boot”, write “the large boot gives you plenty of space for your stuff.”</em> Benefit, not specification. It is the same rule I would give a human writer; the difference is that a model needs it stated every time rather than absorbed once.'},
-        {t:'p',v:'And I ran example briefs through an LLM to test the basic function, rather than only describing what it might produce. A proposal about generated language is worth exactly as much as the language it generates.'},
+        {t:'p',v:'The 2025 proposal was to have an LLM write the explanations on the results page: a short line for each of your priorities, naming the feature of the car that meets it. That was the part of the 2022 design we couldn’t build. The prompt is the set of instructions telling the model how to write them.'},
+        {t:'p',v:'The idea wasn’t the hard part. Anyone can suggest using an LLM. The work was specifying what it should say and how. It’s content design, just with an unusual reader.'},
+        {t:'p',v:'I wrote the spec: the role it plays, what it gets handed, what to produce, and how long. Then the rule that carries the whole thing: <em>instead of “the car has a large boot”, write “the large boot gives you plenty of space for your stuff.”</em> Benefit, not spec. It’s the same rule I’d give a human writer, except a model needs it stated every time.'},
+        {t:'p',v:'I also ran example briefs through an LLM to test the basic function, rather than just describing what it might do.'},
         {t:'cards',cls:'two',v:['hmcPrompt','hmcGenerated']}
       ]},
       {q:'What didn’t make it?', a:[
