@@ -3188,7 +3188,17 @@ availability line in the sidebar ("Weekday evenings, early mornings...") is
 static and stays. On a phone the thread's title gets back the room the theme
 switch took from it in Pass 4. Checked at 1440 and 390 wide in a test browser,
 light theme, no script errors; not on a real phone. Ross also asked what could
-show design thinking in its place; that is open, not decided.
+show design thinking in its place; see the next entry.
+
+**Nothing replaces it; Decisions is enough.**
+*Called by: Ross:* "I think decision mode is enough. The site is to make them
+get in touch and not necessarily to provide every answer. I think knowing when
+too much is too much is important." Claude had offered three ideas: a "show
+thinking" block on case study answers (its recommendation), "regenerate" to
+show the rejected option, and a version picker in the top bar. Ross's reason
+is the site's purpose rather than taste: it should leave a visitor with
+something to ask him, and Decisions already covers how the site was made. The
+top bar keeps just Decisions and the theme switch.
 
 ---
 
