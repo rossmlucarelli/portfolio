@@ -3241,6 +3241,63 @@ Choose case study, where the credit and the context sit next to them.
 are both unpublished, and some UXfolio case studies only ever showed images
 as thumbnails. Nothing is built until he has the files.
 
+### Visual samples, rebuilt with older work
+
+Pushed straight to `main`: "Let's add it and make live." Ross did not see it
+on a preview first.
+
+**Older work goes in: Autocab, AO.com and JD Sports.**
+*Called by: Ross.* This settles the open question above. He found his old
+portfolio images (30, from three companies) and confirmed the compare screens
+are AO.com. Nothing survived from Weaveability or DCML.
+
+**Seven of the thirty.**
+*Called by: Claude; Ross put them live.* The Autocab driver app as one grid of
+every screen, the Autocab sign-in in nine cab firms' colours, the Autocab
+passenger app's tracking screen, the JD bag on desktop, the JD one-page
+checkout, the JD filter panel on a phone, and AO's compare as two phones on
+one card. Left out: product listing grids (mostly product photography), three
+more checkout versions, single Autocab phone shots (354px wide, too soft to
+open large) and the grey wireframes.
+
+**Dates are the years he worked there.**
+*Called by: Ross:* "I can't remember when I did those designs exactly, so
+lets take the dates from the years i worked at the company." Autocab 2013 to
+2017, AO.com 2017, JD Sports 2019 to 2021.
+
+**A line on each, after all.**
+*Called by: Ross:* "I'd like to say a bit about them." This revises his
+"don't explain much" from earlier the same day. The card shows only a title,
+company first ("Autocab · One sign-in, nine cab firms"); the enlarged view
+carries one or two sentences opening with the company and years. The wording
+is Claude's and says only what the screen shows, plus his CV line that he was
+the sole UX designer on Autocab's apps.
+
+**Personal details blurred.**
+*Called by: Claude; told to Ross after.* A real name, home address and phone
+number were in the JD checkout's address panel; a profile photo and name in
+the Autocab driver menu; two house numbers in the driver app's pickups; and a
+driver photo and number plate in the passenger app. All are blurred in the
+published files, and the captions say so. The rewards screen's real brand
+photos stay, as Claude had said they probably could.
+
+**Mixed, not grouped by employer.**
+*Called by: Claude.* The first screenful alternates cinch with the older work
+so it doesn't open on a block of purple. The cinch pieces that remain are
+unchanged and keep their case study captions.
+
+**The page's own copy.** *Called by: Claude.* Sidebar line "Design work since
+2013" (was "Wireframes & flows"). The opener names the four companies. The
+note says all of them are real files, since every redraw and diagram is gone.
+"Are these the real screens?" now starts "Yes." "autocab", "taxi", "jd
+sports", "ao com", "older work" and similar route to it. Images with a
+different shape from the card can set their own crop (`pos`).
+
+**Verification.** Chromium at 1440 light and 390 dark: 22 cards, every image
+loads, no sideways scroll, no script errors, the enlarged view opens with the
+caption, and two typed questions route to Visual samples. Every blurred area
+was looked at zoomed in before the push. Not checked: Safari, a real phone.
+
 ---
 
 ## Open items

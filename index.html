@@ -1958,6 +1958,50 @@ var ART = {
       return svgWrap(s);
     }
   },
+  /* Earlier work, for Visual samples only. Dates are the years Ross worked
+     at each company. */
+  acDriver:{
+    title:'Autocab · The driver app, dark mode',
+    caption:'Autocab, 2013 to 2017. The driver app screen by screen: job offers, the route to each pickup, fares, earnings, ratings and messages. I was the sole UX designer on Autocab’s passenger and driver apps. A profile photo and two house numbers are blurred.',
+    alt:'A grid of twenty dark-mode phone screens from the Autocab driver app: a title card, a side menu, map navigation to a pickup, fare and meter screens, a job offer with accept and reject, balance, earnings charts, job types, a heat map, ratings, chat, a PIN screen, a disclaimer, a team map, rewards, a credit sheet and missed earnings.',
+    img:'img/ac-driver.webp', w:1270, h:810, shot:true
+  },
+  acCities:{
+    title:'Autocab · One sign-in, nine cab firms',
+    caption:'Autocab, 2013 to 2017. The same sign-in screen for nine local cab firms, each in its own colours with its own city skyline.',
+    alt:'Nine phone sign-in screens laid at an angle on a blue background, one each for Nottingham, Liverpool, Bristol, Manchester, Sheffield, Leeds, Birmingham, Newcastle and London, each in a different colour gradient with a city skyline at the bottom.',
+    img:'img/ac-cities.webp', w:1379, h:1103, pos:'center', shot:true
+  },
+  acPassenger:{
+    title:'Autocab · Tracking the car',
+    caption:'Autocab, 2013 to 2017. The passenger app tracks the car to the pickup and says when the driver has arrived. The driver’s photo and number plate are blurred.',
+    alt:'A phone showing the Autocab passenger app’s tracking screen: a map with the car’s route, the driver’s name and car, Cancel booking and Call buttons, and a banner saying “Your driver has arrived.”',
+    img:'img/ac-passenger.webp', w:980, h:848, pos:'center', shot:true
+  },
+  jdBag:{
+    title:'JD Sports · The bag, on desktop',
+    caption:'JD Sports, 2019 to 2021. The bag, where you choose home delivery or click and collect before checkout, with PayPal and Klarna express under the main button.',
+    alt:'The JD Sports bag page on desktop: three Nike items with quantity controls, discount code and gift card panels, and on the right delivery options, the total, a Checkout securely button, and PayPal and Klarna express buttons.',
+    img:'img/jd-bag.webp', w:1600, h:1033, shot:true
+  },
+  jdCheckout:{
+    title:'JD Sports · Checkout on one page',
+    caption:'JD Sports, 2019 to 2021. Delivery, address, delivery method and payment on a single page, with pay later options from five providers. The address is blurred.',
+    alt:'The JD Sports secure checkout on one page: delivery options, a blurred delivery address, five delivery methods with prices, Pay now and Pay later tabs with Klarna, Clearpay, Laybuy, Openpay and PayPal Credit, and a billing address.',
+    img:'img/jd-checkout.webp', w:1136, h:2116, shot:true
+  },
+  jdFilters:{
+    title:'JD Sports · Filters on a phone',
+    caption:'JD Sports, 2019 to 2021. Brand, size, colour, price and range in one panel, with the product count in the header.',
+    alt:'A phone-width filter panel headed “Filter (123 Products)”, with brand logos in a grid, shoe sizes, colour swatches, a price slider from £50 to £150, range options, and Clear all and Done buttons.',
+    img:'img/jd-filters.webp', w:460, h:1862, shot:true
+  },
+  aoCompare:{
+    title:'AO.com · Compare on a phone',
+    caption:'AO.com, 2017. Tick Compare on any product in the list, then open the bar at the bottom to see them side by side.',
+    alt:'Two phones. On the left, a list of coffee machines with “Compared” ticked under one and a “Compare 4 products” bar at the bottom. On the right, “Comparing 4 products”, two machines side by side with price, rating, dimensions and features in rows.',
+    img:'img/ao-compare.webp', w:1600, h:1000, shot:true
+  },
   recLive:{
     title:'What’s actually live',
     caption:'The recommendations page as it stands: “Based on your answers, the Land Rover Discovery Sport scored highest.” It names a winner and stops. The alternatives underneath carry a name, a fuel type and a body style — nothing about why they are there or how they differ.',
@@ -2464,16 +2508,16 @@ var TOPICS = {
     follow:['making','agentic','contact']
   },
   gallery:{
-    topic:'the visual work', nav:'Visual samples', navMeta:'Wireframes & flows', rail:'VS',
+    topic:'the visual work', nav:'Visual samples', navMeta:'Design work since 2013', rail:'VS',
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
-      {t:'p',v:'A few pieces pulled out of the case studies. Tap any of them to open the full view.'},
-      {t:'cards',cls:'gallery',v:['corbyBoots','corbyEmail','cfSearches','cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','cfJump','recLive','recDesktop','recMobile','hmcQuestion','hmcBodyTypes','hmcPreselected','hmcIllustrated','hmcPrice','hmcGrouping','hmcAxure','hmcPrompt','hmcGenerated','hmcFunnel','bizStages']},
-      {t:'note',v:'<b>Most of these are the real thing.</b> Two are photos from my visit to the Corby yard. Seven are the car finder’s working prototype, on sample data. Ten are Help Me Choose files: the results page as designed and as it is live, three of its question screens, two designs that never shipped, the grouping exercise and the Axure prototype. The other five are redraws and diagrams. Happy to walk through the actual files in a call.'}
+      {t:'p',v:'Designs from cinch, JD Sports, AO.com and Autocab. Tap any of them to see it full size, with a line on what it is.'},
+      {t:'cards',cls:'gallery',v:['cfHandover','acCities','jdBag','cfRecs','acDriver','aoCompare','cfBrief','jdFilters','recDesktop','acPassenger','cfCompromise','jdCheckout','cfCompare','hmcQuestion','cfReturn','hmcBodyTypes','cfJump','hmcPreselected','recMobile','hmcPrice','recLive','hmcAxure']},
+      {t:'note',v:'<b>All of these are the real files.</b> The car finder screens are its working prototype, on sample data. The rest are design files, prototypes and live screens, with a few personal details blurred. Happy to walk through any of them in a call.'}
     ],
     probes:[
       {q:'Are these the real screens?', a:[
-        {t:'p',v:'Most of them. The Help Me Choose images are the real files. The car finder was designed as a working prototype and hasn’t been built yet, so the prototype is the real thing, and those screens are it running on sample data.'},
+        {t:'p',v:'Yes. The Help Me Choose images and the older work are the real files. The car finder was designed as a working prototype and hasn’t been built yet, so the prototype is the real thing, and those screens are it running on sample data.'},
         {t:'p',v:'The rest of my work is behind a login, and some of it involves a partner’s data. Putting that on a public URL would be a poor way to demonstrate judgement.'},
         {t:'p',v:'In a portfolio review I’ll walk through the real files, including the versions that didn’t work — which are usually the more interesting half.'}
       ]},
@@ -2659,7 +2703,7 @@ var INTENTS = [
   {key:'making',words:['this site','this page','built this','made this','how was this made','how this was made','how did you make','how did you build','decision log','decisions','who decided','inspect','taste','behind the scenes','built with claude','argon','second model','reword','two models']},
   {key:'ai',words:['ai','artificial intelligence','claude','copilot','gpt','llm','prompt','automate','automation','tooling','guardrail','workflow','ai generated','generated']},
   {key:'philosophy',words:['philosophy','principle','believe','approach','process','method','values','opinion','style','overruled','disagree']},
-  {key:'gallery',words:['visual','image','picture','screenshot','portfolio','sample','wireframe','mockup','flows','designed','show me']},
+  {key:'gallery',words:['visual','autocab','taxi','jd sports','ao com','older work','earlier work','previous work','dark mode','image','picture','screenshot','portfolio','sample','wireframe','mockup','flows','designed','show me']},
   {key:'about',words:['who are you','about you','experience','background','years','career','cinch','yourself','seniority','skills','stack','code','react','figma','next']}
 ];
 function norm(text){ return ' '+String(text).toLowerCase().replace(/[^a-z0-9\s']/g,' ').replace(/\s+/g,' ')+' '; }
@@ -2756,7 +2800,7 @@ function esc(s){ return String(s).replace(/&(?![a-z#0-9]+;)/g,'&amp;').replace(/
 
 /* A screenshot. One with a phone-sized twin (imgSm) serves the twin to phones. */
 function shotHTML(a, eager){
-  var img='<img src="'+a.img+'" alt="'+(a.alt||a.title)+'"'+(a.w?' width="'+a.w+'" height="'+a.h+'"':'')+(eager?'':' loading="lazy" decoding="async"')+'>';
+  var img='<img src="'+a.img+'" alt="'+(a.alt||a.title)+'"'+(a.pos?' style="object-position:'+a.pos+'"':'')+''+(a.w?' width="'+a.w+'" height="'+a.h+'"':'')+(eager?'':' loading="lazy" decoding="async"')+'>';
   return a.imgSm
     ? '<picture><source media="(max-width:599px)" srcset="'+a.imgSm+'"'+(a.wSm?' width="'+a.wSm+'" height="'+a.hSm+'"':'')+'>'+img+'</picture>'
     : img;
