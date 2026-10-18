@@ -358,8 +358,8 @@ canvas.sophon{position:absolute;left:-50%;top:-50%;width:200%;height:200%;displa
 .w.on{opacity:1;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
 /* Blocks held out of the word reveal fade in where they sit, in reading
    order, and nothing rises: the page scrolling is the only movement. */
-.chunk .cards,.chunk .chips-block,.chunk .note,.chunk .case-head .meta{opacity:0;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
-.chunk .blk-on,.chunk.done .cards,.chunk.done .chips-block,.chunk.done .note,.chunk.done .case-head .meta{opacity:1;}
+.chunk .cards,.chunk .eras,.chunk .chips-block,.chunk .note,.chunk .case-head .meta{opacity:0;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
+.chunk .blk-on,.chunk.done .cards,.chunk.done .eras,.chunk.done .chips-block,.chunk.done .note,.chunk.done .case-head .meta{opacity:1;}
 .tail-in{animation:fade-in .34s cubic-bezier(.45,0,.25,1) both;}
 @keyframes fade-in{from{opacity:0;}to{opacity:1;}}
 
@@ -454,6 +454,62 @@ canvas.sophon{position:absolute;left:-50%;top:-50%;width:200%;height:200%;displa
    reads as scrollable rather than as a full stop. */
 .suggest.more::after{content:"";display:block;position:sticky;bottom:calc(var(--sp-8) * -1);height:var(--sp-24);margin-top:calc(var(--sp-24) * -1);background:linear-gradient(to bottom, transparent, var(--surface));pointer-events:none;}
 a.chip{text-decoration:none;}
+
+
+/* --- Visual samples: earliest work first, in one of three layouts --- */
+.eras{margin:0 0 var(--sp-16);}
+.era-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--sp-4) var(--sp-12);margin:0 0 var(--sp-12);}
+.era-yrs{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
+.era-co{font-family:var(--font-display);font-size:var(--fs-24);line-height:var(--lh-32);font-weight:400;letter-spacing:-.012em;color:var(--ink);}
+.era-role{font-size:var(--fs-14);line-height:var(--lh-20);color:var(--ink-2);}
+.era-sub{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-3);margin:0 0 var(--sp-8);}
+.era-sub ~ .era-sub, .cards + .era-sub{margin-top:var(--sp-16);}
+.eras .cards{margin:0;}
+/* timeline: a rail down the left, a mark at each employer */
+.eras-timeline .era{position:relative;padding:0 0 var(--sp-32) var(--sp-32);}
+.eras-timeline .era::before{content:"";position:absolute;left:7px;top:var(--sp-24);bottom:0;width:2px;background:var(--line);}
+.eras-timeline .era:last-child{padding-bottom:0;}
+.eras-timeline .era:last-child::before{bottom:var(--sp-16);}
+.eras-timeline .era-mark{position:absolute;left:0;top:var(--sp-8);width:16px;height:16px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);}
+.eras-timeline .era-head{flex-direction:column;gap:0;}
+/* strip: one row per employer, swiped sideways */
+.eras-strip .era{margin:0 0 var(--sp-32);}
+.eras-strip .era:last-child{margin-bottom:0;}
+.eras-strip .cards{display:flex;gap:var(--sp-12);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:var(--sp-8);scrollbar-width:thin;-webkit-mask-image:linear-gradient(to right,#000 calc(100% - var(--sp-32)),transparent);mask-image:linear-gradient(to right,#000 calc(100% - var(--sp-32)),transparent);}
+.eras-strip .cards .card{flex:0 0 264px;scroll-snap-align:start;}
+.eras-strip .cards .card:last-child{margin-right:var(--sp-32);}
+@media (min-width:600px){ .eras-strip .cards .card{flex-basis:296px;} }
+/* stage: one piece at a time, with the years underneath to move through */
+.vs{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);overflow:hidden;}
+.vs-fig{position:relative;background:var(--sunk);aspect-ratio:16/10;display:grid;place-items:center;}
+.vs-img{display:block;width:100%;height:100%;padding:var(--sp-16);cursor:zoom-in;}
+.vs-img img{width:100%;height:100%;object-fit:contain;display:block;}
+.vs-btn{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-pop);display:grid;place-items:center;color:var(--ink);}
+.vs-btn:hover{color:var(--accent);}
+.vs-btn[disabled]{opacity:.35;pointer-events:none;}
+.vs-btn svg{width:var(--size-icon);height:var(--size-icon);}
+.vs-btn.prev{left:var(--sp-12);} .vs-btn.next{right:var(--sp-12);}
+.vs-meta{padding:var(--sp-16);border-top:1px solid var(--line);}
+.vs-meta h5{font-family:var(--font-ui);font-size:var(--fs-16);line-height:var(--lh-24);font-weight:600;margin:var(--sp-4) 0 0;}
+.vs-meta p{margin:var(--sp-4) 0 0;font-size:var(--fs-14);line-height:var(--lh-20);color:var(--ink-2);}
+.vs-line{display:flex;gap:var(--sp-8);padding:var(--sp-12) var(--sp-16) var(--sp-16);border-top:1px solid var(--line);}
+.vs-seg{flex:1 1 0;min-width:40px;}
+.vs-seg .era-yrs{display:block;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.vs-seg.on .era-yrs{color:var(--accent);}
+.vs-seg b{display:block;font-size:var(--fs-12);line-height:var(--lh-16);font-weight:600;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.vs-dots{display:flex;gap:var(--sp-4);margin-top:var(--sp-8);}
+.vs-dot{flex:1 1 0;height:8px;min-width:8px;border-radius:4px;background:var(--line);}
+.vs-dot:hover{background:var(--ink-3);}
+.vs-dot.on{background:var(--accent);}
+@media (max-width:599px){ .vs-seg b{display:none;} }
+/* the enlarged view steps through the set */
+.lb-nav{display:flex;gap:var(--sp-4);margin-left:auto;flex:none;}
+.lb-nav[hidden]{display:none;}
+.lb-count{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-3);margin:0 0 var(--sp-4);}
+.lb-count:empty{display:none;}
+.lb-fig.swap{animation:lbswap .2s cubic-bezier(.32,.72,0,1) both;}
+@keyframes lbswap{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){ .lb-fig.swap{animation:none;} }
 
 /* --- lightbox --- */
 .lb{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:var(--sp-24);background:rgba(9,24,22,.66);backdrop-filter:blur(4px);}
@@ -681,8 +737,12 @@ a.chip{text-decoration:none;}
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
   <div class="lb-panel">
     <div class="lb-top">
-      <div><h4 id="lbTitle"></h4><p id="lbCap"></p></div>
-      <button class="icon-btn" id="lbClose" aria-label="Close image" style="margin-left:auto;">
+      <div><p class="lb-count" id="lbCount"></p><h4 id="lbTitle"></h4><p id="lbCap"></p></div>
+      <div class="lb-nav" id="lbNav" hidden>
+        <button class="icon-btn" id="lbPrev" aria-label="Previous image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+        <button class="icon-btn" id="lbNext" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      </div>
+      <button class="icon-btn" id="lbClose" aria-label="Close image">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
@@ -2511,8 +2571,8 @@ var TOPICS = {
     topic:'the visual work', nav:'Visual samples', navMeta:'Design work since 2013', rail:'VS',
     prompt:'Show me a visual sample.', title:'Visual samples',
     intro:[
-      {t:'p',v:'Designs from cinch, JD Sports, AO.com and Autocab. Tap any of them to see it full size, with a line on what it is.'},
-      {t:'cards',cls:'gallery',v:['cfHandover','acCities','jdBag','cfRecs','acDriver','aoCompare','cfBrief','jdFilters','recDesktop','acPassenger','cfCompromise','jdCheckout','cfCompare','hmcQuestion','cfReturn','hmcBodyTypes','cfJump','hmcPreselected','recMobile','hmcPrice']},
+      {t:'p',v:'Oldest first, from Autocab in 2013 to cinch now. Tap any of them to see it full size with a line on what it is, then step through the rest.'},
+      {t:'eras'},
       {t:'note',v:'<b>All of these are the real files.</b> The car finder screens are its working prototype, on sample data. The rest are design files, prototypes and live screens, with a few personal details blurred. Happy to walk through any of them in a call.'}
     ],
     probes:[
@@ -2818,6 +2878,77 @@ document.addEventListener('error', function(e){
     im.src=im.getAttribute('src').split('?')[0]+q;
   }, 1500);
 }, true);
+/* Visual samples, earliest first. Years are the years Ross worked at each
+   company, since the designs themselves aren't dated. */
+var ERAS=[
+  {co:'Autocab', y:'2013', yrs:'2013 to 2017', role:'Sole UX designer', groups:[{v:['acDriver','acPassenger','acCities']}]},
+  {co:'AO.com', y:'2017', yrs:'2017', role:'UX designer', groups:[{v:['aoCompare']}]},
+  {co:'JD Sports', y:'2019', yrs:'2019 to 2021', role:'Senior UX designer', groups:[{v:['jdBag','jdCheckout','jdFilters']}]},
+  {co:'cinch', y:'2021', yrs:'2021 to 2026', role:'Senior UX designer', groups:[
+    {label:'Help Me Choose', v:['hmcQuestion','hmcBodyTypes','hmcPreselected','hmcPrice','recDesktop','recMobile']},
+    {label:'Conversational car finder', v:['cfHandover','cfRecs','cfBrief','cfCompromise','cfCompare','cfReturn','cfJump']}
+  ]}
+];
+var GALLERY_LAYOUT='timeline';
+/* On the preview page only: a switch between the three layouts. */
+var PREVIEW_SWITCH=false;
+if(PREVIEW_SWITCH) document.addEventListener('DOMContentLoaded', function(){
+  var bar=document.createElement('div');
+  bar.setAttribute('style','position:fixed;z-index:90;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:4px;padding:4px;border-radius:999px;background:#14201E;box-shadow:0 8px 24px rgba(0,0,0,.25);font:600 12px/16px system-ui,sans-serif;');
+  [['timeline','1 · Timeline'],['strip','2 · Rows'],['stage','3 · One at a time']].forEach(function(o){
+    var b=document.createElement('button'); b.type='button'; b.textContent=o[1]; b.dataset.l=o[0];
+    b.setAttribute('style','white-space:nowrap;border:0;border-radius:999px;padding:8px 12px;cursor:pointer;color:#fff;background:'+(o[0]===GALLERY_LAYOUT?'#0A6E66':'transparent'));
+    b.addEventListener('click', function(){
+      GALLERY_LAYOUT=o[0];
+      [].forEach.call(bar.children, function(x){ x.style.background = x.dataset.l===GALLERY_LAYOUT ? '#0A6E66' : 'transparent'; });
+      document.querySelectorAll('.eras').forEach(function(el){ el.outerHTML=erasHTML(GALLERY_LAYOUT); });
+    });
+    bar.appendChild(b);
+  });
+  document.body.appendChild(bar);
+});
+function eraKeys(){ var ks=[]; ERAS.forEach(function(e){ e.groups.forEach(function(g){ ks=ks.concat(g.v); }); }); return ks; }
+function eraOf(key){ var hit=null; ERAS.forEach(function(e){ e.groups.forEach(function(g){ if(g.v.indexOf(key)>-1) hit=e; }); }); return hit; }
+function eraHeadHTML(e){ return '<header class="era-head"><span class="era-yrs">'+e.yrs+'</span><span class="era-co">'+e.co+'</span><span class="era-role">'+e.role+'</span></header>'; }
+function erasHTML(layout){
+  var keys=eraKeys(); keys.forEach(warmArt);
+  var set=' data-set="'+keys.join(',')+'"';
+  if(layout==='stage') return '<div class="eras eras-stage" data-layout="stage"'+set+'>'+stageHTML(keys,0)+'</div>';
+  var out='<div class="eras eras-'+layout+'" data-layout="'+layout+'"'+set+'>';
+  ERAS.forEach(function(e){
+    out+='<section class="era">'+(layout==='timeline'?'<span class="era-mark" aria-hidden="true"></span>':'')+eraHeadHTML(e);
+    e.groups.forEach(function(g){
+      if(g.label) out+='<div class="era-sub">'+g.label+'</div>';
+      out+='<div class="cards gallery">'; g.v.forEach(function(k){ out+=cardHTML(k); }); out+='</div>';
+    });
+    out+='</section>';
+  });
+  return out+'</div>';
+}
+function stageHTML(keys,i){
+  var k=keys[i], a=ART[k], e=eraOf(k), sub='';
+  e.groups.forEach(function(g){ if(g.label && g.v.indexOf(k)>-1) sub=' · '+g.label; });
+  var line='<div class="vs-line" role="group" aria-label="Move through the years">';
+  ERAS.forEach(function(er){
+    var ks=[]; er.groups.forEach(function(g){ ks=ks.concat(g.v); });
+    line+='<div class="vs-seg'+(er===e?' on':'')+'" style="flex-grow:'+ks.length+'"><span class="era-yrs">'+er.y+'</span><b>'+er.co+'</b><div class="vs-dots">';
+    ks.forEach(function(kk){ var n=keys.indexOf(kk); line+='<button type="button" class="vs-dot'+(n===i?' on':'')+'" data-stage="'+n+'" aria-label="'+ART[kk].title.replace(/"/g,'&quot;')+'"'+(n===i?' aria-current="true"':'')+'></button>'; });
+    line+='</div></div>';
+  });
+  line+='</div>';
+  return '<div class="vs" data-i="'+i+'">'+
+    '<div class="vs-fig"><button type="button" class="vs-img" data-art="'+k+'" aria-label="Open: '+a.title.replace(/"/g,'&quot;')+'">'+(a.img?shotHTML(a,true):a.svg())+'</button>'+
+    '<button type="button" class="vs-btn prev" data-stage="'+(i-1)+'" aria-label="Previous"'+(i===0?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>'+
+    '<button type="button" class="vs-btn next" data-stage="'+(i+1)+'" aria-label="Next"'+(i===keys.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div>'+
+    '<div class="vs-meta"><span class="era-yrs">'+e.co+' · '+e.yrs+sub+' · '+(i+1)+' of '+keys.length+'</span><h5>'+a.title+'</h5><p>'+a.caption+'</p></div>'+
+    line+'</div>';
+}
+function stageGo(root,i){
+  var keys=root.dataset.set.split(',');
+  if(i<0||i>=keys.length) return;
+  root.innerHTML=stageHTML(keys,i);
+  [i-1,i+1].forEach(function(n){ if(keys[n]) warmArt(keys[n]); });
+}
 function cardHTML(key){
   var a=ART[key];
   var inner = a.img ? shotHTML(a) : a.svg();
@@ -2871,6 +3002,7 @@ function blocksHTML(blocks){
        why, and a chip. The chip navigates, like the sidebar: the other case
        study opens as a conversation of its own, not underneath this one. */
     else if(b.t==='next' && byId[b.key]) out += '<div class="note next"><p>'+b.v+'</p><button class="chip" type="button" data-go="'+b.key+'">'+esc(b.label)+'</button></div>';
+    else if(b.t==='eras') out += erasHTML(b.layout||GALLERY_LAYOUT);
     else if(b.t==='cards'){ out+='<div class="cards '+(b.cls||'')+'">'; b.v.forEach(function(k){ out+=cardHTML(k); warmArt(k); }); out+='</div>'; }
     else if(b.t==='contact') out += contactHTML();
     /* the way into inspect mode, from the case study that explains it */
@@ -3092,7 +3224,7 @@ function streamInto(bodyEl, html, done){
   var sTop = stage.getBoundingClientRect().top, fold = rest + stage.clientHeight;
   var yOf = function(el){ return el.getBoundingClientRect().top - sTop + stage.scrollTop; };
   /* the blocks held out of the word reveal; words inside one come with it */
-  var blocks = [].slice.call(chunk.querySelectorAll('.cards,.chips-block,.note,.case-head .meta'));
+  var blocks = [].slice.call(chunk.querySelectorAll('.eras,.cards,.chips-block,.note,.case-head .meta'));
   blocks = blocks.filter(function(b){ return !blocks.some(function(o){ return o!==b && o.contains(b); }); });
   var inBlock = function(s){ return blocks.some(function(b){ return b.contains(s); }); };
   spans.filter(inBlock).forEach(function(s){ s.classList.add('on'); });
@@ -3682,14 +3814,38 @@ document.getElementById('sbClose').addEventListener('click', closeDrawer);
 scrim.addEventListener('click', closeDrawer);
 
 var lb=document.getElementById('lb'), lbFig=document.getElementById('lbFig'), lastFocus=null;
-function openLightbox(key){
+/* Opened from a set (Visual samples), the enlarged view steps through it:
+   the arrows beside the close button, the arrow keys, or a swipe. Stepping
+   swaps the picture in place, so back still closes it in one press. */
+var lbSet=null, lbIdx=0;
+function lbShow(key, swap){
   var a=ART[key];
-  if(!a) return;
-  lastFocus=document.activeElement;
   document.getElementById('lbTitle').textContent=a.title;
   document.getElementById('lbCap').textContent=a.caption;
-  lbFig.className = 'lb-fig' + (a.shot ? ' shot' : '');
+  var e=lbSet?eraOf(key):null;
+  document.getElementById('lbCount').textContent = lbSet ? (e?e.co+' · '+e.yrs+' · ':'')+(lbIdx+1)+' of '+lbSet.length : '';
+  lbFig.className = 'lb-fig' + (a.shot ? ' shot' : '') + (swap ? ' swap' : '');
   lbFig.innerHTML = a.img ? shotHTML(a, true) : a.svg();
+  document.getElementById('lbNav').hidden = !lbSet;
+  if(lbSet){
+    document.getElementById('lbPrev').disabled = lbIdx===0;
+    document.getElementById('lbNext').disabled = lbIdx===lbSet.length-1;
+    [lbIdx-1,lbIdx+1].forEach(function(n){ if(lbSet[n]) warmArt(lbSet[n]); });
+  }
+}
+function lbStep(d){
+  if(!lbSet || !lb.classList.contains('on')) return;
+  var n=lbIdx+d; if(n<0||n>=lbSet.length) return;
+  lbIdx=n; lbShow(lbSet[n], !REDUCED);
+  lb.querySelector('.lb-panel').scrollTop=0;
+}
+function openLightbox(key, set){
+  var a=ART[key];
+  if(!a) return;
+  lbSet = set && set.indexOf(key)>-1 ? set : null;
+  lbIdx = lbSet ? lbSet.indexOf(key) : 0;
+  lastFocus=document.activeElement;
+  lbShow(key, false);
   var wasOpen=lb.classList.contains('on');
   lb.classList.add('on');
   if(!wasOpen) overlayPush('lb');
@@ -3702,6 +3858,22 @@ function closeLightbox(fromHistory){
   if(fromHistory!==true) overlayDrop('lb');
 }
 document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', function(){ lbStep(-1); });
+document.getElementById('lbNext').addEventListener('click', function(){ lbStep(1); });
+document.addEventListener('keydown', function(e){
+  if(!lb.classList.contains('on') || !lbSet) return;
+  if(e.key==='ArrowLeft'){ e.preventDefault(); lbStep(-1); }
+  else if(e.key==='ArrowRight'){ e.preventDefault(); lbStep(1); }
+});
+(function(){
+  var x0=null, y0=0;
+  lb.addEventListener('touchstart', function(e){ if(e.touches.length!==1){ x0=null; return; } x0=e.touches[0].clientX; y0=e.touches[0].clientY; }, {passive:true});
+  lb.addEventListener('touchend', function(e){
+    if(x0===null) return;
+    var t=e.changedTouches[0], dx=t.clientX-x0, dy=t.clientY-y0; x0=null;
+    if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)*1.5) lbStep(dx<0?1:-1);
+  }, {passive:true});
+})();
 lb.addEventListener('click', function(e){ if(e.target===lb) closeLightbox(); });
 document.addEventListener('keydown', function(e){
   if(e.key!=='Escape') return;
@@ -3753,8 +3925,10 @@ document.addEventListener('click', function(e){
   }
   var go=e.target.closest('[data-go]');
   if(go){ openEntry(go.dataset.go); return; }
+  var st=e.target.closest('[data-stage]');
+  if(st){ stageGo(st.closest('.eras-stage'), parseInt(st.dataset.stage,10)); return; }
   var card=e.target.closest('[data-art]');
-  if(card) openLightbox(card.dataset.art);
+  if(card){ var sc=card.closest('[data-set]'); openLightbox(card.dataset.art, sc ? sc.dataset.set.split(',') : null); }
 });
 document.getElementById('railHome').addEventListener('click', enterZero);
 /* The brand lockup is the route home, the way a product logo usually is. */
