@@ -3335,6 +3335,44 @@ button, is more than it needs. That is purpose rather than taste. The links
 on to other threads at the end of the answer stay. Checked at 1280 and 390 wide in a test browser, no script
 errors; not on a real phone.
 
+### Visual samples as a timeline: three layouts on a preview
+
+Commit `62118ed` on the branch `gallery-timeline`, shown on a new private
+preview page, "Visual samples preview", with a switch between the layouts. Not
+on `main`.
+
+**Oldest first.**
+*Called by: Ross:* "Lets organise it from oldest to newest as people have seen
+cinch stuff in the case study." His thought: as a timeline it could show how
+his design skills have improved. Autocab, then AO.com, JD Sports and cinch, the
+cinch screens split into Help Me Choose and the car finder.
+
+**Each employer gets a header: years, company, job title.**
+*Called by: Claude.* Years are the years he worked there, as he asked earlier
+the same day; the titles are the ones on his CV (Sole UX designer at Autocab,
+UX designer at AO.com, Senior UX designer at JD Sports and cinch). cinch is
+"2021 to 2026", not dated per project.
+
+**Three ways to show it.**
+*Called by: Ross (asked for three), Claude (what they are).* 1 Timeline: a rail
+down the left with a mark at each employer and the cards in a grid beside it.
+2 Rows: one sideways-scrolling row per employer, so every employer is on
+screen at once. 3 One at a time: a single large piece, its caption under it,
+arrows either side, and a bar of the years with a dot per piece to jump along.
+
+**The enlarged view steps through the set.**
+*Called by: Ross (the ask), Claude (how).* From Visual samples the lightbox has
+previous and next beside the close button, answers the arrow keys and a
+sideways swipe, and says where you are ("JD Sports · 2019 to 2021 · 6 of 20").
+It swaps the picture in place, so back still closes it in one press, as the
+15 October rule has it. Case study pictures open alone, as before.
+
+**Verification.** Chromium at 1440 light and 390 dark (touch): all three
+layouts render with no sideways scroll; the one-at-a-time arrows move along;
+the lightbox steps by arrow key and button across employers; back closes it
+and stays on the site; no script errors. Not checked: Safari, a real phone's
+swipe.
+
 ---
 
 ## Open items
