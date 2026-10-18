@@ -2894,23 +2894,6 @@ var ERAS=[
   ]}
 ];
 var GALLERY_LAYOUT='timeline';
-/* On the preview page only: a switch between the three layouts. */
-var PREVIEW_SWITCH=false;
-if(PREVIEW_SWITCH) document.addEventListener('DOMContentLoaded', function(){
-  var bar=document.createElement('div');
-  bar.setAttribute('style','position:fixed;z-index:90;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:4px;padding:4px;border-radius:999px;background:#14201E;box-shadow:0 8px 24px rgba(0,0,0,.25);font:600 12px/16px system-ui,sans-serif;');
-  [['timeline','1 · Timeline'],['strip','2 · Rows'],['stage','3 · One at a time']].forEach(function(o){
-    var b=document.createElement('button'); b.type='button'; b.textContent=o[1]; b.dataset.l=o[0];
-    b.setAttribute('style','white-space:nowrap;border:0;border-radius:999px;padding:8px 12px;cursor:pointer;color:#fff;background:'+(o[0]===GALLERY_LAYOUT?'#0A6E66':'transparent'));
-    b.addEventListener('click', function(){
-      GALLERY_LAYOUT=o[0];
-      [].forEach.call(bar.children, function(x){ x.style.background = x.dataset.l===GALLERY_LAYOUT ? '#0A6E66' : 'transparent'; });
-      document.querySelectorAll('.eras').forEach(function(el){ el.outerHTML=erasHTML(GALLERY_LAYOUT); });
-    });
-    bar.appendChild(b);
-  });
-  document.body.appendChild(bar);
-});
 function eraKeys(){ var ks=[]; ERAS.forEach(function(e){ e.groups.forEach(function(g){ ks=ks.concat(g.v); }); }); return ks; }
 function eraOf(key){ var hit=null; ERAS.forEach(function(e){ e.groups.forEach(function(g){ if(g.v.indexOf(key)>-1) hit=e; }); }); return hit; }
 function eraHeadHTML(e){ return '<header class="era-head"><span class="era-yrs">'+e.yrs+'</span><span class="era-co">'+e.co+'</span><span class="era-role">'+e.role+'</span></header>'; }
