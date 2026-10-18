@@ -3308,6 +3308,33 @@ stays in the case study. 21 cards.
 *Called by: Ross:* "Its already in the case study." It stays in Help Me Choose,
 under "Why Axure rather than Figma?". 20 cards.
 
+### Get in touch, cut to the routes
+
+**No phone number.**
+*Called by: Ross:* "I don't want my phone number on there." Nothing to change:
+the site and CV carry no number, and the mobile came off the public CV in
+Pass 1. Recorded so a later chat doesn't add one. The dormant `CAL_URL` booking
+path stays dormant; if it is ever switched on, the earlier rule holds that the
+form must not ask for or show his number either.
+
+**Email stays primary; LinkedIn is added.**
+*Called by: Ross:* "The email button is fine. I think a message on LinkedIn is
+fine too." Claude added "Message me on LinkedIn" as the second button in the
+contact card, between email and the CV, and put LinkedIn in the opener line
+("Quickest route is email, or a message on LinkedIn") and the sidebar meta.
+Ross gave no reason; Claude's reading is channel rather than taste: recruiters
+often start on LinkedIn, and the profile was only linked from the CV page. The card shows up wherever
+the contact block does, including the salary and notice answer.
+
+**The two follow-ups go.**
+*Called by: Ross:* "I don't think we should have follow ups like What are you
+like to work with or What should I put in the message." His reason is in
+keeping with the clock decision: the page's job is to get someone to write,
+and coaching them on what to write, or pitching himself one step from the
+button, is more than it needs. That is purpose rather than taste. The links
+on to other threads at the end of the answer stay. Checked at 1280 and 390 wide in a test browser, no script
+errors; not on a real phone.
+
 ---
 
 ## Open items

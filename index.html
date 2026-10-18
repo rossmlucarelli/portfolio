@@ -2528,24 +2528,15 @@ var TOPICS = {
     follow:['car-finder','help-me-choose','contact']
   },
   contact:{
-    topic:'getting in touch', nav:'Get in touch', navMeta: CAL_URL ? 'Call · email · CV' : 'Email · CV', rail:'✉',
+    topic:'getting in touch', nav:'Get in touch', navMeta: CAL_URL ? 'Call · email · LinkedIn · CV' : 'Email · LinkedIn · CV', rail:'✉',
     prompt:'How do I get in touch?', title:'Get in touch',
     intro:[
       {t:'p',cls:'lede',v: CAL_URL
         ? 'Quickest route is fifteen minutes on a call — weekday evenings, early mornings or Saturday mornings. Email works just as well, and I don’t mind a vague brief: working out what a thing should be is most of the job.'
-        : 'Quickest route is email. I reply to everything that’s actually about a role, and I don’t mind a vague brief — working out what a thing should be is most of the job.'},
+        : 'Quickest route is email, or a message on LinkedIn. I reply to everything that’s actually about a role, and I don’t mind a vague brief — working out what a thing should be is most of the job.'},
       {t:'contact'}
     ],
-    probes:[
-      {q:'What should I put in the message?', a:[
-        {t:'p',v:'The problem, not the process. What’s hard about the product, who else is on the team, and whether the role is close to the decisions or downstream of them. Salary band if you have one — it saves us both a round.'},
-        {t:'p',v:'You don’t need a polished spec. I’d rather read three honest sentences than a job description written by committee.'}
-      ]},
-      {q:'What are you like to work with?', a:[
-        {t:'p',v:'Direct, and faff-free. I’ll tell you early if I think something won’t work, and I’ll tell you in front of the people who need to hear it rather than afterwards in a DM.'},
-        {t:'p',v:'I work well with Product Owners and engineers, I’m comfortable in front of SLT, and I make my own edits rather than sending feedback back and forth. Ask the people I’ve worked with — I’m happy to put you in touch.'}
-      ]}
-    ],
+    probes:[],
     follow:['car-finder','philosophy','gallery']
   }
 };
@@ -2675,6 +2666,7 @@ var ASKABLE = [
 /* =========================================================
    3. Intent routing
    ========================================================= */
+var LINKEDIN = 'https://www.linkedin.com/in/rossmlucarelli/';
 var MAIL = 'mailto:rossmlucarelli@gmail.com?subject=' + encodeURIComponent('Inquiry regarding UX role - via RossLM');
 var MAIL_CV = 'mailto:rossmlucarelli@gmail.com?subject=' + encodeURIComponent('CV request - via RossLM') +
   '&body=' + encodeURIComponent('Hi Ross — could you send over your CV? Context on the role:\n\n');
@@ -2842,6 +2834,7 @@ function contactHTML(){
   }else{
     acts += '<a class="chip primary" href="'+MAIL+'">Email me about a role</a>';
   }
+  acts += '<a class="chip" href="'+LINKEDIN+'" target="_blank" rel="noopener">Message me on LinkedIn</a>';
   acts += '<a class="chip" href="'+CV.href+'"'+CV.attrs+'>'+CV.label+'</a>';
   var fine = CAL_URL
     ? 'Weekday evenings, early mornings and Saturday mornings.<br>rossmlucarelli@gmail.com · '+CV.note
