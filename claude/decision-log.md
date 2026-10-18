@@ -3172,6 +3172,24 @@ notice and asked which one counts. This one does, so what goes in it has to be
 safe to publish: no colleague names, and nothing cinch would keep internal.
 Ross is deleting the project doc himself.
 
+### The clock comes out
+
+**The UK time leaves the top bar.**
+*Called by: Ross:* "Let's remove the clock from the site, it's not adding
+anything to the purpose." The reason is purpose rather than taste: the site is
+there to show how he designs, and a live time does not. This supersedes "Time-of-day
+signal kept, but moved" (Pass 1), which put "9:54pm UK" in the header chip.
+Claude made the knock-on changes: the Decisions button takes the chip's place
+on the right; the "My time, not yours" card leaves the Decisions overlay, so
+nine decisions are marked on the page and the "So is this page AI-generated?"
+answer now says nine, not ten; and the clock drops out of the examples in "Where did Claude add
+something you hadn't asked for?", which keeps the prompt box and the glass. The
+availability line in the sidebar ("Weekday evenings, early mornings...") is
+static and stays. On a phone the thread's title gets back the room the theme
+switch took from it in Pass 4. Checked at 1440 and 390 wide in a test browser,
+light theme, no script errors; not on a real phone. Ross also asked what could
+show design thinking in its place; that is open, not decided.
+
 ---
 
 ## Open items

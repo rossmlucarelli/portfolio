@@ -166,7 +166,6 @@ a{color:var(--accent);text-underline-offset:3px;}
 .icon-btn svg{width:var(--size-icon-lg);height:var(--size-icon-lg);display:block;}
 .topbar .title{font-family:var(--font-ui);font-weight:600;font-size:var(--fs-16);line-height:var(--lh-24);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .main.zero .topbar .title{opacity:0;}
-.status{margin-left:auto;display:flex;align-items:center;gap:var(--sp-8);flex:none;font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-3);border:1px solid var(--line);border-radius:var(--r-pill);padding:var(--sp-4) var(--sp-12) var(--sp-4) var(--sp-8);white-space:nowrap;}
 .dot{width:var(--size-dot);height:var(--size-dot);border-radius:50%;background:var(--accent);flex:none;}
 
 /* Full-bleed on purpose. The old version was capped at 1100px, so on a wide
@@ -563,7 +562,7 @@ a.chip{text-decoration:none;}
 .ins-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-8);margin-top:var(--sp-12);padding-top:var(--sp-12);border-top:1px solid var(--line);}
 .ins-foot .n{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-3);}
 .ins-foot .chip{padding:var(--sp-4) var(--sp-12);}
-.ins-btn{display:flex;align-items:center;gap:var(--sp-8);flex:none;font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-2);border:1px solid var(--line);border-radius:var(--r-pill);padding:var(--sp-4) var(--sp-12) var(--sp-4) var(--sp-8);white-space:nowrap;transition:background .14s ease,border-color .14s ease,color .14s ease;}
+.ins-btn{margin-left:auto;display:flex;align-items:center;gap:var(--sp-8);flex:none;font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-2);border:1px solid var(--line);border-radius:var(--r-pill);padding:var(--sp-4) var(--sp-12) var(--sp-4) var(--sp-8);white-space:nowrap;transition:background .14s ease,border-color .14s ease,color .14s ease;}
 .ins-btn svg{width:var(--size-icon);height:var(--size-icon);flex:none;}
 .ins-btn:hover,.ins-btn[aria-pressed="true"]{background:var(--ins-tint);border-color:var(--ins);color:var(--ins);}
 .ins-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
@@ -575,7 +574,7 @@ a.chip{text-decoration:none;}
 .ins-count{flex:none;font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ins);background:var(--ins-tint);border-radius:var(--r-pill);padding:var(--sp-4) var(--sp-8);}
 .ins-bar .chip{flex:none;padding:var(--sp-4) var(--sp-12);}
 @media (max-width:599px){
-  .inspecting .status,.ins-label,.ins-first,.ins-w,#insBtn span{display:none;}
+  .ins-label,.ins-first,.ins-w,#insBtn span{display:none;}
   #insBtn{padding:var(--sp-8);border-color:transparent;}
   .ins-card{width:auto;}
 }
@@ -643,7 +642,6 @@ a.chip{text-decoration:none;}
         <button class="chip ins-first" type="button" id="insFirst">First screen</button>
         <button class="chip" type="button" id="insDone">Done</button>
       </div>
-      <div class="status" id="statusChip"><span class="dot" aria-hidden="true"></span><span id="clockTop"></span></div>
       <button class="ins-btn" id="insBtn" type="button" aria-pressed="false" aria-label="Show the decisions behind this page" title="Show the decisions behind this page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>Decisions</span></button>
       <button class="theme-btn" id="themeBtn" aria-label="Switch colour theme">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
@@ -2293,7 +2291,6 @@ var CASES = [
       {q:'Where did Claude add something you hadn’t asked for?', a:[
         {t:'p',v:'Mostly when I’d had an idea and was still fleshing it out. I’d say what I wanted, and Claude would come back with the part I hadn’t got to yet. It’s a little delighter for me in UX terms, as it’s one more thing dealt with.'},
         {t:'decisions',v:[
-          {k:'The clock',v:'I moved the time out of the greeting. Claude made it show my time rather than yours, so it says where I am.'},
           {k:'The prompt box',v:'I wanted it to answer recruiters’ questions. Claude added the list showing what has an answer, plus an email link that fills in your question when there isn’t one.'},
           {k:'The glass',v:'I asked for a glass effect. Claude floated the pane in from the edges, because going edge to edge would only have looked tinted.'}
         ]},
@@ -2461,7 +2458,7 @@ var TOPICS = {
         {t:'p',v:'The decisions are split between me and Claude. Claude writes, measures and checks the code, and pushes it live from the chat. I decide what it should be and judge how it feels, like the progressive disclosure you’re using now, the guardrail that stops it inventing answers, and showing a compromise rather than a confidence score.'},
         {t:'p',v:'Every decision goes in a log saying who called it, why, and which ones were down to taste. Gemini rewords the copy, and Claude checks every line against the sources.'},
         {t:'stats',v:[{n:250,suffix:'+',label:'Decisions logged'},{n:17,label:'Marked as taste'},{n:31,label:'Days of building'}],src:'From the decision log, 18 October 2026'},
-        {t:'next',key:'making',v:'The whole story, and ten of those decisions marked on the page itself.',label:'How this site was made'}
+        {t:'next',key:'making',v:'The whole story, and nine of those decisions marked on the page itself.',label:'How this site was made'}
       ]}
     ],
     follow:['making','agentic','contact']
@@ -3411,31 +3408,8 @@ function ask(text){
 }
 
 /* =========================================================
-   6. Greeting, clock, typed hint
+   6. Greeting, typed hint
    ========================================================= */
-
-function ukNow(){
-  try{
-    var parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',hour:'numeric',minute:'2-digit',weekday:'short',hour12:false}).formatToParts(new Date());
-    var o={};
-    parts.forEach(function(p){ o[p.type]=p.value; });
-    return {h:parseInt(o.hour,10), min:o.minute, day:o.weekday};
-  }catch(err){ return null; }
-}
-/* UK time, compact, in the header chip. */
-function clockShort(){
-  var uk=ukNow();
-  if(!uk) return 'UK time';
-  var suffix=uk.h>=12?'pm':'am';
-  var h12=uk.h%12===0?12:uk.h%12;
-  return h12+':'+uk.min+suffix+' UK';
-}
-function paintClock(){
-  var top=document.getElementById('clockTop');
-  if(top) top.textContent=clockShort();
-}
-paintClock();
-setInterval(paintClock,30000);
 
 var ghost=document.getElementById('ghost'), input=document.getElementById('input');
 /* The hint cycles the questions people actually arrive with. Each one has a
@@ -3772,9 +3746,6 @@ var Inspect=(function(){
     {id:'sidebar', sel:[{s:'.sidebar .sb-brand', ax:1, ay:.5, dx:-24},{s:'#rail .tile', ax:1, ay:0},{s:'#menuBtn', ax:1, ay:1, dx:2, dy:2}],
      title:'Frosted glass', tag:['My idea','Claude took it further'],
      text:'I asked for the sidebar as glass. Claude saw that, edge to edge, glass would just look tinted, so it floated the pane in from the edges, where the gap round it makes it read as glass. It also kept the phone menu nearly solid, where glass looked murky.'},
-    {id:'clock', sel:['#statusChip'], ax:0, ay:.5,
-     title:'My time, not yours', tag:['My idea','Claude took it further'],
-     text:'I moved the time out of the greeting, because a greeting on your clock told you nothing about me. Claude’s idea was to show my time instead, so it says where I am and when I’m likely to reply.'},
     {id:'mark', sel:['#heroMark','.msg:not(.user) .av'], ax:.85, ay:.15,
      title:'The mark that thinks', tag:['My idea','Claude took it further'],
      text:'My idea: a ball of liquid mirror that speeds up while it finds an answer, and reacts when you poke it. Claude made the dent stay under your finger, made quick pokes count for more, and kept it a hidden extra that nothing on the page points at. Try it.'},
