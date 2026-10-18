@@ -3126,6 +3126,41 @@ repo. It is now `claude/decision-log.md` in `rossmlucarelli/portfolio`, and a
 chat appends to it instead of rewriting it. The project doc is replaced by a
 pointer to this file.
 
+### An update notice, not pull to refresh
+
+Commit `2ce4a96`, pushed straight to `main`: "2. Please yeah."
+
+**Pull to refresh was never missing: the site switches it off.**
+*Raised by: Ross (he forgets to reload, because moving round a one-page site
+fetches nothing new, and asked whether pull to refresh was worth adding),
+Claude (the cause).* The page itself never scrolls; only the conversation area
+does, and it is set to `overscroll-behavior: contain`, which is the standard way
+to stop the phone's own pull to refresh inside a chat. On this site a refresh
+wipes the conversation, so a visitor who overshoots the top of a long answer
+would lose everything they had opened.
+
+**A notice when a newer version is live, from two.**
+*Called by: Ross, from Claude's two options, with Claude leaning to this one.*
+The other was to let the phone's gesture back on the first screen only, where
+nothing is lost. A script pull to refresh was not offered: it fights the
+phone's gesture. The notice fixes the forgetting itself, on every device.
+
+**How it works.**
+*Called by: Claude.* When the tab comes back into view or the window regains
+focus, at most once a minute, and every five minutes while it is open, the page
+asks the server for its ETag or Last-Modified with a HEAD request, or hashes the
+page if neither comes back. The first answer is the baseline. If a later one
+differs, a pill under the top bar says "The site has been updated." with Reload
+and a close button; closing it stops the checks until the next load. It is
+shown to visitors too, which is harmless. It does not keep the conversation
+across the reload.
+
+**Verification.** Chromium at 1440 wide in light and 390 wide in dark, served
+locally: no notice while the file was unchanged, the notice after it changed,
+one line at 390, Reload reloads, no script errors. Which header Cloudflare
+sends was not checked: the live site could not be reached from this session.
+Not checked: a real phone, Safari.
+
 ---
 
 ## Open items
