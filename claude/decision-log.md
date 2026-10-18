@@ -3231,6 +3231,16 @@ research rather than a design, and the illustrated body types screen carries
 another designer's illustrations, which an unexplained gallery would pass off
 as Ross's.
 
+**Both out as well.**
+*Called by: Ross, agreeing with Claude's two points.* The Miro grouping board
+and the illustrated body types screen leave Visual samples with the photos and
+charts, so 9 of the 24 cards go and 15 are left. Both stay in the Help Me
+Choose case study, where the credit and the context sit next to them.
+
+**Finding the older work.** Ross's earlier portfolios on UXfolio and Behance
+are both unpublished, and some UXfolio case studies only ever showed images
+as thumbnails. Nothing is built until he has the files.
+
 ---
 
 ## Open items
