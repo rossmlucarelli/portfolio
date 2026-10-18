@@ -3304,6 +3304,10 @@ card is cinch's current results page, the "before" in the Help Me Choose case
 study, and the weakest-looking screen on a page that is now designs only. It
 stays in the case study. 21 cards.
 
+**The Axure prototype comes out as well.**
+*Called by: Ross:* "Its already in the case study." It stays in Help Me Choose,
+under "Why Axure rather than Figma?". 20 cards.
+
 ---
 
 ## Open items
