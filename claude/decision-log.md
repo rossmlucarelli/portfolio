@@ -3389,6 +3389,15 @@ Measured across all 20 steps at 1440 and 390 wide: the next button's top
 never moved. Commit `5e30d64` on `gallery-timeline`; the preview page is
 updated.
 
+**Live.**
+*Called by: Ross:* "Push everything live please." `gallery-timeline` went to
+`main` as a fast-forward with the timeline as the layout. The preview's layout
+switch is out of the code; the rows and one-at-a-time layouts stay in the file,
+unused, and come back by changing `GALLERY_LAYOUT`. Checked again on the merged
+code at 1440 light and 390 dark: four employers in order, 20 cards, every image
+loads, no sideways scroll, the lightbox steps through all 20 with its next
+button never moving, back closes it, no script errors.
+
 ---
 
 ## Open items
