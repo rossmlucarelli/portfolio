@@ -3161,6 +3161,17 @@ one line at 390, Reload reloads, no script errors. Which header Cloudflare
 sends was not checked: the live site could not be reached from this session.
 Not checked: a real phone, Safari.
 
+### The repo copy is the log
+
+**One log, in the repo; the project doc goes.**
+*Called by: Ross:* "Repo copy. I'll remove the original." By 18 October there
+were two: the claude.ai project doc, which said the log had been taken out of
+the repo because the repo is public, and this anonymised copy, put back by
+another chat in `be734fa`. Claude found they disagreed while logging the update
+notice and asked which one counts. This one does, so what goes in it has to be
+safe to publish: no colleague names, and nothing cinch would keep internal.
+Ross is deleting the project doc himself.
+
 ---
 
 ## Open items
@@ -3607,8 +3618,10 @@ Each needs Ross's real answer before it goes back.
       does not say the rest of the site was left alone on purpose. Worth a
       line, since "knowing which genre a tool suits" is the same kind of
       judgement the case study is about.
-- [ ] **The project doc version of this log** is replaced by a pointer. Delete
+- [x] **The project doc version of this log** is replaced by a pointer. Delete
       it from claude.ai when the repo copy has been read and trusted.
+      *Settled 18 October: the repo copy is the log, and Ross is removing the
+      project doc.*
 - [ ] **Tweaks to the topic answers and microcopy** are still welcome; they
       just do not go through Gemini. No list of them exists yet.
 
