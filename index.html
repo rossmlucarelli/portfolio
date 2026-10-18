@@ -2372,8 +2372,8 @@ var TOPICS = {
         {t:'p',v:'An agent built on the documented process inherits the same blind spot and adds confidence to it. So before automating a workflow I would go and stand next to the people doing it, for the same reason I went to the yard.'}
       ]},
       {q:'Have you shipped an agent?', a:[
-        {t:'p',v:'Not one that completes multi-step work on someone’s behalf, and I would rather say so here than have it come up in an interview.'},
-        {t:'p',v:'What I have done is the design problem from both sides. I designed a model-driven product from the argument for it through to its failure states. I wrote the prompt for its predecessor and tested the idea by running example briefs through an LLM. And I built this site by supervising a model through all of it, with a record of where it went wrong.'},
+        {t:'p',v:'Not one that completes multi-step work on someone else’s behalf, and I would rather say so here than have it come up in an interview.'},
+        {t:'p',v:'What I have done is the design problem from both sides. I designed a model-driven product from the initial argument through to its failure states, wrote the prompt for its predecessor, and tested the idea by running example briefs through an LLM. And I built this site by supervising a model through the whole thing, keeping a log of where it went wrong.'},
         {t:'p',v:'What I haven’t done is watch one of those designs meet real use at scale. That is the experience I am looking for next.'}
       ]}
     ],
@@ -2418,29 +2418,30 @@ var TOPICS = {
     prompt:'How do you use AI in your work?', title:'How I use AI',
     intro:[
       {t:'p',cls:'lede',v:'I’ve really enjoyed designing with AI as a sounding board. It’s a bit like design tennis, but with someone always there.'},
-      {t:'p',v:'I use it as an extension of my own ideas. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way. I also like the efficiency of using connectors to let disparate apps talk to each other.'},
-      {t:'p',v:'This page is the worked example: a conversational surface with a deliberate guardrail, no live model at read time, and therefore no capacity to invent a claim about my work.'}
+      {t:'p',v:'I use it as an extension of my own ideas. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way. I also use connectors so Claude can reach Figma, Drive, Gmail, Jira, Confluence and my Plaud research recordings. And I built my own connector between Claude and Gemini, an MCP server I host, so I can send work to Gemini without leaving the window.'},
+      {t:'p',v:'This page is a worked example. It has a conversational surface with a deliberate guardrail and no live model at read time, so it cannot invent a claim about my work.'}
     ],
     probes:[
       {q:'Where has it actually saved you time?', a:[
-        {t:'p',v:'Three places, consistently:'},
-        {t:'list',v:[
-          '<b>The twentieth variation.</b> AI is good at producing twenty and bad at knowing which one to defend to a stakeholder. I use it for the twenty.',
-          '<b>First-pass synthesis.</b> Forty pages of interview notes into a clustered starting point I then argue with. The arguing is the research; the clustering was never the valuable part.',
-          '<b>Working prototypes.</b> Getting an interaction real enough to test in an afternoon rather than a sprint — which is how the criteria chips on the car finder got settled.'
-        ]}
+        {t:'p',v:'Turning repeatable jobs into reusable skills. I built a skill that reads real customer search terms, works out what they meant, groups them, and suggests search improvements. Another rebuilds a finished deck inside the company PowerPoint template.'}
+      ]},
+      {q:'How do you set up your own workflow?', a:[
+        {t:'p',v:'I keep a favourite model for each job: Claude for agentic work and building, Gemini (Argon) for words that sound like a person, and Gemini’s image model for pictures. Models get confused and drift over long back-and-forths, so I plan prompts in Gemini before taking the work into Claude.'},
+        {t:'p',v:'When Claude gets something wrong, I fix the method rather than just the answer. After it filed a misspelt “bmx x3” customer search as unclear when it meant a BMW X3, I turned the correction into a rule, and that rule became the search-sorting skill.'},
+        {t:'p',v:'For field research, I record on a Plaud Note Pro and work through the raw notes in NotebookLM. I’ve also built a skill that debriefs recordings of my own presentations, checking how they landed, where my delivery slipped, what was scripted versus off the cuff, and how I’m progressing against earlier talks.'}
       ]},
       {q:'What have you seen go wrong?', a:[
-        {t:'p',v:'Designers who can’t explain their own decisions in a critique, because the decision was made by a tool and they only saw the output. That’s a career problem, not a tooling problem.'},
-        {t:'p',v:'And unsourced figures. A generated number reads exactly like a researched one, and once it’s in a deck it propagates. I verify everything numeric against a primary source before it reaches a document — it’s the rule I break least.'}
+        {t:'p',v:'Designers who can’t explain their own decisions in a critique because a tool made the call and they only saw the output. That’s a career problem, not a tooling problem.'},
+        {t:'p',v:'Also, unsourced figures. A generated number reads just like a researched one, and once it’s in a deck it spreads. I verify every number against a primary source before it goes into a document. It’s the rule I break least.'}
       ]},
       {q:'How did you pitch it internally?', a:[
-        {t:'p',v:'I put together a proposal for adopting Claude as the design team’s primary AI tool, built from an analysis of how the team actually works rather than a feature comparison — because a feature comparison is an argument nobody in a design team finds persuasive.'},
-        {t:'p',v:'I pressure-tested it with colleagues before it went near a decision-maker. Two of them found holes in it, which is exactly what you want to happen at the draft stage rather than in the room.'}
+        {t:'p',v:'I put together a proposal for adopting Claude as the design team’s primary AI tool. It started as a comparison with the tool we already had.'},
+        {t:'p',v:'Before it went to our Head of Design, I ran it past two colleagues. I’d only just started using Claude and knew Gemini better at the time, so I wanted their experience. Their feedback changed the framing from Claude against another tool to Claude against not using it at all.'}
       ]},
       {q:'So is this page AI-generated?', a:[
-        {t:'p',v:'The build was AI-assisted and I’m not going to pretend otherwise — the whole point of the page is that hiding it would be the wrong move.'},
-        {t:'p',v:'The decisions are mine: the progressive disclosure you’re using right now, the guardrail that stops it inventing answers, the choice to show a compromise rather than a confidence score. Those are the things I’d defend in a critique, and they’re the things worth judging me on.'}
+        {t:'p',v:'The build was AI-assisted and I’m not going to pretend otherwise. Hiding it would miss the whole point of the page.'},
+        {t:'p',v:'The decisions are split between me and Claude. Claude writes, measures and checks the code, and pushes it live from the chat. I decide what it should be and judge how it feels, like the progressive disclosure you’re using now, the guardrail that stops it inventing answers, and showing a compromise rather than a confidence score.'},
+        {t:'p',v:'Every decision goes in a log saying who called it, why, and which ones were down to taste. Gemini rewords the copy, and Claude checks every line against the sources.'}
       ]}
     ],
     follow:['making','agentic','contact']
@@ -2528,7 +2529,8 @@ var QA = [
     terms:{'use ai':3,'using ai':3,'used ai':3,'ai in your':3,'ai tools':3,'ai tool':3,'work with ai':3,'design with ai':3,
       'designing with ai':3,'ai workflow':3,'ai in design':3},
     a:[
-      {t:'p',v:'I’ve really enjoyed designing with AI as a sounding board. It’s a bit like design tennis, but with someone always there. I use it as an extension of my own ideas. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way. I also like the efficiency of using connectors to let disparate apps talk to each other.'}
+      {t:'p',v:'I’ve really enjoyed designing with AI as a sounding board. It’s a bit like design tennis, but with someone always there. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way.'},
+      {t:'p',v:'In practice, I keep a favourite model per job (Claude for building, Gemini for words and images), connect Claude to tools like Figma, Jira, Drive and my Plaud recordings, and I’ve built my own connector between Claude and Gemini, an MCP server I host. I also turn repeatable tasks into reusable skills, like one that sorts real customer searches by what people meant and one that rebuilds decks in the company PowerPoint template.'}
     ],
     follow:['ai','agentic']
   },
