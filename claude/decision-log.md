@@ -3373,6 +3373,22 @@ the lightbox steps by arrow key and button across employers; back closes it
 and stays on the site; no script errors. Not checked: Safari, a real phone's
 swipe.
 
+**Timeline, from three.**
+*Called by: Ross, with Claude agreeing when asked. Taste: "I love timeline."*
+Claude's reason for leaning that way: it reads as a career at a glance, and
+the stepping lightbox already gives the one-at-a-time story to anyone who
+opens a piece.
+
+**The arrows stayed put only when the pictures were the same size.**
+*Called by: Ross (spotted: the next button "jumps around vertically" as each
+one loads), Claude (the cause and the fix).* The panel is centred on screen
+and took the height of each picture and caption, so its top bar, and the
+arrows in it, moved with every step. While stepping through a set the panel
+now keeps one height, 92% of the screen, and the picture is centred in it.
+Measured across all 20 steps at 1440 and 390 wide: the next button's top
+never moved. Commit `5e30d64` on `gallery-timeline`; the preview page is
+updated.
+
 ---
 
 ## Open items
