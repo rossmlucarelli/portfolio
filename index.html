@@ -503,6 +503,10 @@ a.chip{text-decoration:none;}
 .vs-dot.on{background:var(--accent);}
 @media (max-width:599px){ .vs-seg b{display:none;} }
 /* the enlarged view steps through the set */
+/* stepping through a set, the panel keeps one height, so the arrows stay put
+   whatever the size of the picture or the length of its caption */
+.lb.set .lb-panel{height:92vh;height:92dvh;display:flex;flex-direction:column;}
+.lb.set .lb-fig{flex:1 0 auto;display:grid;align-content:center;}
 .lb-nav{display:flex;gap:var(--sp-4);margin-left:auto;flex:none;}
 .lb-nav[hidden]{display:none;}
 .lb-count{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-3);margin:0 0 var(--sp-4);}
@@ -3827,6 +3831,7 @@ function lbShow(key, swap){
   lbFig.className = 'lb-fig' + (a.shot ? ' shot' : '') + (swap ? ' swap' : '');
   lbFig.innerHTML = a.img ? shotHTML(a, true) : a.svg();
   document.getElementById('lbNav').hidden = !lbSet;
+  lb.classList.toggle('set', !!lbSet);
   if(lbSet){
     document.getElementById('lbPrev').disabled = lbIdx===0;
     document.getElementById('lbNext').disabled = lbIdx===lbSet.length-1;
