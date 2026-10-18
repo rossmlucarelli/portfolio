@@ -1,4 +1,14 @@
-<!doctype html><html lang="en-GB"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Ross Lucarelli · RossLM portfolio</title><meta name="description" content="An interactive look at the AI product design, product thinking and case studies of Ross Lucarelli, Senior UX Designer."><meta name="robots" content="noindex"><link rel="canonical" href="https://rosslucarelli.com/"><meta property="og:type" content="website"><meta property="og:title" content="Ross Lucarelli · RossLM portfolio"><meta property="og:description" content="An interactive look at the AI product design, product thinking and case studies of Ross Lucarelli, Senior UX Designer."><meta property="og:url" content="https://rosslucarelli.com/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body>
+<!doctype html><html lang="en-GB"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* Update notice: offers a reload when a newer version of the page is live */
+.update{position:fixed;z-index:30;left:50%;top:calc(72px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:center;gap:var(--sp-4);width:max-content;max-width:calc(100vw - 32px);white-space:nowrap;padding:var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-16);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-pill);box-shadow:var(--shadow-pop);font-family:var(--font-ui);font-size:var(--fs-14);line-height:var(--lh-20);color:var(--ink);animation:update-in .24s cubic-bezier(.32,.72,0,1) both;}
+@keyframes update-in{from{opacity:0;transform:translate(-50%,8px);}to{opacity:1;transform:translate(-50%,0);}}
+.update[hidden]{display:none;}
+.update .u-go{border:0;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:600;border-radius:var(--r-pill);padding:var(--sp-8) var(--sp-16);cursor:pointer;margin-left:var(--sp-8);}
+.update .u-go:hover{background:var(--accent-hover);}
+.update .u-x{border:0;background:none;color:var(--ink-3);width:32px;height:32px;border-radius:50%;display:grid;place-items:center;cursor:pointer;}
+.update .u-x:hover{background:var(--sunk);color:var(--ink);}
+@media (prefers-reduced-motion: reduce){.update{animation:none;}}
+</style><title>Ross Lucarelli · RossLM portfolio</title><meta name="description" content="An interactive look at the AI product design, product thinking and case studies of Ross Lucarelli, Senior UX Designer."><meta name="robots" content="noindex"><link rel="canonical" href="https://rosslucarelli.com/"><meta property="og:type" content="website"><meta property="og:title" content="Ross Lucarelli · RossLM portfolio"><meta property="og:description" content="An interactive look at the AI product design, product thinking and case studies of Ross Lucarelli, Senior UX Designer."><meta property="og:url" content="https://rosslucarelli.com/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Instrument+Sans:wght@400;500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -4082,4 +4092,44 @@ startGhost();
 })();
 </script>
 
+<div class="update" id="update" role="status" hidden>
+  <span>The site has been updated.</span>
+  <button type="button" class="u-go" id="updateGo">Reload</button>
+  <button type="button" class="u-x" id="updateX" aria-label="Dismiss"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+</div>
+<script>
+/* Update check. The site is one page, so moving around it never fetches anything new.
+   When the tab comes back into view (at most once a minute) it asks the server whether
+   the page has changed since it was opened, and offers a reload if it has. */
+(function(){
+  "use strict";
+  if (!window.fetch || location.protocol === 'file:') return;
+  var url = location.pathname, base = null, last = 0, dismissed = false;
+  var box = document.getElementById('update');
+  function hash(t){ var h = 2166136261; for (var i = 0; i < t.length; i++){ h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return 'h' + (h >>> 0); }
+  function version(){
+    return fetch(url, {method:'HEAD', cache:'no-store'}).then(function(r){
+      var v = r.ok && (r.headers.get('etag') || r.headers.get('last-modified'));
+      if (v) return v;
+      return fetch(url, {cache:'no-store'}).then(function(r){ return r.ok ? r.text().then(hash) : null; });
+    }).catch(function(){ return null; });
+  }
+  function check(){
+    var now = Date.now();
+    if (document.hidden || dismissed || now - last < 60000) return;
+    last = now;
+    version().then(function(v){
+      if (!v) return;
+      if (base === null){ base = v; return; }
+      if (v !== base) box.hidden = false;
+    });
+  }
+  document.getElementById('updateGo').addEventListener('click', function(){ location.reload(); });
+  document.getElementById('updateX').addEventListener('click', function(){ box.hidden = true; dismissed = true; });
+  document.addEventListener('visibilitychange', check);
+  window.addEventListener('focus', check);
+  setInterval(check, 300000);
+  check();
+})();
+</script>
 </body></html>
