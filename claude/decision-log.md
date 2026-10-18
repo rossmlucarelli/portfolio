@@ -3298,6 +3298,12 @@ loads, no sideways scroll, no script errors, the enlarged view opens with the
 caption, and two typed questions route to Visual samples. Every blurred area
 was looked at zoomed in before the push. Not checked: Safari, a real phone.
 
+**"What's actually live" comes out too.**
+*Called by: Ross:* "Remove the weak Help one from here." Claude raised it: the
+card is cinch's current results page, the "before" in the Help Me Choose case
+study, and the weakest-looking screen on a page that is now designs only. It
+stays in the case study. 21 cards.
+
 ---
 
 ## Open items
