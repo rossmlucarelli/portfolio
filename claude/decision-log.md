@@ -3200,6 +3200,37 @@ is the site's purpose rather than taste: it should leave a visitor with
 something to ask him, and Decisions already covers how the site was made. The
 top bar keeps just Decisions and the theme switch.
 
+### Visual samples becomes designs only
+
+Not built yet. Decided in conversation; the page is unchanged.
+
+**Designs only: no photos, graphs or infographics.**
+*Called by: Ross:* "I think we should remove pictures I have taken and graphs
+and infographics that come from the case study. It should be just designs."
+The reason is the page's purpose rather than taste: it is where a visitor
+judges visual design quality, and the case studies already carry the evidence.
+Out when it is built: the two Corby yard photos, the real-searches chart, the
+Help Me Choose drop-off chart, the competitor infographic, and the prompt and
+generated-examples redraws. That is 7 of the 24 cards.
+
+**Little or no explanation per piece.**
+*Called by: Ross:* "I don't think I should explain much about the designs,
+just a visual representation of what I can do." Claude's view, not yet ruled
+on: a one-line label per piece (where, when, what it is), so screens from
+different employers can be told apart and nothing unlabelled reads as current
+work. A label, not a caption.
+
+**Not settled: older work from before cinch.** Ross's worry is that the page
+is "too narrow and purple": what is left after the cut is almost all one
+cinch product area in one brand colour. The case studies stay AI-focused and
+so stay cinch, which Ross thinks is right; the question is whether Visual
+samples reaches back further, as he first suggested on 7 October. Claude
+recommends yes, a few strong pieces per earlier role, chosen against today's
+bar. Also raised by Claude and not ruled on: the Miro grouping board is
+research rather than a design, and the illustrated body types screen carries
+another designer's illustrations, which an unexplained gallery would pass off
+as Ross's.
+
 ---
 
 ## Open items
