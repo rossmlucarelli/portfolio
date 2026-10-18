@@ -274,6 +274,15 @@ canvas.sophon{position:absolute;left:-50%;top:-50%;width:200%;height:200%;displa
 .pullquote{margin:var(--sp-24) 0;padding:var(--sp-4) 0 var(--sp-4) var(--sp-24);border-left:4px solid var(--accent);}
 .pullquote p{font-family:var(--font-display);font-weight:400;font-size:var(--fs-24);line-height:var(--lh-32);letter-spacing:-.01em;color:var(--ink);margin:0 0 var(--sp-12);text-wrap:pretty;}
 .pullquote footer{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);}
+/* A short row of figures from the decision log. Number in the display face,
+   label in mono; hairlines between, nothing boxed. Counts tick up once. */
+.stats{margin:var(--sp-24) 0 var(--sp-8);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.stats div{display:flex;flex-direction:column;gap:var(--sp-4);padding:var(--sp-16) var(--sp-16) var(--sp-16) 0;}
+.stats div+div{padding-left:var(--sp-16);border-left:1px solid var(--line);}
+.stats b{font-family:var(--font-display);font-weight:400;font-size:var(--fs-48);line-height:var(--lh-56);letter-spacing:-.02em;color:var(--accent);font-variant-numeric:tabular-nums;}
+.stats span{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);}
+.stats-src{margin:0 0 var(--sp-16);font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-3);}
+@media (max-width:599px){.stats b{font-size:var(--fs-32);line-height:var(--lh-40);}.stats div{padding-right:var(--sp-8);}.stats div+div{padding-left:var(--sp-12);}}
 .note.next{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-12);}
 .note.next p{margin:0;}
 
@@ -2441,7 +2450,9 @@ var TOPICS = {
       {q:'So is this page AI-generated?', a:[
         {t:'p',v:'The build was AI-assisted and I’m not going to pretend otherwise. Hiding it would miss the whole point of the page.'},
         {t:'p',v:'The decisions are split between me and Claude. Claude writes, measures and checks the code, and pushes it live from the chat. I decide what it should be and judge how it feels, like the progressive disclosure you’re using now, the guardrail that stops it inventing answers, and showing a compromise rather than a confidence score.'},
-        {t:'p',v:'Every decision goes in a log saying who called it, why, and which ones were down to taste. Gemini rewords the copy, and Claude checks every line against the sources.'}
+        {t:'p',v:'Every decision goes in a log saying who called it, why, and which ones were down to taste. Gemini rewords the copy, and Claude checks every line against the sources.'},
+        {t:'stats',v:[{n:250,suffix:'+',label:'Decisions logged'},{n:17,label:'Marked as taste'},{n:31,label:'Days of building'}],src:'From the decision log, 18 October 2026'},
+        {t:'next',key:'making',v:'The whole story, and ten of those decisions marked on the page itself.',label:'How this site was made'}
       ]}
     ],
     follow:['making','agentic','contact']
@@ -2807,6 +2818,11 @@ function blocksHTML(blocks){
       out+='</ul>';
     }
     else if(b.t==='note') out += '<div class="note">'+b.v+'</div>';
+    else if(b.t==='stats'){
+      out+='<div class="stats">';
+      b.v.forEach(function(x){ out+='<div><b data-to="'+x.n+'" data-suffix="'+(x.suffix||'')+'">'+x.n+(x.suffix||'')+'</b><span>'+x.label+'</span></div>'; });
+      out+='</div>'+(b.src?'<p class="stats-src">'+b.src+'</p>':'');
+    }
     else if(b.t==='pullquote') out += '<blockquote class="pullquote"><p>'+b.v+'</p>'+(b.by?'<footer>'+b.by+'</footer>':'')+'</blockquote>';
     /* a link between two case studies that belong together: a line saying
        why, and a chip. The chip navigates, like the sidebar: the other case
@@ -4011,6 +4027,28 @@ Aurora.wake(true);
 Motes.layout();
 autosize();
 startGhost();
+})();
+
+/* The decision-log figures (.stats): each number ticks up once from zero
+   when the row comes into view. Reduced motion, or no observer, leaves the
+   written number as it is. */
+(function statsWatch(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  function play(row){
+    row.querySelectorAll('b[data-to]').forEach(function(el,i){
+      var to=+el.getAttribute('data-to'), suf=el.getAttribute('data-suffix')||'', t0=null, dur=900;
+      el.textContent='0'+suf;
+      setTimeout(function(){
+        function step(t){ if(t0===null) t0=t; var p=Math.min(1,(t-t0)/dur); el.textContent=Math.round(to*(1-Math.pow(1-p,3)))+suf; if(p<1) requestAnimationFrame(step); }
+        requestAnimationFrame(step);
+      }, i*120);
+    });
+  }
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && e.intersectionRatio>0.5){ io.unobserve(e.target); play(e.target); } }); },{threshold:[0,0.5,1]});
+  function scan(root){ if(!root || !root.querySelectorAll) return; root.querySelectorAll('.stats:not([data-st])').forEach(function(r){ r.setAttribute('data-st','1'); io.observe(r); }); }
+  scan(document);
+  new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(n){ if(n.nodeType===1) scan(n.parentNode||n); }); }); })
+    .observe(document.body,{childList:true,subtree:true});
 })();
 
 /* Animated diagrams (svg.bm): each plays once when it comes into view.
