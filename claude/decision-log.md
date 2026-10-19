@@ -3398,6 +3398,31 @@ code at 1440 light and 390 dark: four employers in order, 20 cards, every image
 loads, no sideways scroll, the lightbox steps through all 20 with its next
 button never moving, back closes it, no script errors.
 
+### "Visual samples" becomes "Work through the years"
+
+**The new name.**
+*Called by: Ross, from four Claude offered. Ross:* "It signifies I've been a
+designer for a long time. It makes sense of the timeline too." Claude had
+raised that "Visual samples" read as loose fragments rather than thirteen
+years of product work in order, and leaned "Design timeline". The other
+options were "Earlier work" and "Portfolio".
+
+**What changed.** *Wording: Claude.* The sidebar title and its line under it,
+now "Autocab to cinch, since 2013"; the page title; the first-screen chip; the
+tablet rail's short code, "WY"; the thinking line, which now says "my work
+through the years". The suggested question is "Show me your design work over
+the years." (was "Show me a visual sample."), as Ross agreed. "Through the
+years", "over the years", "design work" and "timeline" route to it, and the old
+words, "visual" and "sample" among them, still do.
+
+**It changes the first screen.** The chip is longer. On a desktop the chips
+still sit three and two. On a 390px phone they now take four rows (one, one,
+one, two), one more than before. Ross was told after it went live.
+
+**Verification.** Chromium at 1440 light and 390 dark: the chip opens the page
+with the new question, 20 cards, and four typed phrasings, the old "show me a
+visual sample" among them, open it. No script errors.
+
 ---
 
 ## Open items

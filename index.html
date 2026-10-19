@@ -456,7 +456,7 @@ canvas.sophon{position:absolute;left:-50%;top:-50%;width:200%;height:200%;displa
 a.chip{text-decoration:none;}
 
 
-/* --- Visual samples: earliest work first, in one of three layouts --- */
+/* --- Work through the years: earliest work first, in one of three layouts --- */
 .eras{margin:0 0 var(--sp-16);}
 .era-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--sp-4) var(--sp-12);margin:0 0 var(--sp-12);}
 .era-yrs{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
@@ -2022,7 +2022,7 @@ var ART = {
       return svgWrap(s);
     }
   },
-  /* Earlier work, for Visual samples only. Dates are the years Ross worked
+  /* Earlier work, for Work through the years only. Dates are the years Ross worked
      at each company. */
   acDriver:{
     title:'Autocab · The driver app, dark mode',
@@ -2572,8 +2572,8 @@ var TOPICS = {
     follow:['making','agentic','contact']
   },
   gallery:{
-    topic:'the visual work', nav:'Visual samples', navMeta:'Design work since 2013', rail:'VS',
-    prompt:'Show me a visual sample.', title:'Visual samples',
+    topic:'my work through the years', nav:'Work through the years', navMeta:'Autocab to cinch, since 2013', rail:'WY',
+    prompt:'Show me your design work over the years.', title:'Work through the years',
     intro:[
       {t:'p',v:'Oldest first, from Autocab in 2013 to cinch now. Tap any of them to see it full size with a line on what it is, then step through the rest.'},
       {t:'eras'},
@@ -2759,7 +2759,7 @@ var INTENTS = [
   {key:'making',words:['this site','this page','built this','made this','how was this made','how this was made','how did you make','how did you build','decision log','decisions','who decided','inspect','taste','behind the scenes','built with claude','argon','second model','reword','two models']},
   {key:'ai',words:['ai','artificial intelligence','claude','copilot','gpt','llm','prompt','automate','automation','tooling','guardrail','workflow','ai generated','generated']},
   {key:'philosophy',words:['philosophy','principle','believe','approach','process','method','values','opinion','style','overruled','disagree']},
-  {key:'gallery',words:['visual','autocab','taxi','jd sports','ao com','older work','earlier work','previous work','dark mode','image','picture','screenshot','portfolio','sample','wireframe','mockup','flows','designed','show me']},
+  {key:'gallery',words:['through the years','over the years','design work','timeline','visual','autocab','taxi','jd sports','ao com','older work','earlier work','previous work','dark mode','image','picture','screenshot','portfolio','sample','wireframe','mockup','flows','designed','show me']},
   {key:'about',words:['who are you','about you','experience','background','years','career','cinch','yourself','seniority','skills','stack','code','react','figma','next']}
 ];
 function norm(text){ return ' '+String(text).toLowerCase().replace(/[^a-z0-9\s']/g,' ').replace(/\s+/g,' ')+' '; }
@@ -2882,7 +2882,7 @@ document.addEventListener('error', function(e){
     im.src=im.getAttribute('src').split('?')[0]+q;
   }, 1500);
 }, true);
-/* Visual samples, earliest first. Years are the years Ross worked at each
+/* Work through the years, earliest first. Years are the years Ross worked at each
    company, since the designs themselves aren't dated. */
 var ERAS=[
   {co:'Autocab', y:'2013', yrs:'2013 to 2017', role:'Sole UX designer', groups:[{v:['acDriver','acPassenger','acCities']}]},
@@ -3737,7 +3737,7 @@ Sophon.scan();
 heroChips.innerHTML=[
   {label:'The work I’m proudest of',go:'car-finder',lead:true},
   {label:'Designing for agents',go:'agentic'},
-  {label:'Visual samples',go:'gallery'},
+  {label:'Work through the years',go:'gallery'},
   {label:'Design philosophy',go:'philosophy'},
   {label:'Get in touch',go:'contact'}
 ].map(function(c){
@@ -3801,7 +3801,7 @@ document.getElementById('sbClose').addEventListener('click', closeDrawer);
 scrim.addEventListener('click', closeDrawer);
 
 var lb=document.getElementById('lb'), lbFig=document.getElementById('lbFig'), lastFocus=null;
-/* Opened from a set (Visual samples), the enlarged view steps through it:
+/* Opened from a set (Work through the years), the enlarged view steps through it:
    the arrows beside the close button, the arrow keys, or a swipe. Stepping
    swaps the picture in place, so back still closes it in one press. */
 var lbSet=null, lbIdx=0;
