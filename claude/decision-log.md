@@ -3499,6 +3499,69 @@ A 32px PNG and a 180px apple-touch-icon, rendered from the same SVG, go in
 beside it. The open item about Safari and a real phone still stands for the
 WebGL mark itself; this only covers the icon.
 
+### Two more decisions on the page, and the counts brought up to date
+
+Pushed straight to `main`: "Build and put live please".
+
+**Newer decisions go on the page, but only the ones that pass the cards' test.**
+*Called by: Ross (whether the decisions made since 16 October belong on the
+page), Claude (which ones).* The test from 16 October: something passed
+between Ross and Claude, and the decision can be pointed at on the page. The
+favicon, the update notice and the Get in touch trims fail it.
+
+**"Work through the years", on its chip.**
+*Called by: Claude (the card and its wording).* Tagged My idea · Claude took
+it further: oldest first, so it reads as a career, was Ross's; the employer
+headers with years and job title were Claude's; Ross chose the timeline from
+Claude's three layouts and the name from Claude's four. The stepping lightbox
+is not credited to Claude on the card, because Ross asked for it.
+
+**"Decisions in amber", on the Decisions button itself.**
+*Called by: Claude (the card, and a new tag).* Tagged My brief · Claude built
+three, I picked. Built-options-and-picked is how most of the bigger calls were
+made, so it gets its own label. The card also says the button's place beside
+the theme switch was Ross's call. On a phone its dot first sat over the
+icon-only button and took the tap meant for the button; it now sits just
+below the button's bottom-left corner.
+
+**The mark's card tells the thinking states.**
+*Called by: Claude (the wording).* It now says Ross turned down two thinking
+states, the plates ("less coherent") and the spikes ("violent"), before the
+energy web, and keeps the dent under your finger.
+
+**The clock goes in the case study, not on a card.**
+*Called by: Claude (proposed), Ross (put live).* "Knowing when too much is too
+much" is Ross's own line and the strongest story of the week, but nothing is
+left on the page to point at. "When did you overrule it?" gains a paragraph:
+the clock was a nice touch that didn't help anyone understand how he designs,
+Claude offered three things in its place, he turned them all down.
+
+**The counts.**
+*Counted by: Claude, from this log on 19 October.* Case study 05's Impact cell
+said "Ten of them are marked on the page" after the clock card had made it
+nine; it now says eleven, as does the note under the AI-generated answer.
+Taste is 18: the 17 of 17 October plus the timeline ("I love timeline",
+18 October). Days of building is 32, 17 September to 19 October. 320
+attributed lines, so "250+" stands. The stats row's source line is dated
+19 October.
+
+**Every dot was anchored to the wrong box.**
+*Found by: Claude, while placing the new cards.* The switch that anchors a dot
+to a target's words rather than its frame was called `text`, the same name as
+each card's wording, so every card had it switched on and measured its
+target's contents. For most targets that is close to the frame. For the mark
+it is the drawing area, twice its size since the energy web went in, so the
+mark's dot floated well clear of the ball. The switch is now `words`. Every
+dot was looked at again at both widths.
+
+**Verification.** Chromium at 1440 light and 390 dark: nine dots on the first
+screen and eight in a conversation at both widths; on and off by the pill
+(including on a phone, tapping the button past its dot), by Done and by back;
+every case study 05 follow-up, every sidebar thread and five typed questions;
+the overrule paragraph, 18, eleven and the 32-day figure rendered; the pointer
+held on each of the nine dots for 60 frames, none moved; no script errors, no
+sideways scroll. Not checked: Safari, a real phone.
+
 ---
 
 ## Open items
