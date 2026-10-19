@@ -3560,7 +3560,9 @@ screen and eight in a conversation at both widths; on and off by the pill
 every case study 05 follow-up, every sidebar thread and five typed questions;
 the overrule paragraph, 18, eleven and the 32-day figure rendered; the pointer
 held on each of the nine dots for 60 frames, none moved; no script errors, no
-sideways scroll. Not checked: Safari, a real phone.
+sideways scroll. rosslucarelli.com serves the two new cards, the overrule
+paragraph, eleven, 18 and the anchor fix, checked from the browser on Ross's
+computer. Not checked: Safari, a real phone.
 
 ---
 
