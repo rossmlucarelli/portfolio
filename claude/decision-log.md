@@ -3564,6 +3564,47 @@ sideways scroll. rosslucarelli.com serves the two new cards, the overrule
 paragraph, eleven, 18 and the anchor fix, checked from the browser on Ross's
 computer. Not checked: Safari, a real phone.
 
+### Going public on LinkedIn
+
+**Share the site in a public LinkedIn post.**
+*Called by: Ross, after asking what Claude thought.* He had never posted his
+work publicly and pointed to another designer's post about an AI-built
+portfolio as the kind of thing he meant. Claude's view, asked for: yes, and
+now, because the site is live, the case studies have been read through, and
+the decision log and inspect mode only earn their place if people see them.
+Claude's suggestion for the angle, not yet taken up or written: not "AI got
+me to 1, taste got me to 100", which is the other post's, but the site's own
+argument: no live model so it can't be wrong about him, every call logged with
+taste marked as taste, and the mistakes caught in both directions. Whether the
+post says he is looking for work is his call.
+
+**Search engines may now list the site and the CV.**
+*Called by: Claude (spotted it and proposed lifting it), Ross ("Yes please").*
+Commit `5f522dc`. `<meta name="robots" content="noindex">` had been on the
+portfolio since before 10 October, when it was first flagged under Open items,
+and was on the CV page too. Going public makes it a fault: someone who sees the
+post and searches his name later would not find the site. Taking it off the CV
+page as well is Claude's call; Ross had only been told about the portfolio's.
+
+**A link preview card, rendered from the first screen itself.**
+*Called by: Claude (spotted that there was no `og:image`, so a LinkedIn link
+would be a grey card, and made it), Ross (agreed to the idea; he had not seen
+the image before it went live).* `og-image.png`, 1200×630, served from the
+site root, with `og:image`, its size and alt text and a `twitter:card` on both
+pages. It is the live first screen rendered in Chromium at 2x with the site's
+own typefaces, wash, icon field and Sophon, with the sidebar, top bar, prompt
+box and chips hidden and "rosslucarelli.com" added under the name line in
+the mono face. Nothing was redrawn, so it cannot drift from the site, but it is
+a still: it will not change when the first screen does, and needs rendering
+again if it does.
+
+**The log itself is kept out of search results.**
+*Called by: Claude.* This file is served at rosslucarelli.com/claude/
+decision-log.md and holds context marked for this log only. Nothing links to
+it, but with the site now open to search engines a `_headers` rule tells them
+not to list anything under /claude/. It does not make the file private:
+anyone with the address can still read it. Ross has been told.
+
 ---
 
 ## Open items
@@ -3785,9 +3826,10 @@ Each needs Ross's real answer before it goes back.
       prototype's page in Chromium and calling its own `__proto.scene()` hook
       and functions. The script was not added to the repo, because everything
       in the repo is served on the site.
-- [ ] **The live site carries `<meta name="robots" content="noindex">`.** Seen
+- [x] **The live site carries `<meta name="robots" content="noindex">`.** Seen
       in `index.html` on `main` while working. Search engines are being told
       not to list rosslucarelli.com. Not changed; Ross has been told.
+      *Done 19 October, commit `5f522dc`, on the CV page too.*
 
 **Added 11 October — from the early Help Me Choose screens**
 
