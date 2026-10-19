@@ -3425,6 +3425,60 @@ visual sample" among them, open it. No script errors.
 
 ---
 
+## Pass 15 — 19 October 2026
+
+### A hero image for the car finder case study
+
+**The case study opens with both devices in a frame.**
+*Called by: Ross.* He wants something at the top of the conversational car
+finder case study to grab a reader before the prose, showing mobile and
+desktop together. His worry was that the site's rule of showing mobile
+screens to mobile readers and desktop to desktop readers, which he likes,
+could read as if he had ignored one. Claude's reading: keep that rule for the
+body, where it serves the reader, and let the hero carry the breadth, because
+a hero's job is the first impression. Ross went ahead on that basis.
+
+**Device frames come from shots.so, on a transparent background.**
+*Called by: Ross (the tool), Claude (how it is used).* Ross chose shots.so and
+the iPhone 17 Air and MacBook Air M2 frames. Claude asked for the gradient
+background to go and the export to be transparent, so the composition sits on
+the site's own background rather than looking pasted in from elsewhere; for
+the two devices to be exported separately, so the site can overlap them on a
+wide screen and restack them on a phone, where a single flat image would
+shrink the mobile frame to nothing; and for the plainer frames over a branded
+outline, since the design is not a shipped app. Ross is adding the screens and
+exporting; Claude fits the result to the site's theme.
+
+**Two beats of the flow, not the same screen twice.**
+*Called by: Claude, agreed by Ross.* The desktop frame shows the results screen
+(cars arriving in the conversation, with "why this car"); the mobile frame
+shows the step before it, the finder playing the brief back and asking its
+first narrowing question. The same screen on both would only prove
+responsiveness; two beats say "it talks, then it delivers" in one glance.
+Claude pulled both from the case study's existing images.
+
+### The quick-reply chips are the user's words
+
+Ross, reviewing the mobile question screen before it went into a frame:
+"This is for my portfolio. So I want it 100% right."
+
+**Right-aligned, docked above the prompt box, 48px tall.**
+*Called by: Ross.* His reasons: the chips are pre-written answers from the
+user, so they belong on the user's side, where their bubbles already sit; and
+the right-hand side is easier for a right-handed thumb. Claude's input: the
+convention in chat products (Messenger, Material, most LLM interfaces) is
+left-aligned, so this is a departure, but a defensible one, because a tapped
+chip becomes the next bubble on the right and the alignment makes that
+continuity visible before the tap. The thumb argument only holds if the chips
+sit in the thumb zone, so they dock above the composer rather than inline
+under the question. The size came from the chips being cinch's filter chips,
+built for scanning a results page, not for a single tap; Ross chose 48px over
+40px, the safer of the two on the grid. Visual style stays cinch (border,
+radius, type); only size and placement change. Not yet rebuilt: the screen is a
+rendered image, and Claude needs the Cowork source to change it properly.
+
+---
+
 ## Open items
 
 - [ ] **Both artifacts are private.** Sharing must be turned on before either link
