@@ -1,1 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="8" fill="#0A6E66"/><g fill="none" stroke="#FAFFFE" stroke-width="2.2" stroke-linecap="round"><path d="M28.5 16.2A9 9 0 0 1 28.5 31.8"/><path d="M19.5 16.2A9 9 0 0 0 19.5 31.8"/><path d="M31.25 11.44A14.5 14.5 0 0 1 31.25 36.56" opacity=".78"/><path d="M16.75 11.44A14.5 14.5 0 0 0 16.75 36.56" opacity=".78"/></g><circle cx="24" cy="24" r="3.2" fill="#FAFFFE"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- The Sophon, held still. One frame of the liquid-mirror sphere:
+       sky above, deep below, the wash's six lights round its waist,
+       one fixed highlight. Colours follow the site's light and dark tokens. -->
+  <style>
+    :root{--sky:#FFFFFF;--deep:#2E7F77;--mid:#12A093;--rim:#0B4F4A;--rim-o:.55;--wash:.55}
+    @media (prefers-color-scheme:dark){
+      :root{--sky:#CFEDE8;--deep:#0A1E1C;--mid:#0A6E66;--rim:#58CFC0;--rim-o:.35;--wash:.7}
+    }
+  </style>
+  <defs>
+    <radialGradient id="body" cx=".38" cy=".3" r=".78">
+      <stop offset="0" style="stop-color:var(--sky)"/>
+      <stop offset=".42" style="stop-color:var(--mid)"/>
+      <stop offset="1" style="stop-color:var(--deep)"/>
+    </radialGradient>
+    <linearGradient id="wash" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5E8FD0"/>
+      <stop offset=".2" stop-color="#9A78C6"/>
+      <stop offset=".4" stop-color="#D97A80"/>
+      <stop offset=".6" stop-color="#DCA046"/>
+      <stop offset=".8" stop-color="#62B274"/>
+      <stop offset="1" stop-color="#12A093"/>
+    </linearGradient>
+    <radialGradient id="glint" cx=".5" cy=".5" r=".5">
+      <stop offset="0" style="stop-color:var(--sky)" stop-opacity=".95"/>
+      <stop offset="1" style="stop-color:var(--sky)" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <clipPath id="ball"><circle cx="24" cy="24" r="23"/></clipPath>
+  </defs>
+  <circle cx="24" cy="24" r="23" fill="url(#body)"/>
+  <!-- the six lights, reflected as a soft band round the waist -->
+  <g clip-path="url(#ball)" style="opacity:var(--wash)">
+    <ellipse cx="24" cy="31" rx="26" ry="6" fill="url(#wash)" filter="url(#soft)" style="mix-blend-mode:screen"/>
+  </g>
+  <!-- the fixed highlight -->
+  <ellipse cx="16" cy="13" rx="8" ry="6" fill="url(#glint)"/>
+  <!-- the edge -->
+  <circle cx="24" cy="24" r="22.4" fill="none" stroke-width="1.2" style="stroke:var(--rim);opacity:var(--rim-o)"/>
+</svg>

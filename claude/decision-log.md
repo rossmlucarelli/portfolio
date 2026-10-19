@@ -3477,6 +3477,28 @@ built for scanning a results page, not for a single tap; Ross chose 48px over
 radius, type); only size and placement change. Not yet rebuilt: the screen is a
 rendered image, and Claude needs the Cowork source to change it properly.
 
+### The favicon becomes the Sophon, held still
+
+**The tab icon is one frame of the Sophon, drawn as a plain SVG.**
+*Called by: Ross (that it had to change), Claude (how).* The favicon was still
+the Pass 1 mark, the dot and arcs, which the site no longer uses anywhere;
+Ross noticed it no longer fitted after the mascot became the Sophon. A
+favicon cannot run WebGL and should not move, so Claude drew the sphere as a
+still: sky above, deep below, the wash's six lights as a soft band round its
+waist, the one fixed highlight, and the edge. It takes its colours from the
+same light and dark tokens as the live mark, through a media query inside the
+SVG, so it follows the system setting the way the page does. At 16px it reads
+as a small mirrored ball; the band and highlight only come through at 32px and
+up. Ross saw it at tab size against the old mark on light and dark and said
+"live please" without changes.
+
+**PNG fallbacks go in at the same time.**
+*Called by: Claude.* Safari and the iOS home screen ignore SVG favicons, so
+until now the site showed nothing there at all, a gap older than the Sophon.
+A 32px PNG and a 180px apple-touch-icon, rendered from the same SVG, go in
+beside it. The open item about Safari and a real phone still stands for the
+WebGL mark itself; this only covers the icon.
+
 ---
 
 ## Open items
@@ -3616,7 +3638,8 @@ Each needs Ross's real answer before it goes back.
 
 **Added 9 October — from the Sophon**
 
-- [ ] **The favicon still shows the Pass 1 mark,** the dot and arcs.
+- [x] **The favicon still shows the Pass 1 mark,** the dot and arcs.
+      *Done 19 October: replaced with a still Sophon, plus PNG fallbacks (Pass 15).*
 - [ ] **Safari and a real phone.** The Sophon is drawn with WebGL and was
       checked in Chromium only.
 - [ ] **The rounder ends of the prompt box.** Live, and never ruled on by Ross
