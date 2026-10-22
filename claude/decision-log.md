@@ -3648,9 +3648,11 @@ switching and returning to the first screen; Claude ran that sequence in
 headless Chromium on the fixed build and could not reproduce it, and since the
 switch had been a no-op it cannot have been the cause. Left open below.
 
-**Not yet redone: the link preview image.** `og-image.png` is a still of the
-first screen with the old field (Pass 15). It now differs from the page and
-needs rendering again. Raised by Claude; waiting on Ross.
+**The link preview image stays as it is.**
+*Called by: Ross ("it's fine for LinkedIn"), after Claude raised it.*
+`og-image.png` is a still of the first screen with the old 16px field
+(Pass 15), so it no longer matches the page. Ross chose not to re-render it;
+the card does its job as it stands.
 
 **Verification.** Headless Chromium at 1280×800: switch to 24/64, open a
 thread from the sidebar, back to the start via the brand; the field returns at
@@ -3787,8 +3789,8 @@ Each needs Ross's real answer before it goes back.
 - [ ] **The icon field vanishing after a size switch and a return to the
       first screen.** Seen once by Ross on the preview's broken first version
       (Pass 16); not reproduced on the fixed one. Watch for it on live.
-- [ ] **`og-image.png` is out of date.** It shows the 16px field; the first
-      screen now has the 24px one (Pass 16).
+- [x] **`og-image.png` shows the 16px field, not the 24px one.** Ross chose
+      to leave it (Pass 16).
 - [x] **The prompt box border at 125% and 175% display scaling.** Checked at
       150% only (9 October).
       *Done the same day: even at a real 100%, 125%, 175% and 200%.*
