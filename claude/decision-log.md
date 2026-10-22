@@ -3674,6 +3674,16 @@ so it turns faster too. Ross did not ask for the chip to be separated. The
 turn time is now settable (`Edge.turn()`), and `Edge` is on `window`, for the
 next comparison.
 
+**The lead chip stays on the shared clock.**
+*Called by: Ross ("I think it's fine then"), after asking whether the chip
+should be sped up too and hearing Claude's view.* It had already quickened
+with the box, since they share a clock; it reads slower only because its loop
+is shorter. Claude's advice was to leave it: one clock is what makes the box
+and the chip read as the same device, and the chip's job is to be the quiet,
+permanent pointer, not to draw the eye. If it ever needs more motion, the
+lever Claude suggested is matching the box's pixel speed rather than its lap
+time, tried on a preview first.
+
 **Verification.** None beyond the preview: the change is one number.
 
 ---
