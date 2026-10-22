@@ -3607,6 +3607,58 @@ anyone with the address can still read it. Ross has been told.
 
 ---
 
+## Pass 16 — 22 October 2026
+
+### The icon field, culled and enlarged
+
+Shown on a private preview page, "Icon size preview", with a switch between
+three sizes, then pushed to `main` as one commit.
+
+**Thirty-three icons come out; thirty-four stay.**
+*Called by: Ross. His reason: "there were just too many and some didn't read
+as clearly."* Claude rendered the whole set at six times its size and listed
+what each one was, with its honest read: the groups specific to him (dogs,
+space, Lego, the past-roles objects, 3D printing) were the strength, and the
+interface and tech groups, a third of the set, were the stock ones that any
+designer's library has. Ross cut by name, and cut more widely than that: the
+crescent moon, all of food, the pint glass, six of the interfaces (pen nib,
+layers, diamond grid, text cursor, layout grid, eye), three of tech (laptop,
+floppy disk, database), the whole past-roles group of ten, the robot head and
+the whole outdoors group of seven. What stays: dogs 3, space 3, drinks 3,
+cooking 3, interfaces 6, tech 7, 3D printing 1, Lego 3, AI 3, gaming 2. The
+code comment describing the set was brought in line. Claude flagged that
+interfaces and tech are now the biggest share (13 of 34); not contested.
+
+**The icons go up from 16px on a 48px grid to 24px on a 64px grid.**
+*Called by: Ross, from three on the preview ("I like 24 most"). Taste.* He had
+said the field was not reading as icons and was quite subtle, and wanted the
+roll-over kept. Claude built three scales that move together: today's 16/48,
+24/64 and 32/80, each with the pointer's reach, the push distance and the rest
+opacity scaled to match (reach 128 → 160 → 192px, push 6 → 8 → 10px, rest 13%
+→ 18% → 22%) and the stroke thinned a touch at the larger sizes (1.3 → 1.25 →
+1.2) so they stay light. The effect itself is unchanged. The table of the
+three stays in the code with a `Motes.scale()` call, so the next comparison
+does not need rebuilding.
+
+**The preview's first version did nothing.**
+*Spotted by: Ross ("the sizes aren't changing").* The icon module is scoped
+inside the page's main script, so the switch's clicks reached nothing. Fixed
+by exposing it as `window.Motes`. Ross also saw the field vanish after
+switching and returning to the first screen; Claude ran that sequence in
+headless Chromium on the fixed build and could not reproduce it, and since the
+switch had been a no-op it cannot have been the cause. Left open below.
+
+**Not yet redone: the link preview image.** `og-image.png` is a still of the
+first screen with the old field (Pass 15). It now differs from the page and
+needs rendering again. Raised by Claude; waiting on Ross.
+
+**Verification.** Headless Chromium at 1280×800: switch to 24/64, open a
+thread from the sidebar, back to the start via the brand; the field returns at
+the new size, no script errors. Not checked: Safari, a real phone, the touch
+glimmer at the new size.
+
+---
+
 ## Open items
 
 - [ ] **Both artifacts are private.** Sharing must be turned on before either link
@@ -3729,8 +3781,14 @@ Each needs Ross's real answer before it goes back.
 - [ ] **Is the border one working signal too many?** See Pass 3. The Sophon
       now carries the thinking state as well (Pass 4), on the same clock.
 - [ ] **Icons Ross may want made more specific.** Claude asked and has no
-      answer yet: the dog's breed, a console or kind of game, what he does
-      outdoors, a favourite dish or drink. Weaveability has no icon.
+      answer yet: the dog's breed, a console or kind of game, a favourite
+      drink. Outdoors and the past roles were cut in Pass 16, so the thin
+      groups there no longer apply.
+- [ ] **The icon field vanishing after a size switch and a return to the
+      first screen.** Seen once by Ross on the preview's broken first version
+      (Pass 16); not reproduced on the fixed one. Watch for it on live.
+- [ ] **`og-image.png` is out of date.** It shows the 16px field; the first
+      screen now has the 24px one (Pass 16).
 - [x] **The prompt box border at 125% and 175% display scaling.** Checked at
       150% only (9 October).
       *Done the same day: even at a real 100%, 125%, 175% and 200%.*
