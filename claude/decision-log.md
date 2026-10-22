@@ -3659,6 +3659,23 @@ thread from the sidebar, back to the start via the brand; the field returns at
 the new size, no script errors. Not checked: Safari, a real phone, the touch
 glimmer at the new size.
 
+### The prompt box border turns faster
+
+Shown on a private preview page, "Prompt box speed preview", with a switch
+between four speeds, then pushed to `main`.
+
+**One lap every 8 seconds at rest, from 11.**
+*Called by: Ross, from four on the preview (11, 8, 6, 4.5): "it's more
+obvious it's moving and the other two feel too fast." Taste.* The 11 was set
+in Pass 3 with the Orbit style. The thinking and answering speeds are
+multiples of the rest speed (3.5× and 1.8×), so they quicken in the same
+proportion; Claude pointed this out and that the lead chip shares the clock,
+so it turns faster too. Ross did not ask for the chip to be separated. The
+turn time is now settable (`Edge.turn()`), and `Edge` is on `window`, for the
+next comparison.
+
+**Verification.** None beyond the preview: the change is one number.
+
 ---
 
 ## Open items

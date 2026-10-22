@@ -919,7 +919,7 @@ var Edge = (function(){
   snap();
   window.addEventListener('resize', snap);
   if(!el) return {pace:function(){}};
-  var TURN = 11000;                       /* ms per turn at rest */
+  var TURN = 8000;                        /* ms per turn at rest (11000 until 22 October); the lead chip keeps the same clock */
   var phase = 0, rate = 1, goal = 1, last = 0, lead = null;
 
   function frame(now){
@@ -943,9 +943,11 @@ var Edge = (function(){
       var m = document.getElementById('main');
       if(m) m.classList.toggle('busy', v > 1);
       if(Sophon) Sophon.pace(v);                 /* the mark keeps the same time */
-    }
+    },
+    turn:function(ms){ TURN = ms; }               /* for previews and the console */
   };
 })();
+window.Edge = Edge;
 
 /* =========================================================
    0c. Motes — the icon field behind the zero state.
