@@ -3756,9 +3756,10 @@ switch to stop the old line wrapping. Of four lengths measured at 1440 wide,
 only "Remote, Manchester or London" fits on one, and it loses "hybrid". Ross's
 wording stays until he rules.
 
-**Motorway stays off the site.** *Called by: Claude.* It is in the competitor
-audit, which is a good line for the application itself, not for a page any
-company can read.
+**The company stays off the site.** *Called by: Claude.* It is in the
+competitor audit, which is a good line for the application itself, not for a
+page any company can read. It is not named here either, since this log is
+served publicly.
 
 **Verification.** Headless Chromium at 1440 wide in light and 390 wide in dark,
 reduced motion: the question typed, all four follow-ups asked in turn, the
