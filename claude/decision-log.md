@@ -3688,6 +3688,91 @@ time, tried on a preview first.
 
 ---
 
+## Pass 17 — 28 October 2026
+
+### "How would you set up a design team to work with AI?"
+
+Commit `6168328`, pushed straight to `main`: "Really happy with this, put live
+please." Written for an application to a Lead Product Designer role whose ad
+asks for exactly this, but worded for any reader.
+
+**A new direct question, about an area the site had barely touched.**
+*Called by: Ross (the question, and that it came from an interview), Claude
+(four topics to make sure of, plus suggested additions).* Ross set four topics:
+why he pushed for Claude and what the reframe changed, what he'd set up first,
+where AI stays out, and how he'd know it was working. Claude added: be plain
+about what he did versus what he'd do, a rule about data as well as skills,
+bringing beginners along, and keeping divergence. Not every addition made the
+answer; the interview went where Ross took it.
+
+**A short answer with four follow-ups behind it, from three.**
+*Called by: Ross, from Claude's options (a short answer with follow-ups, one
+tight answer, or a new thread under How I use AI). Claude leaned towards the
+first.* Direct questions had no follow-ups of their own until now. This one is
+registered with the threads' probe machinery, so its chips behave like a case
+study's, and "Other questions" stays at the bottom after each one. Eighth in
+the prompt box's list, fourth after "How do you use AI in your own design
+work?".
+
+**In Ross's words, trimmed, and checked for AI tells.**
+*Called by: Ross ("make sure it's human sounding"), Claude (how).* Built from
+his answers in the interview and from the speaker notes of his July 2026 pitch
+deck, which he supplied. No Gemini pass, following the 18 October call that
+the short answers stay in his voice. The humanizer skill was run as a check
+only: no em dashes, none of its flagged vocabulary, sentences from 3 to 32
+words. Its one mild flag, two "not by speed" contrasts (in the opener and the
+last follow-up), was left as it is. Nothing was rewritten.
+
+**Claude's lines in it, offered as such and kept.** "People first, then tools"
+and "flying" in the opener; the pass in the icebreaker; the last sentence of
+the Claude answer, assembled from Ross's yes to two quick checks; and "because
+they made them, even when AI helped". Ross was shown all five and changed
+none.
+
+**The pitch: not approved, and said so.**
+*Corrected by: Ross.* It wasn't approved; talks stalled when the person it was
+being pitched to left the business. Ross's guess at why she left is for this
+log only, and the page names nobody. The reframe, in his account: he and two
+colleagues chose to pitch Claude's focus on design, because the other tools
+did not have the same focus. The colleagues are not named, as before.
+
+**Only claims Ross has seen hold up.**
+*Called by: Claude (raised it), Ross (agreed).* The deck promised research
+synthesis in hours, prototypes from a brief the same day and code "correct
+before a developer sees it". The page claims the first two, from his own
+work: the competitor review, called that rather than interview synthesis, and
+the car finder prototype. The design-to-code claim is left out.
+
+**Remote, or hybrid in Manchester or London.**
+*Called by: Claude (the wording), Ross ("yes, perfect").* The role asks for
+two days a week in a London office. The site is public, so the wording is
+general rather than written for one company; the location answer now says
+"I’m happy to spend some days in an office, in Manchester or London". The
+sidebar foot and its label say the same.
+
+**It wraps to two lines.** *Found by: Claude, after it was live.* At every
+width the sidebar line is now two lines, balanced. Pass 4 moved the theme
+switch to stop the old line wrapping. Of four lengths measured at 1440 wide,
+only "Remote, Manchester or London" fits on one, and it loses "hybrid". Ross's
+wording stays until he rules.
+
+**Motorway stays off the site.** *Called by: Claude.* It is in the competitor
+audit, which is a good line for the application itself, not for a page any
+company can read.
+
+**Verification.** Headless Chromium at 1440 wide in light and 390 wide in dark,
+reduced motion: the question typed, all four follow-ups asked in turn, the
+last one ending on "That’s everything on this one"; "Why did you push for
+Claude?" and "How do you roll out AI across the team?" route to the new answer;
+"Where are you based?", "Have you managed other designers?" and "How do you
+use AI in your work?" still reach their own; no script errors, no sideways
+scroll. The Cloudflare build for `6168328` succeeded. Claude could not load
+rosslucarelli.com from its session, and a fetch straight after the build still
+served the old sidebar line, most likely from a cache. Not checked: the live
+page itself, Safari, a real phone.
+
+---
+
 ## Open items
 
 - [ ] **Both artifacts are private.** Sharing must be turned on before either link
@@ -4146,6 +4231,16 @@ Each needs Ross's real answer before it goes back.
       project doc.*
 - [ ] **Tweaks to the topic answers and microcopy** are still welcome; they
       just do not go through Gemini. No list of them exists yet.
+
+
+**Added 28 October — from the AI team answer**
+
+- [ ] **The sidebar location line wraps** to two lines. Shorter options that
+      fit: "Remote, Manchester or London" (loses "hybrid"). Ross to rule.
+- [ ] **Look at the new answer on the live site** after a hard refresh.
+- [ ] **The project doc copy of this log is stale.** A chat on 28 October read
+      it first and told Ross the log stopped at 18 October; the repo copy was
+      current to 22 October. Replace the doc with a pointer, or delete it.
 
 ---
 
