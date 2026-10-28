@@ -3772,6 +3772,34 @@ rosslucarelli.com from its session, and a fetch straight after the build still
 served the old sidebar line, most likely from a cache. Not checked: the live
 page itself, Safari, a real phone.
 
+
+### Three tweaks from a second read
+
+**Three wording changes from feedback Ross brought from another chat.**
+*Called by: Ross ("Yes to 1 to 3"), Claude (its view on each, and the
+wording).* Ross pasted four suggestions; Claude agreed with three and argued
+against one.
+- The opener said he'd "agree early on where AI stays out", while the follow-up
+  calls it a judgement call, not a list. Now "agree early on how we decide
+  where AI stays out"; the test itself stays in the follow-up, in his words.
+- The icebreaker is now "what’s the weirdest thing you’ve asked AI?", which
+  gets the same laugh without seeming to invite oversharing at work. The pass,
+  Claude's addition, went with the old question.
+- "How would you know it’s working?" now names the signal: "fewer problems
+  caught late: designs coming back after handoff, or changes found in
+  testing." The handoff signal is the UI drift problem from his own pitch
+  deck, so it is not a new claim. "When they’re most expensive to fix" was
+  cut to keep the sentence short.
+
+**"Completely" stays.**
+*Called by: Claude (argued), Ross (did not take that suggestion).* The
+feedback suggested "Trust drops fast" for "People lose trust completely".
+"Completely" is Ross's word, and his answer on designing AI products already
+says one wrong answer can shatter trust completely; softening one would make
+the two disagree.
+
+**Verification.** Headless Chromium at 1440 light and 390 dark: the answer and
+all four follow-ups render, no script errors.
 ---
 
 ## Open items
