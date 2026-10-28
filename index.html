@@ -153,7 +153,7 @@ a{color:var(--accent);text-underline-offset:3px;}
 .sb-me-status .dot{background:var(--accent-bright);}
 /* The theme switch sits in the top bar, beside the time. It used to share the
    sidebar's foot with the account row, and left that row too narrow for
-   "Remote or Manchester hybrid" on one line. */
+   the location line on one line. */
 .theme-btn{padding:var(--sp-8);border-radius:var(--r-md);color:var(--ink-2);flex:none;}
 .theme-btn:hover{background:var(--sunk);color:var(--ink);}
 .theme-btn svg{width:var(--size-icon);height:var(--size-icon);display:block;}
@@ -674,12 +674,12 @@ a.chip{text-decoration:none;}
       <div class="sb-group"><p class="sb-label">Pinned</p><ul class="sb-list" id="sbPinned"></ul></div>
     </div>
     <div class="sb-foot">
-      <button class="sb-me" type="button" data-go="contact" aria-label="Ross Lucarelli — open to new roles, remote or Manchester hybrid. Get in touch">
+      <button class="sb-me" type="button" data-go="contact" aria-label="Ross Lucarelli — open to new roles, remote, or hybrid in Manchester or London. Get in touch">
         <img id="sbPortrait" alt="">
         <span class="sb-me-text">
           <span class="sb-me-name">Ross Lucarelli</span>
           <span class="sb-me-status"><span class="dot" aria-hidden="true"></span>Open to new roles</span>
-          <span class="sb-me-where">Remote or Manchester hybrid</span>
+          <span class="sb-me-where">Remote, or hybrid in Manchester or London</span>
         </span>
       </button>
     </div>
@@ -2632,6 +2632,40 @@ var QA = [
     follow:['ai','agentic']
   },
   {
+    /* Has follow-ups of its own, like a thread: registered in byId under its id
+       so the probe chips work, and still answered as a direct question. */
+    id:'ai-team', topic:'setting up a team to work with AI',
+    q:'How would you set up a design team to work with AI?', hint:'How would you set up a team with AI?',
+    terms:{'design team':3,'set up a team':5,'set up a design team':6,'team to work with ai':6,'team with ai':4,'team work with ai':5,
+      'ai adoption':4,'adopt ai':4,'adopting ai':4,'roll out ai':4,'rolling out ai':4,'playbook':3,'ai playbook':5,'upskill':3,
+      'upskilling':3,'rituals':3,'design culture':3,'ai culture':4,'bring the team':3,'team using ai':4,'your team':2,
+      'ai strategy':3,'ai across the team':5,'team adopt':4,'shared skills':4,'workshop':2,'push for claude':6,'claude pitch':5,
+      'pitched claude':5,'where should ai stay out':6,'stay out':3,'is it working':3,'know it s working':4,'know it is working':4},
+    a:[
+      {t:'p',v:'People first, then tools. I’d start by finding out how everyone already uses AI, because a team where some people are flying and others haven’t started needs different help. Then shared things, so what one person learns helps everyone: meeting summaries first, then skills. I’d agree early on where AI stays out. And I’d judge it by whether we catch problems sooner and feel more confident about our decisions in crits, not by how much faster we are.'}
+    ],
+    probes:[
+      {q:'Why did you push for Claude at cinch?', a:[
+        {t:'p',v:'A few of us were already using AI on our own. Everyone started from scratch, so nothing we learned built up across the team. I put together a case for giving the design team Claude, set up once for everyone with our brand voice, tokens and ways of working.'},
+        {t:'p',v:'It started as a comparison with the tool we already had. Talking it through with two colleagues, we made it about design instead: what the team could do with it, and what we were missing without it.'},
+        {t:'p',v:'It wasn’t approved. The talks stalled when the person we were pitching to left the business. Some of what we pitched I’ve since seen work in my own projects, like a competitor review across dozens of sites done in hours, and a working prototype from a written brief.'}
+      ]},
+      {q:'What would you set up first?', a:[
+        {t:'p',v:'I’d start by finding out where everyone is. A fun workshop, more get-to-know-you than training. The icebreaker would be something like “what’s one thing you’ve asked AI that you wouldn’t want people to know?”, with a pass for anyone who’d rather not. Laughing about it makes it easier to be honest about what you have and haven’t tried, and that gives us a baseline.'},
+        {t:'p',v:'I’d share the patterns back with the team and pick up the rest in one-to-ones. People ask different questions when it’s just the two of you, and I wouldn’t want anyone to feel left behind.'},
+        {t:'p',v:'The first shared thing would be meeting summaries, because everyone has meetings and everyone needs the next steps out of them. I’ve used Granola, and Plaud for field research. After that, skills. I’d rebuild the ones I use, like the one that rebuilds a finished deck in the company template, and share them so nobody starts from scratch.'}
+      ]},
+      {q:'Where should AI stay out?', a:[
+        {t:'p',v:'Where AI stays out is a judgement call, and I’d rather say that than pretend there’s a list. I encourage people to run ideas past it like a conversation, and to ask it to push back rather than agree. For me it comes down to feeling in control. If I couldn’t answer a question about a design, I shouldn’t have let AI make that call, so that decides a lot of what I let it do on its own. Before I hand anything over, I want to know what happens if it gets it wrong.'},
+        {t:'p',v:'It’s the same in the products we design. I’d bring the trust tenets from the car finder: it doesn’t guess when it can’t confirm something, it never quietly changes what you asked for, and it can say no. People lose trust completely the moment it gets something wrong.'}
+      ]},
+      {q:'How would you know it’s working?', a:[
+        {t:'p',v:'Not by speed. For the business, the sign is fewer problems caught late, when they’re most expensive to fix. For the team, I’d hear it in one-to-ones, and see it in crits: people confident about the decisions they’ve made, because they made them, even when AI helped.'}
+      ]}
+    ],
+    follow:['ai','car-finder']
+  },
+  {
     id:'lead', topic:'leading other designers',
     q:'Have you led or managed other designers?', hint:'Have you managed other designers?',
     terms:{'managed':2,'manage':2,'manager':2,'managing':2,'management':2,'line manage':3,'line managed':3,'line management':3,
@@ -2669,7 +2703,7 @@ var QA = [
     terms:{'based':2,'where are you':3,'where do you live':4,'location':2,'located':2,'remote':2,'remotely':2,'hybrid':2,'office':2,
       'relocate':2,'relocation':2,'commute':2,'manchester':2,'london':2,'wfh':2,'work from home':3,'onsite':2,'on site':3,'in person':3},
     a:[
-      {t:'p',v:'I’m based in Bury, Greater Manchester, and work remotely. I’m happy to spend some days in an office in or around Manchester.'}
+      {t:'p',v:'I’m based in Bury, Greater Manchester, and work remotely. I’m happy to spend some days in an office, in Manchester or London.'}
     ],
     follow:['contact']
   },
@@ -2690,13 +2724,13 @@ var QA = [
 var qaById={};
 QA.forEach(function(x){ qaById[x.id]=x; });
 
-/* What the prompt box offers, in order. Seven direct questions first, then
+/* What the prompt box offers, in order. Eight direct questions first, then
    the threads, so typing narrows across everything that has a written answer.
    "How I use AI" is left out of the threads here: its question is the third
    direct one, and two near-identical rows in the list would be noise. */
 var ASKABLE = [
   {id:'work'}, {id:'ai-product'},
-  {id:'ai-use'},
+  {id:'ai-use'}, {id:'ai-team'},
   {id:'lead'}, {id:'code'}, {id:'titles'}, {id:'location'},
   {id:'car-finder', thread:true, extra:true, keys:'best work proudest chatbot assistant llm flagship current project'},
   {id:'help-me-choose', thread:true, extra:true, keys:'wizard rebuild numbers'},
@@ -2826,6 +2860,9 @@ var FALLBACK = {
 var byId={};
 CASES.forEach(function(c){ byId[c.id]=c; });
 Object.keys(TOPICS).forEach(function(k){ byId[k]=TOPICS[k]; });
+/* A direct question with follow-ups of its own answers them through the same
+   probe machinery as a thread. */
+QA.forEach(function(x){ if(x.probes && !byId[x.id]) byId[x.id]=x; });
 
 var main=document.getElementById('main'), stage=document.getElementById('stage'),
     hero=document.getElementById('hero'), heroSlot=document.getElementById('heroSlot'),
@@ -3436,6 +3473,8 @@ function runProbe(key, idx){
   var open=inner.querySelectorAll('.probe-block');
   for(var i=0;i<open.length;i++) open[i].remove();
 
+  var isQA=!!qaById[key];
+  if(isQA) retireQABlocks();
   addUser(probe.q);
   var body=newAssistant();
   var t=think(body, 'probe', e.topic);
@@ -3446,6 +3485,7 @@ function runProbe(key, idx){
       box.className='chunk done';
       box.innerHTML=tailFor(key, e, 'Anything else?');
       body.appendChild(box);
+      if(isQA) appendChunk(body, otherQuestionsHTML('Other questions'));
       onAnswered();
     });
   }, t.totalMs);
@@ -3486,7 +3526,14 @@ function deliverQA(x, kind){
   setTimeout(function(){
     t.stop(); t.remove();
     streamInto(body, blocksHTML(x.a), function(){
-      appendChunk(body, followHTML(x.follow, 'More on this'));
+      if(x.probes){
+        currentKey=x.id;
+        answered[x.id]=answered[x.id]||{};
+        var left=remainingProbes(x.id);
+        appendChunk(body, left.length ? probeChipsHTML(x.id, left, 'Ask a follow-up') : followHTML(x.follow, 'More on this'));
+      }else{
+        appendChunk(body, followHTML(x.follow, 'More on this'));
+      }
       appendChunk(body, otherQuestionsHTML('Other questions'));
       onAnswered();
     });
