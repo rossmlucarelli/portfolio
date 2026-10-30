@@ -32,6 +32,7 @@
   --size-dot:8px; --size-icon:16px; --size-icon-lg:20px;
   --size-control:40px; --size-avatar:32px;
 
+  --dev-body:#1A2321; --dev-cam:#3A4744; --dev-base-1:#DCE2DF; --dev-base-2:#B7C1BD; --dev-shadow:0 1px 2px rgba(16,40,36,.12),0 24px 40px -24px rgba(16,40,36,.45);
   --ground:#F7F7F5; --surface:#FFFFFF; --sunk:#EDF1EF; --sunk-2:#E3EAE7;
   --line:#DFE5E2; --line-strong:#CBD5D1;
   --ink:#14201E; --ink-2:#56655F; --ink-3:#8A9792;
@@ -61,7 +62,8 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --ground:#101716; --surface:#18211F; --sunk:#1F2A27; --sunk-2:#273330;
+    --dev-body:#0A0F0E; --dev-cam:#2B3936; --dev-base-1:#4A5753; --dev-base-2:#323D3A; --dev-shadow:0 0 0 1px #2B3936,0 24px 40px -24px rgba(0,0,0,.8);
+  --ground:#101716; --surface:#18211F; --sunk:#1F2A27; --sunk-2:#273330;
     --line:#2B3936; --line-strong:#3C4C48;
     --ink:#EDF3F1; --ink-2:#9DADA8; --ink-3:#74847F;
     --accent:#58CFC0; --accent-hover:#7FDFD2; --accent-bright:#58CFC0;
@@ -77,6 +79,7 @@
   }
 }
 :root[data-theme="dark"]{
+  --dev-body:#0A0F0E; --dev-cam:#2B3936; --dev-base-1:#4A5753; --dev-base-2:#323D3A; --dev-shadow:0 0 0 1px #2B3936,0 24px 40px -24px rgba(0,0,0,.8);
   --ground:#101716; --surface:#18211F; --sunk:#1F2A27; --sunk-2:#273330;
   --line:#2B3936; --line-strong:#3C4C48;
   --ink:#EDF3F1; --ink-2:#9DADA8; --ink-3:#74847F;
@@ -263,6 +266,39 @@ canvas.sophon{position:absolute;left:-50%;top:-50%;width:200%;height:200%;displa
 .case-head{border-bottom:1px solid var(--line);padding-bottom:var(--sp-16);margin-bottom:var(--sp-24);}
 .case-head .kicker{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);letter-spacing:.11em;text-transform:uppercase;color:var(--accent);margin-bottom:var(--sp-8);}
 .case-head h2{font-family:var(--font-display);font-size:var(--fs-32);line-height:var(--lh-40);font-weight:400;letter-spacing:-.015em;margin:0 0 var(--sp-8);text-wrap:balance;}
+/* A case study's hero: the design on a laptop and a phone, drawn here round
+   the real captures rather than flattened into one picture, so a new capture
+   updates it. Two beats of the flow, not one screen twice. Frames are
+   stylised, never a branded device render. */
+.devs{position:relative;margin:0 0 var(--sp-24);padding:var(--sp-32) var(--sp-24) var(--sp-24);border-radius:var(--r-lg);
+  background:radial-gradient(120% 90% at 85% 100%,var(--accent-tint),transparent 60%),linear-gradient(165deg,var(--sunk),var(--sunk-2));overflow:hidden;}
+.devs .dev-lap{width:76%;margin-left:4%;position:relative;z-index:1;}
+.devs .dev-lid{position:relative;background:var(--dev-body);border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-sm);padding:var(--sp-12) var(--sp-8) var(--sp-16);box-shadow:var(--dev-shadow);}
+.devs .dev-lid::before{content:"";position:absolute;top:4px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--dev-cam);}
+.devs .dev-base{position:relative;height:12px;margin:0 -7%;border-radius:2px 2px var(--r-lg) var(--r-lg);background:linear-gradient(var(--dev-base-1),var(--dev-base-2));box-shadow:var(--dev-shadow);}
+.devs .dev-base::after{content:"";position:absolute;top:0;left:42%;right:42%;height:4px;border-radius:0 0 var(--r-sm) var(--r-sm);background:var(--dev-base-2);filter:brightness(.88);}
+.devs .dev-screen{display:block;overflow:hidden;background:#fff;border-radius:2px;}
+.devs .dev-screen img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;}
+.devs .dev-lap .dev-screen{aspect-ratio:16/10;}
+.devs .dev-phone{position:absolute;z-index:2;right:6%;bottom:var(--sp-16);width:21%;background:var(--dev-body);border-radius:var(--r-xl);padding:4px;box-shadow:var(--dev-shadow);}
+.devs .dev-phone .dev-screen{aspect-ratio:9/19.5;border-radius:20px;position:relative;}
+.devs .dev-phone .dev-screen::before{content:"";position:absolute;z-index:1;top:6px;left:38%;right:38%;height:6px;border-radius:var(--r-pill);background:var(--dev-body);}
+@media (max-width:599px){
+  .devs{padding:var(--sp-24) var(--sp-16) var(--sp-16);}
+  .devs .dev-lap{width:78%;margin-left:0;}
+  .devs .dev-lid{padding:var(--sp-8) 4px var(--sp-12);border-radius:var(--r-md) var(--r-md) 2px 2px;}
+  .devs .dev-base{height:8px;}
+  .devs .dev-phone{width:24%;right:4%;bottom:var(--sp-16);border-radius:var(--r-lg);padding:3px;}
+  .devs .dev-phone .dev-screen{border-radius:13px;}
+  .devs .dev-phone .dev-screen::before{top:4px;height:4px;}
+}
+/* Where it sits on a phone: with the header (default), or after the lede so
+   the first screen is still words. Wider screens always have it up top. */
+.devs.at-lede{display:none;}
+@media (max-width:599px){
+  html[data-hero-phone="lede"] .devs.at-top{display:none;}
+  html[data-hero-phone="lede"] .devs.at-lede{display:block;}
+}
 .case-head .meta{font-family:var(--font-mono);font-size:var(--fs-12);line-height:var(--lh-16);color:var(--ink-3);display:flex;flex-wrap:wrap;gap:var(--sp-4) var(--sp-16);}
 
 .triad{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin:0 0 var(--sp-24);}
@@ -358,8 +394,8 @@ canvas.sophon{position:absolute;left:-50%;top:-50%;width:200%;height:200%;displa
 .w.on{opacity:1;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
 /* Blocks held out of the word reveal fade in where they sit, in reading
    order, and nothing rises: the page scrolling is the only movement. */
-.chunk .cards,.chunk .eras,.chunk .chips-block,.chunk .note,.chunk .case-head .meta{opacity:0;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
-.chunk .blk-on,.chunk.done .cards,.chunk.done .eras,.chunk.done .chips-block,.chunk.done .note,.chunk.done .case-head .meta{opacity:1;}
+.chunk .devs,.chunk .cards,.chunk .eras,.chunk .chips-block,.chunk .note,.chunk .case-head .meta{opacity:0;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
+.chunk .blk-on,.chunk.done .devs,.chunk.done .cards,.chunk.done .eras,.chunk.done .chips-block,.chunk.done .note,.chunk.done .case-head .meta{opacity:1;}
 .tail-in{animation:fade-in .34s cubic-bezier(.45,0,.25,1) both;}
 @keyframes fade-in{from{opacity:0;}to{opacity:1;}}
 
@@ -2071,6 +2107,8 @@ var CASES = [
     id:'car-finder', topic:'the car finder', nav:'Conversational car finder', navMeta:'cinch · designed, not yet built', rail:'CF',
     prompt:'What are you most proud of?',
     title:'A conversation to replace the wizard I built', kicker:'Case study 01',
+    hero:{alt:'The car finder prototype on a laptop, showing seven cars with reasons, and on a phone, asking its first question.',
+      lap:{src:'img/cf-recs.webp', pos:'50% 70%'}, phone:{src:'img/cf-questions-sm.webp'}},
     meta:['cinch','Designed, not yet built','Senior UX Designer'],
     triad:{
       challenge:'“Help Me Choose”, a branching wizard I originally built, could ask what you wanted, but never explain why a car fitted. An LLM-driven mode could, and raised harder questions about trust and control than the wizard ever had.',
@@ -2173,6 +2211,8 @@ var CASES = [
     id:'help-me-choose', topic:'Help Me Choose', nav:'Help Me Choose', navMeta:'cinch · 2022 and 2025', rail:'HM',
     prompt:'Tell me about Help Me Choose.',
     title:'A design that waited three years for a model', kicker:'Case study 02 · 2022 and 2025',
+    hero:{alt:'Help Me Choose on a laptop, asking what matters most, and its recommendation design on a phone.',
+      lap:{src:'img/hmc-question.webp', pos:'50% 0'}, phone:{src:'img/hmc-results-mobile.webp', pos:'50% 0'}},
     meta:['cinch','Rebuild, 2022','LLM proposal, 2025'],
     triad:{
       challenge:'Help Me Choose converted more than twice as well as the rest of the site (0.47% against 0.20%), and it was dying. Usage had fallen from 4.45% of visitors to 1.5% in nine months. Of the people who did start it, 42% never reached a recommendation.',
@@ -3015,6 +3055,13 @@ function blocksHTML(blocks){
   });
   return out;
 }
+function heroHTML(entry, where){
+  var h=entry.hero; if(!h) return '';
+  var img=function(x){ return '<img src="'+x.src+'" alt="" decoding="async"'+(where==='lede'?' loading="lazy"':'')+' style="object-position:'+(x.pos||'50% 0')+'">'; };
+  return '<figure class="devs at-'+where+'" role="img" aria-label="'+esc(h.alt)+'">'+
+    '<div class="dev-lap"><div class="dev-lid"><span class="dev-screen">'+img(h.lap)+'</span></div><div class="dev-base"></div></div>'+
+    '<div class="dev-phone"><span class="dev-screen">'+img(h.phone)+'</span></div></figure>';
+}
 function headHTML(entry){
   if(!entry.title) return '';
   var html='<div class="case-head">';
@@ -3229,7 +3276,7 @@ function streamInto(bodyEl, html, done){
   var sTop = stage.getBoundingClientRect().top, fold = rest + stage.clientHeight;
   var yOf = function(el){ return el.getBoundingClientRect().top - sTop + stage.scrollTop; };
   /* the blocks held out of the word reveal; words inside one come with it */
-  var blocks = [].slice.call(chunk.querySelectorAll('.eras,.cards,.chips-block,.note,.case-head .meta'));
+  var blocks = [].slice.call(chunk.querySelectorAll('.devs,.eras,.cards,.chips-block,.note,.case-head .meta'));
   blocks = blocks.filter(function(b){ return !blocks.some(function(o){ return o!==b && o.contains(b); }); });
   var inBlock = function(s){ return blocks.some(function(b){ return b.contains(s); }); };
   spans.filter(inBlock).forEach(function(s){ s.classList.add('on'); });
@@ -3417,7 +3464,10 @@ function deliver(key, entry, firstLabel, kind){
         ? '<p>We\u2019re on that one already \u2014 here\u2019s what else I can tell you about it.</p>'
         : '<p>That\u2019s everything I have written up on that one. Try another thread below.</p>';
     }else{
-      html = headHTML(entry) + triadHTML(entry) + blocksHTML(entry.intro);
+      html = headHTML(entry) + heroHTML(entry,'top') + triadHTML(entry);
+      if(entry.hero && entry.intro.length && entry.intro[0].cls==='lede')
+        html += blocksHTML(entry.intro.slice(0,1)) + heroHTML(entry,'lede') + blocksHTML(entry.intro.slice(1));
+      else html += blocksHTML(entry.intro);
       if(key) introShown[key]=true;
     }
     streamInto(body, html, function(){
