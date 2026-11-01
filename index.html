@@ -356,6 +356,17 @@ canvas.sophon{position:absolute;left:-50%;top:-50%;width:200%;height:200%;displa
 
 .w{opacity:0;}
 .w.on{opacity:1;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
+/* The trail. While an answer arrives, each word lands in a colour from the
+   wash and fades to the text colour, so the newest words are bright and
+   the older ones have settled: across the talking paragraph it reads as a
+   gradient that follows the words. Sentences that settle afterwards do the
+   same, a sentence at a time. A word inside a link or bold settles to that
+   colour. Words that are already there when the answer starts (below the
+   fold, or after a click finishes it) arrive settled. --trail-c is the
+   start colour and --trail-ms the fade; script sets both on the root. */
+.chunk.trail .w{color:var(--trail-c,var(--edge-3));}
+.chunk.trail .w.on{color:inherit;transition:opacity .34s cubic-bezier(.45,0,.25,1),color var(--trail-ms,1400ms) cubic-bezier(.3,0,.4,1);}
+.chunk.trail .w.now{transition:none;}
 /* Blocks held out of the word reveal fade in where they sit, in reading
    order, and nothing rises: the page scrolling is the only movement. */
 .chunk .cards,.chunk .eras,.chunk .chips-block,.chunk .note,.chunk .case-head .meta{opacity:0;transition:opacity .34s cubic-bezier(.45,0,.25,1);}
@@ -905,6 +916,26 @@ var Aurora = (function(){
    is moved between the hero and the dock, and a CSS animation starts
    again from zero when its element is re-inserted.
    ========================================================= */
+/* The colour at the top of the border right now, for the 'border' trail.
+   The conic paint starts at --et of a turn, so the top shows the stop at
+   1 - et. */
+var trailHues = null;
+function trailNow(ph){
+  if(!trailHues){
+    var cs = getComputedStyle(document.documentElement);
+    trailHues = [1,2,3,4,5,6,1].map(function(n){
+      var h = cs.getPropertyValue('--edge-'+n).trim().replace('#','');
+      return [0,2,4].map(function(i){ return parseInt(h.substr(i,2),16); });
+    });
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ trailHues = null; });
+    new MutationObserver(function(){ trailHues = null; }).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme','class']});
+  }
+  var stops = [0,.17,.34,.5,.66,.83,1], u = (1 - ph) % 1, i = 0;
+  while(i < 5 && u > stops[i+1]) i++;
+  var k = (u - stops[i]) / (stops[i+1] - stops[i]), a = trailHues[i], b = trailHues[i+1];
+  document.documentElement.style.setProperty('--trail-now', 'rgb(' + [0,1,2].map(function(j){ return Math.round(a[j] + (b[j]-a[j])*k); }).join(',') + ')');
+}
+
 var Edge = (function(){
   var el = document.getElementById('edge');
   /* The line is 2px, and 3px when the box has focus, taken to the nearest
@@ -933,6 +964,7 @@ var Edge = (function(){
        first screen comes back, so look it up again if it has gone */
     if(!lead || !lead.isConnected) lead = document.querySelector('.hero-chips .chip.lead');
     if(lead) lead.style.setProperty('--et', v);
+    if(window.TRAIL && TRAIL.c === 'border') trailNow(phase);
     requestAnimationFrame(frame);
   }
   if(!REDUCED) requestAnimationFrame(frame);              /* reduced motion: it holds still */
@@ -3114,6 +3146,19 @@ var SENT_MS = 260;     /* the beat between sentences and blocks */
 var HEAD_MS = 100;     /* the beat in a case study's header and panel */
 var activeReveal = null;
 
+/* The trail's start colour and fade length (see .chunk.trail). 'border'
+   takes whatever colour is at the top of the prompt box's border at that
+   moment, so the words and the border share one clock. */
+var TRAIL = {c:'violet', ms:1400};
+var TRAIL_C = {violet:'var(--edge-3)', blue:'var(--edge-2)', rose:'var(--edge-4)', border:'var(--trail-now)'};
+function trailApply(){
+  var r = document.documentElement.style;
+  r.setProperty('--trail-c', TRAIL_C[TRAIL.c] || TRAIL_C.violet);
+  r.setProperty('--trail-ms', TRAIL.ms + 'ms');
+}
+trailApply();
+window.Trail = {set:function(o){ for(var k in o) TRAIL[k]=o[k]; trailApply(); }, get:function(){ return TRAIL; }};
+
 document.addEventListener('pointerdown', function(){ if(activeReveal) activeReveal.finish(); }, true);
 document.addEventListener('keydown', function(e){
   if(!activeReveal) return;
@@ -3206,10 +3251,12 @@ function streamInto(bodyEl, html, done){
   avState(bodyEl, 'answering');
 
   var finished=false, timers=[];
-  function finish(){
+  function finish(natural){
     if(finished) return;
     finished=true;
     timers.forEach(clearTimeout);
+    /* finished early by a click or a key: everything lands settled */
+    if(natural !== true) all.forEach(function(s){ s.classList.add('now'); });
     all.forEach(function(s){ s.classList.add('on'); });
     chunk.classList.add('done');
     avState(bodyEl, null);
@@ -3225,6 +3272,7 @@ function streamInto(bodyEl, html, done){
   if(activeReveal) activeReveal.finish();
   activeReveal={chunk:chunk, finish:finish};
   chunk.classList.add('settling');
+  if(TRAIL.c !== 'off') chunk.classList.add('trail');
 
   var sTop = stage.getBoundingClientRect().top, fold = rest + stage.clientHeight;
   var yOf = function(el){ return el.getBoundingClientRect().top - sTop + stage.scrollTop; };
@@ -3232,12 +3280,12 @@ function streamInto(bodyEl, html, done){
   var blocks = [].slice.call(chunk.querySelectorAll('.eras,.cards,.chips-block,.note,.case-head .meta'));
   blocks = blocks.filter(function(b){ return !blocks.some(function(o){ return o!==b && o.contains(b); }); });
   var inBlock = function(s){ return blocks.some(function(b){ return b.contains(s); }); };
-  spans.filter(inBlock).forEach(function(s){ s.classList.add('on'); });
+  spans.filter(inBlock).forEach(function(s){ s.classList.add('on','now'); });
   spans = spans.filter(function(s){ return !inBlock(s); });
   blocks.forEach(function(b){ if(yOf(b) > fold) b.classList.add('blk-on'); });
   blocks = blocks.filter(function(b){ return yOf(b) <= fold; });
   var below = spans.filter(function(s){ return yOf(s) > fold; });
-  below.forEach(function(s){ s.classList.add('on'); });
+  below.forEach(function(s){ s.classList.add('on','now'); });
   spans = spans.filter(function(s){ return below.indexOf(s) < 0; });
 
   /* the talking part is the first paragraph; a case study's heading and
@@ -3266,7 +3314,7 @@ function streamInto(bodyEl, html, done){
     t += inHead ? HEAD_MS : (u.word && next && next.word) ? WORD_MS : SENT_MS;
   });
   /* let the last fade land before the chips under the answer come in */
-  timers.push(setTimeout(finish, t + 100));
+  timers.push(setTimeout(function(){ finish(true); }, t + 100));
 }
 
 /* --- messages --- */
