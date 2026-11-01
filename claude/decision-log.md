@@ -3802,6 +3802,39 @@ the two disagree.
 all four follow-ups render, no script errors.
 ---
 
+## Pass 18 — 1 November 2026
+
+### A colour trail on answers, tried and dropped
+
+Built on the branch `answer-trail` (commit `711695c`) and shown on a private
+preview page, "Answer Colour Preview", with switches. Never on `main`.
+
+**Words land in colour and fade to the text colour.**
+*Called by: Ross (the idea: responses appear in a slightly different colour
+that quickly transitions to the standard one, noticeable, almost a gradient
+within a paragraph), Claude (how).* Each word arrived in a wash hue and faded
+to the text colour, so the talking paragraph showed a gradient behind the
+newest words; settled sentences did the same a sentence at a time. A click
+settled everything at once; reduced motion had none. Claude advised against
+teal (it reads as a link) and amber (Decisions mode). The preview offered
+violet, blue, rose and the border's live colour, at 0.8, 1.4 and 2.2 seconds.
+
+**Dropped.**
+*Called by: Ross. Taste: "Having seen it, I think I don't like it as much.
+Let's not bother."* The branch stays in the repo, unmerged.
+
+### Missing images on preview pages
+
+*Raised by: Ross, who saw missing images on the preview; Rob reported the same
+on 16 October.* Not a fault on the site. Preview pages are published on
+claude.ai, which does not load images from another domain; Pass 1 hit the
+same limit. On rosslucarelli.com, checked from the browser on Ross's computer
+on 1 November, all 39 image files the page refers to loaded, none failed.
+Rob's report is still most likely his work network, as recorded under Rob's
+check in Pass 12; the retry added then stands.
+
+---
+
 ## Open items
 
 - [ ] **Both artifacts are private.** Sharing must be turned on before either link
