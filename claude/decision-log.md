@@ -3880,7 +3880,36 @@ their frames, every follow-up opens, no script errors, no sideways scroll.
 *Called by: Ross: "I'm quite happy with the content as is without Gemini
 rewriting it. Without going too much into WoW, its understandable."* The
 first case study since 14 October not reworded by Gemini. The Stocking
-Jetsteam wording went live with the rest of the copy.
+Jetstream wording went live with the rest of the copy.
+
+### Real conversations in the Forever Companion — 6 November
+
+On the branch `forever-companion`, not yet on `main`.
+
+**Show it working in Claude.**
+*Called by: Ross (more screenshots, so readers understand what it can do, and
+the two conversations to use), Claude (the crops and where they go).* The
+Stocking Jetstream chat is split in two: the nudge and "a bit more" sit under
+the ladder diagram, and the turn with mixed marks sits under the key. The
+first Grund and Gozwin nudge goes in "What did launch week change?". Padded
+with white to the card's 16:10 rather than cropped.
+
+**Full width, not two-up.**
+*Called by: Claude.* Two-up beside the diagrams, neither the diagrams nor the
+chat text could be read without opening them.
+
+**Two decades of wikis, guides and videos.**
+*Called by: Ross (the idea), Claude (the wording).* One sentence in "Every
+fact says where it came from": the names are the same across Classic, retail
+and Forever and the details aren't, so a model has plenty of confident wrong
+answers. Called source marks, not confidence scores, because the car finder
+argues against confidence scores and the marks say where a fact came from,
+not how sure the model is.
+
+**"Stocking Jetstream", not "Jetsteam".** *Corrected by: Ross's screenshot.*
+
+**A login-screen hero, to come.** *Called by: Ross:* "Its geeky but it tells
+a thousand words." Its place is marked in the code after the lede.
 
 ---
 
@@ -4506,8 +4535,10 @@ cost is usually in the wrong place, not in the work.
 - [x] **Ross to put the draft through Gemini.** *Settled 6 November: not
       needed, live as drafted.*
 - [ ] **The /ding screenshot** from Ross.
-- [x] **"Stocking Jetsteam"** was Claude's reading of Ross's note. *Live
+- [x] **"Stocking Jetstream"** was Claude's reading of Ross's note. *Live
       6 November with the rest of the copy, which Ross was happy with.*
 - [ ] **How this site was made** says "all four case studies have been
       through" Gemini. Still true of the four, but there are now five case
       studies besides it, and this one wasn't.
+- [ ] **The login-screen hero** from Ross, for the top of the Forever
+      Companion.

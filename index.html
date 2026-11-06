@@ -1823,6 +1823,24 @@ var ART = {
       return svgWrap(s);
     }
   },
+  fcLadderChat:{
+    title:'Climbing the ladder, in Claude',
+    caption:'A real conversation from launch week. The first step is a nudge in the quest giver’s own words. “A bit more” gives a direction from where I last saved, and says what time that save was.',
+    alt:'A Claude conversation. Asked about a quest, it gives a nudge from the quest giver’s own words, marked as from the game. Asked for a bit more, it says head north-west, a short walk from the last save, measured from 12:24, and suggests /sync if the player has moved.',
+    img:'img/fc-ladder-chat.webp', w:1464, h:915, shot:true
+  },
+  fcMarksChat:{
+    title:'Marks in a real answer',
+    caption:'The same quest, a turn later. What I told it, what my game says and what it only knows from Classic each carry their own mark, and the Classic detail is offered as a possibility, not a fact.',
+    alt:'A Claude reply giving two possibilities for a missing quest item. Facts from the game are marked with a filled diamond, what the player said with a diamond and dot, and a detail from Classic with an empty circle and the line: I can’t confirm whether Forever changed that.',
+    img:'img/fc-marks-chat.webp', w:1231, h:769, shot:true
+  },
+  fcGrund:{
+    title:'The first nudge on Grund and Gozwin',
+    caption:'The first hint is the quest’s own story, and it asks which part I’m stuck on. This is the quest where the ladder later ran out and I went to YouTube anyway, which led to “show me”.',
+    alt:'A Claude reply giving a first nudge for a quest, built from what the quest giver said, with a key underneath: your game, looked up, unconfirmed for Forever.',
+    img:'img/fc-grund.webp', w:805, h:503, shot:true
+  },
   cfSearches:{
     title:'997 real searches, sorted by what the car finder would do',
     caption:'Every term typed into cinch’s search box in one test, sorted against the rules the car finder was designed with. Registration plates and a postcode are shown as X’s. It is about a thousand searches, so it supports the design’s assumptions rather than proving them.',
@@ -2254,6 +2272,7 @@ var CASES = [
     },
     intro:[
       {t:'p',cls:'lede',v:'This is about designing how an AI should behave. World of Warcraft is the setting, not the point.'},
+      /* HERO TO COME: Ross's character on the login screen, full width, here. */
       {t:'p',v:'Forever launched on 4 November 2026, and I built a companion for it: a Claude connector, plus an addon that saves a snapshot of my character when I ask. I designed it, made the calls and tested it in real play. Claude wrote the code.'},
 
       {t:'h',v:'It helps, it never plays'},
@@ -2262,11 +2281,13 @@ var CASES = [
       {t:'h',v:'Hints before answers'},
       {t:'p',v:'Ask where something is and you get a nudge. Ask for a bit more and it climbs one step: nudge, then direction, then the answer. In Forever’s new zones, discovery mode stops at direction unless I switch it off.'},
       {t:'cards',v:['fcLadder']},
+      {t:'cards',v:['fcLadderChat']},
       {t:'p',v:'The restraint lives in the connector, not the model. Claude is only ever given what the current step allows. If it knew the answer and was just told to hold back, it would let it slip sooner or later. This way it can’t.'},
 
       {t:'h',v:'Every fact says where it came from'},
-      {t:'p',v:'Forever shares names with Classic and retail, and models fill the gaps from both. Gemini did it to me again and again, even when I told it not to. So every fact carries a mark for where it came from: my game, something I told it, something it looked up, or unconfirmed for Forever.'},
-      {t:'cards',v:['fcMarks']}
+      {t:'p',v:'World of Warcraft has two decades of wikis, guides and videos behind it, across Classic, retail and now Forever. The names are the same and the details aren’t, so a model has plenty of confident answers that are wrong for this version. Gemini did it to me again and again, even when I told it not to. So every fact carries a mark for where it came from: my game, something I told it, something it looked up, or unconfirmed for Forever.'},
+      {t:'cards',v:['fcMarks']},
+      {t:'cards',v:['fcMarksChat']}
     ],
     probes:[
       {q:'How does it know how you play?', a:[
@@ -2283,9 +2304,10 @@ var CASES = [
         {t:'decisions',v:[
           {k:'The ladder ran out',v:'On Grund and Gozwin, the hints dead-ended and I went to YouTube for the full spoiler anyway. So when the hints run out it now offers “show me”: one video, only if I ask. It also gives route hints, for getting somewhere awkward, from ones I’ve saved.'},
           {k:'Typing /reload',v:'Having to reload to save was the weakest part of it. /ding and /sync now save and reload in one step.'},
-          {k:'The game beat the wiki',v:'On Stocking Jetsteam, the game’s quest marker pointed to the hand-in, not the boar. Checking in game beat the wiki, which describes Classic. Now what the player sees in game outranks anything looked up.'},
+          {k:'The game beat the wiki',v:'On Stocking Jetstream, the game’s quest marker pointed to the hand-in, not the boar. Checking in game beat the wiki, which describes Classic. Now what the player sees in game outranks anything looked up.'},
           {k:'No videos yet',v:'“Show me” found no Forever videos in launch week. It says so plainly, rather than offering one from the wrong version of the game.'}
-        ]}
+        ]},
+        {t:'cards',v:['fcGrund']}
       ]},
       {q:'What carries over to other products?', a:[
         {t:'p',v:'The same three problems turn up in car finders and property search.'},
