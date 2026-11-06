@@ -3833,6 +3833,49 @@ on 1 November, all 39 image files the page refers to loaded, none failed.
 Rob's report is still most likely his work network, as recorded under Rob's
 check in Pass 12; the retry added then stands.
 
+## Pass 19 — 6 November 2026
+
+### Forever Companion, drafted as case study 02
+
+Built on the branch `forever-companion`. Not on `main`. The copy is a first
+draft, for Ross to put through Gemini before anything goes live.
+
+**A new case study: Forever Companion.**
+*Called by: Ross (the project, the brief and the facts).* A Claude connector
+and in-game addon he designed and shipped for World of Warcraft: Forever,
+launched 4 November 2026, public on GitHub at release 1.4.0. Claude wrote the
+code; Ross designed it, made the calls and tested it in real play.
+
+**Framed as designing how an AI should behave, not as a game addon.**
+*Called by: Ross.* The game is the setting. The transferable patterns are
+drawn out in a follow-up: graded disclosure, labelling where facts come from,
+and handling stale data, the same problems as the car finder.
+
+**Second, after the car finder.**
+*Called by: Ross.* Help Me Choose, the competitor landscape, Corby yard and
+How this site was made move down one, to 03 to 06. The sidebar order follows.
+
+**Short, like the others.**
+*Called by: Ross.* An opener of three short sections and five follow-ups.
+
+**Two diagrams, drawn in the site's style.**
+*Called by: Ross (what to draw), Claude (how).* The hint ladder as three steps
+with a bracket for discovery mode and a "show me" line under it; the source
+marks as a key, drawn as shapes rather than type so they render in any font.
+The examples on the ladder are the spec's own. A screenshot of /ding in game
+chat, from Ross, goes in "How does it know how you play?"; its place is marked
+in the code, not on the page.
+
+**Every claim checked against the spec and the code.** *Called by: Claude.*
+The restraint in the connector, discovery mode stopping at direction, "show
+me" offering one video only when asked and only when the ladder runs out, and
+route hints coming only from the player's own saved hints are all in
+`server/src/hints.js` at 1.4.0.
+
+**Verification.** Chromium at 1440 wide in light and 390 wide in dark: the
+case study opens from the sidebar, both diagrams render with no text past
+their frames, every follow-up opens, no script errors, no sideways scroll.
+
 ---
 
 ## Open items
@@ -4451,3 +4494,13 @@ slow and risks truncating something written over a month. The fix was not a
 better writing technique; it was moving the file to where appending is cheap.
 Worth remembering when a tool starts forcing a worse version of a task: the
 cost is usually in the wrong place, not in the work.
+
+**Added 6 November — from the Forever Companion draft**
+
+- [ ] **Ross to put the draft through Gemini,** then read it, before
+      `forever-companion` goes to `main`.
+- [ ] **The /ding screenshot** from Ross.
+- [ ] **"Stocking Jetsteam"** is Claude's reading of Ross's note: the quest
+      marker pointed to the hand-in, not the boar. Ross to check the wording.
+- [ ] **How this site was made** says "all four case studies have been
+      through" Gemini. Five once this one has.

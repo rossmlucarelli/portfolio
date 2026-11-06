@@ -1750,6 +1750,79 @@ var ART = {
       return '<svg class="bm" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Who was tested at each stage" xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
     }
   },
+  fcLadder:{
+    title:'The hint ladder',
+    caption:'Every “where” or “how” question starts at a nudge, and each “a bit more?” climbs one step. The connector holds the full answer and passes Claude only what the current step allows. In Forever’s new zones, discovery mode stops at direction.',
+    alt:'Three steps. 1, Nudge: a clue in the world’s own terms, from the quest’s own text. 2, Direction: the zone, a landmark the character already knows, and which way to head. 3, Answer: the exact place. Discovery mode stops new zones at step 2. When the ladder runs out, “show me” offers one video, only if asked.',
+    svg:function(){
+      var steps=[
+        ['1','Nudge','A clue in the world’s','own terms','“Innkeepers hear','everything.”'],
+        ['2','Direction','The zone, a landmark','you already know','“The inn north-east','of the lake.”'],
+        ['3','Answer','The exact place','','“Upstairs, by the','fireplace.”']
+      ];
+      var s='<text x="24" y="40" font-family="Instrument Sans, sans-serif" font-size="15" font-weight="600" fill="'+P.ink+'">How much it tells you, one step at a time</text>';
+      s+=txt(24,60,'WHAT CLAUDE IS GIVEN AT EACH STEP',9.5,P.ink3,500);
+      var x=24, w=168, gap=44, y=88, h=168;
+      steps.forEach(function(st,i){
+        var bx=x+i*(w+gap), on=(i===0);
+        s+='<rect x="'+bx+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="12" fill="'+(on?P.tint:P.bg)+'" stroke="'+(on?P.acc:P.line)+'" stroke-width="1.4"/>';
+        s+='<circle cx="'+(bx+28)+'" cy="'+(y+28)+'" r="12" fill="'+(on?P.acc:P.panel)+'" stroke="'+(on?P.acc:P.line)+'" stroke-width="1.2"/>';
+        s+=txt(bx+28,y+32,st[0],11,on?'var(--surface)':P.ink2,600,'middle');
+        s+='<text x="'+(bx+48)+'" y="'+(y+33)+'" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="'+P.ink+'">'+st[1]+'</text>';
+        s+=txt(bx+16,y+68,st[2],10,P.ink2);
+        if(st[3]) s+=txt(bx+16,y+84,st[3],10,P.ink2);
+        s+='<line x1="'+(bx+16)+'" y1="'+(y+104)+'" x2="'+(bx+w-16)+'" y2="'+(y+104)+'" stroke="'+P.faint+'" stroke-width="1"/>';
+        s+='<text x="'+(bx+16)+'" y="'+(y+128)+'" font-family="Newsreader, Georgia, serif" font-style="italic" font-size="13" fill="'+P.ink2+'">'+st[4]+'</text>';
+        s+='<text x="'+(bx+16)+'" y="'+(y+146)+'" font-family="Newsreader, Georgia, serif" font-style="italic" font-size="13" fill="'+P.ink2+'">'+st[5]+'</text>';
+        if(i<2){
+          var ax=bx+w+12;
+          s+='<path d="M'+ax+' '+(y+h/2)+' h20 m-5 -5 l5 5 l-5 5" fill="none" stroke="'+P.ink3+'" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>';
+          s+=txt(ax+10,y+h/2-10,'more?',9,P.ink3,500,'middle');
+        }
+      });
+      /* discovery mode: a bracket over steps 1 and 2, the wall before step 3 */
+      var dy=y+h+24, endX=x+2*w+gap;
+      s+='<path d="M'+x+' '+(dy-8)+' v8 h'+(endX-x)+' v-8" fill="none" stroke="'+P.acc+'" stroke-width="1.4"/>';
+      s+=txt(x,dy+20,'DISCOVERY MODE · IN NEW FOREVER ZONES IT STOPS HERE',9.5,P.acc,600);
+      /* show me */
+      var sy=dy+44;
+      s+=box(x,sy,592,40,20,P.panel);
+      s+='<text x="'+(x+20)+'" y="'+(sy+25)+'" font-family="Instrument Sans, sans-serif" font-size="12" font-weight="600" fill="'+P.ink+'">Hints run out?</text>';
+      s+=txt(x+124,sy+25,'“Show me” finds one Forever video, only if you ask.',10.5,P.ink2);
+      return svgWrap(s);
+    }
+  },
+  fcMarks:{
+    title:'Where each fact came from',
+    caption:'Every fact about the game carries a mark. The shapes empty as certainty drops, so they read at a glance once you’ve seen the key. Advice and opinions aren’t marked.',
+    alt:'Four marks. A filled diamond: from your game, the snapshot or the game’s own quest marker. A diamond with a dot: something you told it. An outlined diamond: looked up on the wiki or a Forever guide, which may lag or describe Classic. An empty circle: unconfirmed for Forever, from general WoW knowledge.',
+    svg:function(){
+      function dia(cx,cy,r,fill,stroke){ return '<path d="M'+cx+' '+(cy-r)+' L'+(cx+r)+' '+cy+' L'+cx+' '+(cy+r)+' L'+(cx-r)+' '+cy+' Z" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2" stroke-linejoin="round"/>'; }
+      var rows=[
+        ['game','Your game','Certain','The snapshot of your character, or the game’s own quest marker'],
+        ['told','You told me','Yours','Your playstyle profile, or something you said in the chat'],
+        ['looked','Looked up','Usually right','The wiki or a Forever guide. May lag, or describe Classic'],
+        ['unconf','Unconfirmed for Forever','Check first','General WoW knowledge, which comes from Classic or retail']
+      ];
+      var s='<text x="24" y="40" font-family="Instrument Sans, sans-serif" font-size="15" font-weight="600" fill="'+P.ink+'">Every fact says where it came from</text>';
+      s+=txt(24,60,'THE MARK SITS AT THE END OF THE SENTENCE IT COVERS',9.5,P.ink3,500);
+      var y=84;
+      rows.forEach(function(r,i){
+        var cy=y+32, cx=60;
+        s+='<rect x="24" y="'+y+'" width="592" height="64" rx="10" fill="'+(i%2?P.bg:P.panel)+'"/>';
+        if(r[0]==='game') s+=dia(cx,cy,13,P.acc,P.acc);
+        if(r[0]==='told') s+=dia(cx,cy,13,'none',P.acc)+'<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="'+P.acc+'"/>';
+        if(r[0]==='looked') s+=dia(cx,cy,13,'none',P.acc);
+        if(r[0]==='unconf') s+='<circle cx="'+cx+'" cy="'+cy+'" r="11" fill="none" stroke="'+P.ink3+'" stroke-width="2"/>';
+        s+='<text x="92" y="'+(cy-4)+'" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="'+P.ink+'">'+r[1]+'</text>';
+        s+=txt(92,cy+14,r[3],10,P.ink2);
+        s+=txt(600,cy+4,r[2].toUpperCase(),9.5,r[0]==='unconf'?P.ink3:P.acc,600,'end');
+        y+=72;
+      });
+      s+=txt(24,388,'Forever shares names with Classic and retail, so the last two matter most.',9.5,P.ink3);
+      return svgWrap(s);
+    }
+  },
   cfSearches:{
     title:'997 real searches, sorted by what the car finder would do',
     caption:'Every term typed into cinch’s search box in one test, sorted against the rules the car finder was designed with. Registration plates and a postcode are shown as X’s. It is about a thousand searches, so it supports the design’s assumptions rather than proving them.',
@@ -2170,9 +2243,70 @@ var CASES = [
     follow:['agentic','help-me-choose','competitors']
   },
   {
+    id:'forever', topic:'the Forever Companion', nav:'Forever Companion', navMeta:'Claude connector · launch week', rail:'FC',
+    prompt:'Tell me about the Forever Companion.',
+    title:'Designing how much an AI should tell you', kicker:'Case study 02',
+    meta:['Personal project','Claude connector and game addon','In progress'],
+    triad:{
+      challenge:'Help in games sits at two extremes. Quest addons and guides give you the answer outright. Without them you get stuck and end up on YouTube. Nothing in between knows your character, or how much you want to be told.',
+      solution:'A Claude connector and a small in-game addon that coach from the player’s own character. It never acts in the game, hints before it answers, and marks where every fact came from.',
+      impact:'Shipped for World of Warcraft: Forever’s launch on 4 November 2026, and public on GitHub at release 1.4.0. One player so far, me, and launch week has already changed the design four times.'
+    },
+    intro:[
+      {t:'p',cls:'lede',v:'This is about designing how an AI should behave. World of Warcraft is the setting, not the point.'},
+      {t:'p',v:'Forever launched on 4 November 2026, and I built a companion for it: a Claude connector, plus an addon that saves a snapshot of my character when I ask. I designed it, made the calls and tested it in real play. Claude wrote the code.'},
+
+      {t:'h',v:'It helps, it never plays'},
+      {t:'p',v:'It only reads. The addon writes a file and the connector reads it. It never presses a key, posts in chat or touches the auction house. That’s Blizzard’s rule, and it’s the right line for an assistant anyway.'},
+
+      {t:'h',v:'Hints before answers'},
+      {t:'p',v:'Ask where something is and you get a nudge. Ask for a bit more and it climbs one step: nudge, then direction, then the answer. In Forever’s new zones, discovery mode stops at direction unless I switch it off.'},
+      {t:'cards',v:['fcLadder']},
+      {t:'p',v:'The restraint lives in the connector, not the model. Claude is only ever given what the current step allows. If it knew the answer and was just told to hold back, it would let it slip sooner or later. This way it can’t.'},
+
+      {t:'h',v:'Every fact says where it came from'},
+      {t:'p',v:'Forever shares names with Classic and retail, and models fill the gaps from both. Gemini did it to me again and again, even when I told it not to. So every fact carries a mark for where it came from: my game, something I told it, something it looked up, or unconfirmed for Forever.'},
+      {t:'cards',v:['fcMarks']}
+    ],
+    probes:[
+      {q:'How does it know how you play?', a:[
+        {t:'p',v:'A short chat the first time you use it. Mine says I prefer steady damage, find long cooldowns awkward, and value a steady spell cadence over levelling fast. Talent advice is weighed against that, so it favours the spells I cast all the time over ones I’d forget to use.'},
+        {t:'p',v:'Paste a build link from Icy Veins’ talent calculator and it becomes a plan. Type /ding in game when you level and it tells you your next talent, and why.'}
+        /* SCREENSHOT TO COME: Ross's capture of /ding in game chat. Goes here. */
+      ]},
+      {q:'What happens when its data is out of date?', a:[
+        {t:'p',v:'The game only saves addon data when you log out or reload, so the snapshot is always from the end of the last save, never live. It says how old it is, and asks what’s changed since.'},
+        {t:'p',v:'What I tell it beats what it last saw. If I’ve just bought my mount, it doesn’t argue with a snapshot from yesterday.'}
+      ]},
+      {q:'What did launch week change?', a:[
+        {t:'p',v:'Four things, all from playing it.'},
+        {t:'decisions',v:[
+          {k:'The ladder ran out',v:'On Grund and Gozwin, the hints dead-ended and I went to YouTube for the full spoiler anyway. So when the hints run out it now offers “show me”: one video, only if I ask. It also gives route hints, for getting somewhere awkward, from ones I’ve saved.'},
+          {k:'Typing /reload',v:'Having to reload to save was the weakest part of it. /ding and /sync now save and reload in one step.'},
+          {k:'The game beat the wiki',v:'On Stocking Jetsteam, the game’s quest marker pointed to the hand-in, not the boar. Checking in game beat the wiki, which describes Classic. Now what the player sees in game outranks anything looked up.'},
+          {k:'No videos yet',v:'“Show me” found no Forever videos in launch week. It says so plainly, rather than offering one from the wrong version of the game.'}
+        ]}
+      ]},
+      {q:'What carries over to other products?', a:[
+        {t:'p',v:'The same three problems turn up in car finders and property search.'},
+        {t:'decisions',v:[
+          {k:'Graded disclosure',v:'Letting people choose how much they’re told, and enforcing it below the model rather than asking it nicely.'},
+          {k:'Labelling where facts come from',v:'Separating what the system knows for certain from what it looked up or assumed, at a glance.'},
+          {k:'Handling stale data',v:'Saying how old the data is, and letting what the person says now win.'}
+        ]},
+        {t:'next',key:'car-finder',label:'Read the car finder case study',v:'The car finder had the same question at its heart: how much of the model to show, and what it can do without asking.'}
+      ]},
+      {q:'Can other people use it?', a:[
+        {t:'p',v:'That was the aim from the start. It sets up a profile through a first-run chat, makes a plan from any Icy Veins build link, and installs and updates its own addon. It’s public on GitHub.'},
+        {t:'p',v:'So far it has one player, me. It’s launch week, and it’s still changing.'}
+      ]}
+    ],
+    follow:['car-finder','ai','making']
+  },
+  {
     id:'help-me-choose', topic:'Help Me Choose', nav:'Help Me Choose', navMeta:'cinch · 2022 and 2025', rail:'HM',
     prompt:'Tell me about Help Me Choose.',
-    title:'A design that waited three years for a model', kicker:'Case study 02 · 2022 and 2025',
+    title:'A design that waited three years for a model', kicker:'Case study 03 · 2022 and 2025',
     meta:['cinch','Rebuild, 2022','LLM proposal, 2025'],
     triad:{
       challenge:'Help Me Choose converted more than twice as well as the rest of the site (0.47% against 0.20%), and it was dying. Usage had fallen from 4.45% of visitors to 1.5% in nine months. Of the people who did start it, 42% never reached a recommendation.',
@@ -2255,7 +2389,7 @@ var CASES = [
   {
     id:'competitors', topic:'the competitor landscape', nav:'Competitor landscape', navMeta:'UK used-car market · 2026', rail:'CL',
     prompt:'What was the competitor analysis about?',
-    title:'Building a repeatable competitor benchmark with AI', kicker:'Case study 03',
+    title:'Building a repeatable competitor benchmark with AI', kicker:'Case study 04',
     meta:['cinch','Competitive benchmark','Planned in Gemini, run in Claude'],
     triad:{
       challenge:'An earlier benchmark scored every UK competitor against one shared set of criteria. It gave cinch a good marketing line, the only place to buy a car online end to end, but less for squads to act on, since marketplaces aren’t trying to sell cars directly.',
@@ -2299,7 +2433,7 @@ var CASES = [
   {
     id:'yard', topic:'the Corby visit', nav:'Corby yard research', navMeta:'cinchPro · operational research', rail:'YR',
     prompt:'Tell me about the Corby yard research.',
-    title:'Going to where the friction actually is', kicker:'Case study 04',
+    title:'Going to where the friction actually is', kicker:'Case study 05',
     meta:['cinch','Site visit & report','Product + Design audience'],
     triad:{
       challenge:'The cinchPro yard system had gone live at Corby a week before my visit, running alongside a legacy system still holding about 1,300 cars. The friction that created was obvious on the tarmac and invisible from a product backlog.',
@@ -2360,7 +2494,7 @@ var CASES = [
        it holds things that are not for the site. */
     id:'making', topic:'how this site was made', nav:'How this site was made', navMeta:'RossLM · built with Claude', rail:'RL',
     prompt:'How did you make this site?',
-    title:'Every decision on the record', kicker:'Case study 05',
+    title:'Every decision on the record', kicker:'Case study 06',
     meta:['RossLM','September–October 2026','Built with Claude'],
     triad:{
       challenge:'A portfolio for AI-focused roles has to answer one question well: how do I use AI? A list of tools doesn’t answer it.',
@@ -2769,6 +2903,7 @@ var INTENTS = [
   {key:'agentic',words:['agent','agents','agentic','autonomy','autonomous','human in the loop','oversight','tool use','multi step']},
   {key:'car-finder',words:['car finder','conversational','deepseek','long conversation','jump to','your messages','proud','proudest','best work','real searches','search terms','registration','number plate','free text','what people type','chatbot','assistant','criteria','compromise','flagship','llm','current project','working on now']},
   {key:'help-me-choose',words:['help me choose','hmc','wizard','the old tool','predecessor','drop off','drop-off','funnel','axure','miro','sticky','body type','soft check','pre-selected','preselected','illustration','illustrated','price range','histogram','slider','didn’t make it','didn\'t make it','never shipped','content first','content-first','grouping','prompt','first thing','earlier version','v2','quiz']},
+  {key:'forever',words:['forever','warcraft','world of warcraft','wow','game','gaming','addon','companion','hint','hints','spoiler','spoilers','ding','discovery mode','source marks','stale']},
   {key:'competitors',words:['competitor','competition','market','landscape','auto trader','motorway','motorpoint','cazoo','carwow','benchmark','analysis','strategy','mystery shop','gemini','bias','mobbin','audit']},
   {key:'yard',words:['yard','corby','cinchpro','research','site visit','ops','operations','field','interview','ethnograph','report','plaud','shadowing','lyssna']},
   {key:'making',words:['this site','this page','built this','made this','how was this made','how this was made','how did you make','how did you build','decision log','decisions','who decided','inspect','taste','behind the scenes','built with claude','argon','second model','reword','two models']},
