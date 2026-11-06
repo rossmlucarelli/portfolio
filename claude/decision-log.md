@@ -3876,6 +3876,12 @@ route hints coming only from the player's own saved hints are all in
 case study opens from the sidebar, both diagrams render with no text past
 their frames, every follow-up opens, no script errors, no sideways scroll.
 
+**Live as drafted, without Gemini.**
+*Called by: Ross: "I'm quite happy with the content as is without Gemini
+rewriting it. Without going too much into WoW, its understandable."* The
+first case study since 14 October not reworded by Gemini. The Stocking
+Jetsteam wording went live with the rest of the copy.
+
 ---
 
 ## Open items
@@ -4497,10 +4503,11 @@ cost is usually in the wrong place, not in the work.
 
 **Added 6 November — from the Forever Companion draft**
 
-- [ ] **Ross to put the draft through Gemini,** then read it, before
-      `forever-companion` goes to `main`.
+- [x] **Ross to put the draft through Gemini.** *Settled 6 November: not
+      needed, live as drafted.*
 - [ ] **The /ding screenshot** from Ross.
-- [ ] **"Stocking Jetsteam"** is Claude's reading of Ross's note: the quest
-      marker pointed to the hand-in, not the boar. Ross to check the wording.
+- [x] **"Stocking Jetsteam"** was Claude's reading of Ross's note. *Live
+      6 November with the rest of the copy, which Ross was happy with.*
 - [ ] **How this site was made** says "all four case studies have been
-      through" Gemini. Five once this one has.
+      through" Gemini. Still true of the four, but there are now five case
+      studies besides it, and this one wasn't.
