@@ -3952,6 +3952,8 @@ styled like the existing `next` note, opening in a new tab.
 **Verification.** Chromium at 1440 light and 390 dark: every follow-up opens,
 the GitHub chip points at the repo, no script errors, no sideways scroll.
 
+**Live.** *Called by: Ross: "Yes".*
+
 ---
 
 ## Open items
