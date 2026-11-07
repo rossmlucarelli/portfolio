@@ -2267,22 +2267,22 @@ var CASES = [
     follow:['agentic','help-me-choose','competitors']
   },
   {
-    id:'forever', topic:'the Forever Companion', nav:'Forever Companion', navMeta:'Claude connector · launch week', rail:'FC',
-    prompt:'Tell me about the Forever Companion.',
+    id:'forever', topic:'the Warcraft: Forever companion add-on', nav:'Warcraft: Forever companion add-on', navMeta:'Claude connector · launch week', rail:'FC',
+    prompt:'Tell me about the Warcraft: Forever companion add-on.',
     title:'Designing how much an AI should tell you', kicker:'Case study 02',
-    meta:['Personal project','Claude connector and game addon','In progress'],
+    meta:['Personal project','Claude connector and game add-on','In progress'],
     triad:{
-      challenge:'Help in games sits at two extremes. Quest addons and guides give you the answer outright. Without them you get stuck and end up on YouTube. Nothing in between knows your character, or how much you want to be told.',
-      solution:'A Claude connector and a small in-game addon that coach from the player’s own character. It never acts in the game, hints before it answers, and marks where every fact came from.',
+      challenge:'Help in games sits at two extremes. Quest add-ons and guides give you the answer outright. Without them you get stuck and end up on YouTube. Nothing in between knows your character, or how much you want to be told.',
+      solution:'A Claude connector and a small in-game add-on that coach from the player’s own character. It never acts in the game, hints before it answers, and marks where every fact came from.',
       impact:'Shipped for World of Warcraft: Forever’s launch on 4 November 2026, and public on GitHub at release 1.5.0. One player so far, me, and launch week has already changed the design several times.'
     },
     intro:[
       {t:'p',cls:'lede',v:'This is about designing how an AI should behave. World of Warcraft is the setting, not the point.'},
       /* HERO TO COME: Ross's character on the login screen, full width, here. */
-      {t:'p',v:'Forever launched on 4 November 2026, and I built a companion for it: a Claude connector, plus an addon that saves a snapshot of my character when I ask. I designed it, made the calls and tested it in real play. Claude wrote the code.'},
+      {t:'p',v:'Forever launched on 4 November 2026, and I built a companion for it: a Claude connector, plus an add-on that saves a snapshot of my character when I ask. I designed it, made the calls and tested it in real play. Claude wrote the code.'},
 
       {t:'h',v:'It helps, it never plays'},
-      {t:'p',v:'It only reads. The addon writes a file and the connector reads it. It never presses a key, posts in chat or touches the auction house. That’s Blizzard’s rule, and it’s the right line for an assistant anyway.'},
+      {t:'p',v:'It only reads. The add-on writes a file and the connector reads it. It never presses a key, posts in chat or touches the auction house. That’s Blizzard’s rule, and it’s the right line for an assistant anyway.'},
 
       {t:'h',v:'Hints before answers'},
       {t:'p',v:'Ask where something is and you get a nudge. Ask for a bit more and it climbs one step: nudge, then direction, then the answer. In Forever’s new zones, discovery mode stops at direction unless I switch it off.'},
@@ -2302,7 +2302,7 @@ var CASES = [
         {t:'cards',v:['fcDing']}
       ]},
       {q:'What happens when its data is out of date?', a:[
-        {t:'p',v:'The game only saves addon data when you log out or reload, so the snapshot is always from the end of the last save, never live. It says how old it is, and asks what’s changed since.'},
+        {t:'p',v:'The game only saves add-on data when you log out or reload, so the snapshot is always from the end of the last save, never live. It says how old it is, and asks what’s changed since.'},
         {t:'p',v:'Newer isn’t always better, either. Logging out can save after the game has already cleared my bags and gear, so an empty save would wipe a full one. It now never saves a worse snapshot over a better one.'},
         {t:'p',v:'What I tell it beats what it last saw. If I’ve just bought my mount, it doesn’t argue with a snapshot from yesterday.'}
       ]},
@@ -2328,7 +2328,7 @@ var CASES = [
         {t:'next',key:'car-finder',label:'Read the car finder case study',v:'The car finder had the same question at its heart: how much of the model to show, and what it can do without asking.'}
       ]},
       {q:'Can other people use it?', a:[
-        {t:'p',v:'That was the aim from the start. It sets up a profile through a first-run chat, makes a plan from any Icy Veins build link, and installs and updates its own addon.'},
+        {t:'p',v:'That was the aim from the start. It sets up a profile through a first-run chat, makes a plan from any Icy Veins build link, and installs and updates its own add-on.'},
         {t:'p',v:'So far it has one player, me. It’s launch week, and it’s still changing.'},
         {t:'link',href:'https://github.com/rossmlucarelli/forever-companion',label:'See it on GitHub',v:'It’s free to download. You’ll need World of Warcraft: Forever and the Claude desktop app.'}
       ]}

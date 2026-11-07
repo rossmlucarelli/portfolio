@@ -3954,6 +3954,16 @@ the GitHub chip points at the repo, no script errors, no sideways scroll.
 
 **Live.** *Called by: Ross: "Yes".*
 
+### "Warcraft: Forever companion add-on" — 7 November
+
+**The case study names it for what it is.**
+*Called by: Ross: "It's more obvious what it is as some people will have
+heard of Warcraft."* The sidebar, the question that opens it and the topic
+say "Warcraft: Forever companion add-on" (was "Forever Companion"). "addon"
+is "add-on" throughout the case study, Ross's spelling. The title is
+unchanged. On a 390 phone the top bar cuts the name short, as it does
+"Conversational car finder"; the sidebar fits it on one line at 1440.
+
 ---
 
 ## Open items
