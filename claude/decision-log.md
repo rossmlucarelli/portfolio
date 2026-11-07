@@ -3911,6 +3911,19 @@ not how sure the model is.
 **A login-screen hero, to come.** *Called by: Ross:* "Its geeky but it tells
 a thousand words." Its place is marked in the code after the lede.
 
+### The level 10 /ding, zoomed — 7 November
+
+On the branch `forever-companion`, not yet on `main`.
+
+**Ross's capture, with the chat enlarged.**
+*Called by: Ross (the capture, and "it would be cool if we could have the chat
+bit zoomed in"), Claude (how).* A 4K screenshot cut to 1600×1000 with the chat
+enlarged in a callout over the sky, joined to the original by two lines in a
+light teal. On a phone the card shows the enlarged chat alone. It sits in "How
+does it know how you play?", where its place was marked. The caption points
+at "Couldn't read your talents, so this assumes you're on plan": it says what
+it doesn't know rather than guessing.
+
 ---
 
 ## Open items
@@ -4534,7 +4547,7 @@ cost is usually in the wrong place, not in the work.
 
 - [x] **Ross to put the draft through Gemini.** *Settled 6 November: not
       needed, live as drafted.*
-- [ ] **The /ding screenshot** from Ross.
+- [x] **The /ding screenshot** from Ross. *In, 7 November.*
 - [x] **"Stocking Jetstream"** was Claude's reading of Ross's note. *Live
       6 November with the rest of the copy, which Ross was happy with.*
 - [ ] **How this site was made** says "all four case studies have been

@@ -1841,6 +1841,12 @@ var ART = {
     alt:'A Claude reply giving a first nudge for a quest, built from what the quest giver said, with a key underneath: your game, looked up, unconfirmed for Forever.',
     img:'img/fc-grund.webp', w:805, h:503, shot:true
   },
+  fcDing:{
+    title:'/ding at level 10, in game chat',
+    caption:'My first talent point. The companion names the talent and why, in game chat, so I never leave the game. When it can’t read something it says so, rather than guessing.',
+    alt:'The game at level 10, with game chat zoomed in: Companion: Ding! Level 10. Take Power in Light (Discipline, 1/5). Smite and Penance hit 10% harder on anything with your Shadow Word: Pain or Holy Fire on it. Couldn’t read your talents, so this assumes you’re on plan. Claude can see this now too.',
+    img:'img/fc-ding.webp', w:1600, h:1000, imgSm:'img/fc-ding-sm.webp', wSm:780, hSm:488
+  },
   cfSearches:{
     title:'997 real searches, sorted by what the car finder would do',
     caption:'Every term typed into cinch’s search box in one test, sorted against the rules the car finder was designed with. Registration plates and a postcode are shown as X’s. It is about a thousand searches, so it supports the design’s assumptions rather than proving them.',
@@ -2292,8 +2298,8 @@ var CASES = [
     probes:[
       {q:'How does it know how you play?', a:[
         {t:'p',v:'A short chat the first time you use it. Mine says I prefer steady damage, find long cooldowns awkward, and value a steady spell cadence over levelling fast. Talent advice is weighed against that, so it favours the spells I cast all the time over ones I’d forget to use.'},
-        {t:'p',v:'Paste a build link from Icy Veins’ talent calculator and it becomes a plan. Type /ding in game when you level and it tells you your next talent, and why.'}
-        /* SCREENSHOT TO COME: Ross's capture of /ding in game chat. Goes here. */
+        {t:'p',v:'Paste a build link from Icy Veins’ talent calculator and it becomes a plan. Type /ding in game when you level and it tells you your next talent, and why.'},
+        {t:'cards',v:['fcDing']}
       ]},
       {q:'What happens when its data is out of date?', a:[
         {t:'p',v:'The game only saves addon data when you log out or reload, so the snapshot is always from the end of the last save, never live. It says how old it is, and asks what’s changed since.'},
