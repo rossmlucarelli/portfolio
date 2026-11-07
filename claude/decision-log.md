@@ -3929,6 +3929,29 @@ it doesn't know rather than guessing.
 The conversations, the two-decades line, the Jetstream spelling and the ding
 went to `main` together. The hero's place stays marked in the code.
 
+### Forever Companion 1.5 — 7 November
+
+On the branch `forever-companion`, not yet on `main`.
+
+**Only the 1.5 fixes worth a reader's time.**
+*Called by: Ross (update for 1.5, "only if interesting"), Claude (which).* In:
+an empty save never replaces a full one (in the stale-data answer); quest
+markers only count as the answer once a quest is done (the Stocking Jetstream
+item, refined); talents read through Forever's newer system, which closes the
+"couldn't read your talents" seen in the ding capture; item hints that say who
+sells it, from a Rumble Shots question the night before. Out: quest levels of
+0 treated as unknown.
+
+**A link to the repo.**
+*Called by: Ross (asked), Claude (agreed, and where).* At the end of "Can
+other people use it?", as a note with a "See it on GitHub" chip, saying it's
+free and what it needs. The README is written for players and installs from
+the latest release, so the link needs nothing else. A new `link` block type,
+styled like the existing `next` note, opening in a new tab.
+
+**Verification.** Chromium at 1440 light and 390 dark: every follow-up opens,
+the GitHub chip points at the repo, no script errors, no sideways scroll.
+
 ---
 
 ## Open items

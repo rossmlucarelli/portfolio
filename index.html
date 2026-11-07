@@ -2274,7 +2274,7 @@ var CASES = [
     triad:{
       challenge:'Help in games sits at two extremes. Quest addons and guides give you the answer outright. Without them you get stuck and end up on YouTube. Nothing in between knows your character, or how much you want to be told.',
       solution:'A Claude connector and a small in-game addon that coach from the player’s own character. It never acts in the game, hints before it answers, and marks where every fact came from.',
-      impact:'Shipped for World of Warcraft: Forever’s launch on 4 November 2026, and public on GitHub at release 1.4.0. One player so far, me, and launch week has already changed the design four times.'
+      impact:'Shipped for World of Warcraft: Forever’s launch on 4 November 2026, and public on GitHub at release 1.5.0. One player so far, me, and launch week has already changed the design several times.'
     },
     intro:[
       {t:'p',cls:'lede',v:'This is about designing how an AI should behave. World of Warcraft is the setting, not the point.'},
@@ -2303,15 +2303,18 @@ var CASES = [
       ]},
       {q:'What happens when its data is out of date?', a:[
         {t:'p',v:'The game only saves addon data when you log out or reload, so the snapshot is always from the end of the last save, never live. It says how old it is, and asks what’s changed since.'},
+        {t:'p',v:'Newer isn’t always better, either. Logging out can save after the game has already cleared my bags and gear, so an empty save would wipe a full one. It now never saves a worse snapshot over a better one.'},
         {t:'p',v:'What I tell it beats what it last saw. If I’ve just bought my mount, it doesn’t argue with a snapshot from yesterday.'}
       ]},
       {q:'What did launch week change?', a:[
-        {t:'p',v:'Four things, all from playing it.'},
+        {t:'p',v:'All of these came from playing it.'},
         {t:'decisions',v:[
           {k:'The ladder ran out',v:'On Grund and Gozwin, the hints dead-ended and I went to YouTube for the full spoiler anyway. So when the hints run out it now offers “show me”: one video, only if I ask. It also gives route hints, for getting somewhere awkward, from ones I’ve saved.'},
           {k:'Typing /reload',v:'Having to reload to save was the weakest part of it. /ding and /sync now save and reload in one step.'},
-          {k:'The game beat the wiki',v:'On Stocking Jetstream, the game’s quest marker pointed to the hand-in, not the boar. Checking in game beat the wiki, which describes Classic. Now what the player sees in game outranks anything looked up.'},
-          {k:'No videos yet',v:'“Show me” found no Forever videos in launch week. It says so plainly, rather than offering one from the wrong version of the game.'}
+          {k:'The game beat the wiki, mostly',v:'On Stocking Jetstream, checking in game beat the wiki, which describes Classic. So what the player sees in game outranks anything looked up. But the game’s quest marker pointed to the hand-in, not the boar, so a marker only counts as the answer once the quest is done.'},
+          {k:'No videos yet',v:'“Show me” found no Forever videos in launch week. It says so plainly, rather than offering one from the wrong version of the game.'},
+          {k:'Talents it couldn’t read',v:'At level 10, /ding told me it couldn’t read my talents and assumed I was on plan. Forever uses a newer talent system than Classic. It reads that now, and still says when it can’t.'},
+          {k:'Where to buy it',v:'Asked where to buy ammo, it knew nothing beyond the name. Item hints now check who sells it, and prefer a vendor nearby.'}
         ]},
         {t:'cards',v:['fcGrund']}
       ]},
@@ -2325,8 +2328,9 @@ var CASES = [
         {t:'next',key:'car-finder',label:'Read the car finder case study',v:'The car finder had the same question at its heart: how much of the model to show, and what it can do without asking.'}
       ]},
       {q:'Can other people use it?', a:[
-        {t:'p',v:'That was the aim from the start. It sets up a profile through a first-run chat, makes a plan from any Icy Veins build link, and installs and updates its own addon. It’s public on GitHub.'},
-        {t:'p',v:'So far it has one player, me. It’s launch week, and it’s still changing.'}
+        {t:'p',v:'That was the aim from the start. It sets up a profile through a first-run chat, makes a plan from any Icy Veins build link, and installs and updates its own addon.'},
+        {t:'p',v:'So far it has one player, me. It’s launch week, and it’s still changing.'},
+        {t:'link',href:'https://github.com/rossmlucarelli/forever-companion',label:'See it on GitHub',v:'It’s free to download. You’ll need World of Warcraft: Forever and the Claude desktop app.'}
       ]}
     ],
     follow:['car-finder','ai','making']
@@ -3169,6 +3173,7 @@ function blocksHTML(blocks){
     /* a link between two case studies that belong together: a line saying
        why, and a chip. The chip navigates, like the sidebar: the other case
        study opens as a conversation of its own, not underneath this one. */
+    else if(b.t==='link') out += '<div class="note next"><p>'+b.v+'</p><a class="chip" href="'+b.href+'" target="_blank" rel="noopener">'+esc(b.label)+'</a></div>';
     else if(b.t==='next' && byId[b.key]) out += '<div class="note next"><p>'+b.v+'</p><button class="chip" type="button" data-go="'+b.key+'">'+esc(b.label)+'</button></div>';
     else if(b.t==='eras') out += erasHTML(b.layout||GALLERY_LAYOUT);
     else if(b.t==='cards'){ out+='<div class="cards '+(b.cls||'')+'">'; b.v.forEach(function(k){ out+=cardHTML(k); warmArt(k); }); out+='</div>'; }
