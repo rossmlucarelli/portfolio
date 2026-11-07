@@ -3924,6 +3924,11 @@ does it know how you play?", where its place was marked. The caption points
 at "Couldn't read your talents, so this assumes you're on plan": it says what
 it doesn't know rather than guessing.
 
+**Live, without the login shot.**
+*Called by: Ross: "Lets leave the login screenshot for now. Push live please."*
+The conversations, the two-decades line, the Jetstream spelling and the ding
+went to `main` together. The hero's place stays marked in the code.
+
 ---
 
 ## Open items
@@ -4554,4 +4559,4 @@ cost is usually in the wrong place, not in the work.
       through" Gemini. Still true of the four, but there are now five case
       studies besides it, and this one wasn't.
 - [ ] **The login-screen hero** from Ross, for the top of the Forever
-      Companion.
+      Companion. Left for now (7 November).
