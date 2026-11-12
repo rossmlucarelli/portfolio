@@ -3970,7 +3970,7 @@ unchanged. On a 390 phone the top bar cuts the name short, as it does
 
 ### How I use AI, brought up to date
 
-On the branch `ai-section-tweaks`, not on `main`. Ross to read the copy first.
+Built on the branch `ai-section-tweaks`, then pushed to `main` as a fast-forward: "Live please."
 
 **Time to update it.**
 *Called by: Ross.* The section was last rewritten on 18 October. Claude
