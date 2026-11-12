@@ -2531,13 +2531,13 @@ var CASES = [
     triad:{
       challenge:'A portfolio for AI-focused roles has to answer one question well: how do I use AI? A list of tools doesn’t answer it.',
       solution:'I built the site with Claude in the browser rather than in Figma, and logged every decision. I recorded what was decided, who made the call, and whether the reason was analysis or taste. Later I brought in a second model, Gemini, to reword the case studies, with Claude checking every line.',
-      impact:'More than 250 decisions logged over a month of building, each showing who made it and why. Eleven of them are marked on the page itself.<br><button class="ins-btn ins-inline" type="button" data-inspect><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>Show them</span></button>'
+      impact:'More than 300 decisions logged over nearly two months of building, each showing who made it and why. Eleven of them are marked on the page itself.<br><button class="ins-btn ins-inline" type="button" data-inspect><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>Show them</span></button>'
     },
     intro:[
       {t:'p',cls:'lede',v:'This site is the worked example of how I use AI. The best way to show that is to show how the decisions were split, so I wrote them all down.'},
       {t:'p',v:'I designed and built the site with Claude, working on the real page rather than in a design file. Claude writes the code, measures it and checks it. I decide what it should be and judge how it feels.'},
       {t:'p',v:'From the first session I kept a decision log. Every entry says what was decided, whether me or Claude made the call, and whether the reason was analysis or just taste. Each new chat reads the log before we start, so nothing has to be explained twice.'},
-      {t:'p',v:'It now holds more than 250 decisions from a month of building. Most are shared: I spot something, Claude finds the cause, and I judge the fix. 18 are marked as taste.'},
+      {t:'p',v:'It now holds more than 300 decisions from nearly two months of building. Most are shared: I spot something, Claude finds the cause, and I judge the fix. 21 are marked as taste.'},
       {t:'p',v:'A month in, I brought in Gemini. I found its newest model sounded more natural, so it rewords the case studies. Claude checks every line Gemini writes against my sources, and nothing that can’t be confirmed goes on the page.'},
       {t:'inspect',v:'<b>See them in place.</b> The decisions behind what’s on your screen, marked on the page. Turn them on here, or any time with Decisions at the top of the page.',label:'Show the decisions on this page'}
     ],
@@ -2643,9 +2643,10 @@ var TOPICS = {
         {t:'p',v:'An agent built on the documented process inherits the same blind spot and adds confidence to it. So before automating a workflow I would go and stand next to the people doing it, for the same reason I went to the yard.'}
       ]},
       {q:'Have you shipped an agent?', a:[
-        {t:'p',v:'Not one that completes multi-step work on someone else’s behalf, and I would rather say so here than have it come up in an interview.'},
-        {t:'p',v:'What I have done is the design problem from both sides. I designed a model-driven product from the initial argument through to its failure states, wrote the prompt for its predecessor, and tested the idea by running example briefs through an LLM. And I built this site by supervising a model through the whole thing, keeping a log of where it went wrong.'},
-        {t:'p',v:'What I haven’t done is watch one of those designs meet real use at scale. That is the experience I am looking for next.'}
+        {t:'p',v:'Not one that completes multi-step work on someone else’s behalf, and I would rather say so here than have it come up in an interview. But I have shipped an AI product. The Warcraft: Forever companion is a Claude connector I designed, released publicly on GitHub and tested in real play through launch week. Claude wrote the code; I designed how it behaves and made the calls.'},
+        {t:'p',v:'I also run agents on my own work. My competitor audit splits the job between separate agents, so the one that looks at a site isn’t the one that scores it. I designed the car finder from the initial argument through to its failure states. And I built this site by supervising a model through the whole thing, keeping a log of where it went wrong.'},
+        {t:'p',v:'What I haven’t done yet is watch one of my designs meet real use at scale. That is the experience I am looking for next.'},
+        {t:'next',key:'forever',v:'The connector I shipped, and how much it decides to tell you.',label:'Read the Warcraft: Forever case study'}
       ]}
     ],
     follow:['car-finder','ai','contact']
@@ -2689,12 +2690,14 @@ var TOPICS = {
     prompt:'How do you use AI in your work?', title:'How I use AI',
     intro:[
       {t:'p',cls:'lede',v:'I’ve really enjoyed designing with AI as a sounding board. It’s a bit like design tennis, but with someone always there.'},
-      {t:'p',v:'I use it as an extension of my own ideas. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way. I also use connectors so Claude can reach Figma, Drive, Gmail, Jira, Confluence and my Plaud research recordings. And I built my own connector between Claude and Gemini, an MCP server I host, so I can send work to Gemini without leaving the window.'},
+      {t:'p',v:'I use it as an extension of my own ideas. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way. I also use connectors so Claude can reach Figma, Drive, Gmail, Jira, Confluence and my Plaud research recordings. I built my own connector between Claude and Gemini, an MCP server I host, so I can send work to Gemini without leaving the window. And I’ve shipped one for other people: a Claude connector for Warcraft: Forever that anyone can install.'},
       {t:'p',v:'This page is a worked example. It has a conversational surface with a deliberate guardrail and no live model at read time, so it cannot invent a claim about my work.'}
     ],
     probes:[
       {q:'Where has it actually saved you time?', a:[
-        {t:'p',v:'Turning repeatable jobs into reusable skills. I built a skill that reads real customer search terms, works out what they meant, groups them, and suggests search improvements. Another rebuilds a finished deck inside the company PowerPoint template.'}
+        {t:'p',v:'The biggest one is the competitor audit. I write the questions and the rest runs as a team of agents. One turns my questions into a test script, and another predicts where it will break before a browser is opened. Then an agent captures each site, recording only what it sees, and a separate judge scores every site together, one question at a time. A third checks the scores against the evidence, and I rule on anything it flags.'},
+        {t:'p',v:'I split it up because when one agent looked at a site and scored it in the same go, it drifted. A 4 on the first site wasn’t a 4 on the ninth, and I was correcting it by hand. The one that looks shouldn’t be the one that scores.'},
+        {t:'p',v:'Smaller repeatable jobs are skills too. One reads real customer search terms, works out what they meant, groups them, and suggests search improvements. Another rebuilds a finished deck inside the company PowerPoint template.'}
       ]},
       {q:'How do you set up your own workflow?', a:[
         {t:'p',v:'I keep a favourite model for each job: Claude for agentic work and building, Gemini (Argon) for words that sound like a person, and Gemini’s image model for pictures. Models get confused and drift over long back-and-forths, so I plan prompts in Gemini before taking the work into Claude.'},
@@ -2712,7 +2715,7 @@ var TOPICS = {
         {t:'p',v:'The build was AI-assisted and I’m not going to pretend otherwise. Hiding it would miss the whole point of the page.'},
         {t:'p',v:'The decisions are split between me and Claude. Claude writes, measures and checks the code, and pushes it live from the chat. I decide what it should be and judge how it feels, like the progressive disclosure you’re using now, the guardrail that stops it inventing answers, and showing a compromise rather than a confidence score.'},
         {t:'p',v:'Every decision goes in a log saying who called it, why, and which ones were down to taste. Gemini rewords the copy, and Claude checks every line against the sources.'},
-        {t:'stats',v:[{n:250,suffix:'+',label:'Decisions logged'},{n:18,label:'Marked as taste'},{n:32,label:'Days of building'}],src:'From the decision log, 19 October 2026'},
+        {t:'stats',v:[{n:300,suffix:'+',label:'Decisions logged'},{n:21,label:'Marked as taste'},{n:57,label:'Days of building'}],src:'From the decision log, 12 November 2026'},
         {t:'next',key:'making',v:'The whole story, and eleven of those decisions marked on the page itself.',label:'How this site was made'}
       ]}
     ],
@@ -2793,7 +2796,7 @@ var QA = [
       'designing with ai':3,'ai workflow':3,'ai in design':3},
     a:[
       {t:'p',v:'I’ve really enjoyed designing with AI as a sounding board. It’s a bit like design tennis, but with someone always there. It frees me up to make the bigger, more creative decisions while it makes lots of micro decisions along the way.'},
-      {t:'p',v:'In practice, I keep a favourite model per job (Claude for building, Gemini for words and images), connect Claude to tools like Figma, Jira, Drive and my Plaud recordings, and I’ve built my own connector between Claude and Gemini, an MCP server I host. I also turn repeatable tasks into reusable skills, like one that sorts real customer searches by what people meant and one that rebuilds decks in the company PowerPoint template.'}
+      {t:'p',v:'In practice, I keep a favourite model per job (Claude for building, Gemini for words and images), connect Claude to tools like Figma, Jira, Drive and my Plaud recordings, and I’ve built my own connector between Claude and Gemini, an MCP server I host. I also turn repeatable work into skills, from a competitor audit run by a team of agents to one that sorts real customer searches by what people meant.'}
     ],
     follow:['ai','agentic']
   },

@@ -3966,6 +3966,62 @@ unchanged. On a 390 phone the top bar cuts the name short, as it does
 
 ---
 
+## Pass 20 — 12 November 2026
+
+### How I use AI, brought up to date
+
+On the branch `ai-section-tweaks`, not on `main`. Ross to read the copy first.
+
+**Time to update it.**
+*Called by: Ross.* The section was last rewritten on 18 October. Claude
+listed what had gone stale: "Have you shipped an agent?" still said no and
+that he had never watched a design of his meet real use, which Forever
+Companion now contradicts; the stats row was from 19 October; and the
+opener named only the Gemini connector.
+
+**Tweaks in his voice, no Gemini.** *Called by: Ross.* The 18 October
+exception, which sent this section through Argon, is not repeated.
+
+**Doorstep stays off the site.** *Called by: Ross:* he wants more done with
+it first. Same as 18 October.
+
+**The multi-agent competitor audit goes in.**
+*Called by: Ross. Reverses 14 and 18 October.* Kept out while he was at
+cinch, "too much for now". His reason now: he doesn't think cinch is doing
+anything with it. It goes into "Where has it actually saved you time?",
+the short typed answer and "Have you shipped an agent?". The method is
+described from the competitor-ux-audit skill: protocol, pre-mortem, one
+capture agent per site recording facts only, a judge scoring every site
+together question by question, a verifier, and Ross ruling on flagged
+cells. The reason given, that one agent looking and scoring drifted ("a 4
+on the first site wasn't a 4 on the ninth") and he corrected it by hand,
+is the skill's own account. The wording is Claude's, in Ross's voice. The
+competitor landscape case study itself still leaves the method out.
+
+**"Have you shipped an agent?" keeps its no, and adds what he has
+shipped.** *Called by: Claude (the wording); for Ross to check.* Still not
+an agent that does multi-step work for someone else, but Forever Companion
+is a shipped AI product: a Claude connector he designed, public on GitHub
+and tested in real play through launch week, credited as before ("Claude
+wrote the code; I designed how it behaves and made the calls"). "Watch
+one of my designs meet real use at scale" stays as the gap. The answer
+ends with a link to the case study. The prompt-for-its-predecessor and
+example-briefs lines were cut for length.
+
+**The figures, recounted.** *Counted by: Claude, from this log on
+12 November.* 337 "Called by" and "Corrected by" lines, against 291 counted
+the same way on 18 October, so "300+". Taste is 21: the 18 of 19 October
+plus the 24px icons, the 8-second border lap and the answer colour trail.
+57 days, 17 September to 12 November. The stats row and case study 06's
+panel and opener were changed together ("nearly two months").
+
+**Verification.** Chrome at 1440 light and 390 dark: the thread opener,
+"Where has it actually saved you time?", the typed short answer and "Have
+you shipped an agent?" render with the new copy, the chip opens the
+Warcraft: Forever case study, no script errors, no sideways scroll.
+
+---
+
 ## Open items
 
 - [ ] **Both artifacts are private.** Sharing must be turned on before either link
