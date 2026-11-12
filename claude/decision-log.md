@@ -4032,6 +4032,41 @@ Warcraft: Forever case study, no script errors, no sideways scroll.
 
 ---
 
+### The audit as a picture, and no more days — 12 November
+
+On the branch `audit-diagram`, not on `main`.
+
+**A diagram of the agents in "Where has it actually saved you time?".**
+*Called by: Ross (the idea: show at a glance how many agents are involved,
+"more impressive"), Claude (the design).* A new animated card, drawn in the
+site's own SVG style like the competitor infographic: two rows, my
+questions, protocol, pre-mortem and my approval, then nine capture agents,
+the judge, the verifier and my ruling. Agents are teal and solid, Ross's
+steps grey and dashed; the nine capture dots pop in one by one, and the
+footer counts up to 13 agents and 2 checkpoints. It sits straight after the
+paragraph it pictures. The steps are the competitor-ux-audit skill's. Nine
+sites is the skill's default set for the homepage, search results and
+vehicle page, so 13 is a typical run, not every run; the card says "one
+journey stage, nine sites". The shared animation CSS is now `BM_CSS`, used
+by both cards.
+
+**"Days of building" comes out.**
+*Called by: Ross:* he doesn't want readers to think it took that long to get
+there; a first version was up quickly, and the tweaks are what matter.
+*Claude (the replacement):* "Rounds of changes", 20, one per pass in this
+log, so the third figure is about refinement rather than time. Case study
+06 loses "over nearly two months of building" in its panel and opener, and
+"A month in, I brought in Gemini" is "Once the site was live, I brought in
+Gemini". The site no longer states how long it took.
+
+**Verification.** Chrome at 1440 light and 390 dark: the card plays when
+scrolled into view and lands on 13 and 2, the competitor infographic still
+renders on the shared CSS, no script errors, no sideways scroll. On a phone
+the card's text is small, like the site's other diagrams; tapping opens it
+large.
+
+---
+
 ## Open items
 
 - [ ] **Both artifacts are private.** Sharing must be turned on before either link
