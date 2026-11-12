@@ -1611,6 +1611,19 @@ Sophon.scan();
    1. Artwork
    ========================================================= */
 var P = {bg:'var(--surface)',panel:'var(--sunk)',line:'var(--line-strong)',faint:'var(--line)',ink:'var(--ink)',ink2:'var(--ink-2)',ink3:'var(--ink-3)',acc:'var(--accent)',tint:'var(--accent-tint)'};
+var BM_CSS='<style>'+
+  '.bm .bm-a{animation-duration:.5s;animation-timing-function:cubic-bezier(.2,.8,.3,1);animation-fill-mode:both;animation-delay:var(--d,0s);animation-play-state:paused}'+
+  '.bm.bm-play .bm-a{animation-play-state:running}'+
+  '.bm .bm-up{animation-name:bmUp}.bm .bm-left{animation-name:bmLeft}.bm .bm-fade{animation-name:bmFade}'+
+  '.bm .bm-pop{animation-name:bmPop;animation-duration:.42s;animation-timing-function:cubic-bezier(.3,1.6,.5,1);transform-box:fill-box;transform-origin:center}'+
+  '.bm .bm-ring{animation-name:bmRing;animation-duration:1.4s;animation-timing-function:ease-out;transform-box:fill-box;transform-origin:center}'+
+  '@keyframes bmUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}'+
+  '@keyframes bmLeft{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}'+
+  '@keyframes bmFade{from{opacity:0}to{opacity:1}}'+
+  '@keyframes bmPop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}'+
+  '@keyframes bmRing{0%{opacity:0;transform:scale(.6)}25%{opacity:.9}100%{opacity:0;transform:scale(2.4)}}'+
+  '@media (prefers-reduced-motion:reduce){.bm .bm-a{animation:none!important}.bm .bm-ring{display:none}}'+
+  '</style>';
 function svgWrap(i){return '<svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="640" height="400" fill="'+P.bg+'"/>'+i+'</svg>';}
 function bar(x,y,w,h,f,r){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+(r==null?3:r)+'" fill="'+(f||P.faint)+'"/>';}
 function box(x,y,w,h,r,f){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+(r||8)+'" fill="'+(f||P.bg)+'" stroke="'+P.line+'" stroke-width="1.4"/>';}
@@ -1696,19 +1709,7 @@ var ART = {
         ['Car buyers',['webuyanycar'],[0,0,0,0,1]]
       ];
       var SANS='Instrument Sans, sans-serif', x0=212, cw=82, y0=146, rh=44;
-      var s='<style>'+
-        '.bm .bm-a{animation-duration:.5s;animation-timing-function:cubic-bezier(.2,.8,.3,1);animation-fill-mode:both;animation-delay:var(--d,0s);animation-play-state:paused}'+
-        '.bm.bm-play .bm-a{animation-play-state:running}'+
-        '.bm .bm-up{animation-name:bmUp}.bm .bm-left{animation-name:bmLeft}.bm .bm-fade{animation-name:bmFade}'+
-        '.bm .bm-pop{animation-name:bmPop;animation-duration:.42s;animation-timing-function:cubic-bezier(.3,1.6,.5,1);transform-box:fill-box;transform-origin:center}'+
-        '.bm .bm-ring{animation-name:bmRing;animation-duration:1.4s;animation-timing-function:ease-out;transform-box:fill-box;transform-origin:center}'+
-        '@keyframes bmUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}'+
-        '@keyframes bmLeft{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}'+
-        '@keyframes bmFade{from{opacity:0}to{opacity:1}}'+
-        '@keyframes bmPop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}'+
-        '@keyframes bmRing{0%{opacity:0;transform:scale(.6)}25%{opacity:.9}100%{opacity:0;transform:scale(2.4)}}'+
-        '@media (prefers-reduced-motion:reduce){.bm .bm-a{animation:none!important}.bm .bm-ring{display:none}}'+
-        '</style>';
+      var s=BM_CSS;
       s+='<rect x="0" y="0" width="640" height="400" fill="'+P.bg+'"/>';
       s+='<g class="bm-a bm-fade" style="--d:0s"><text x="24" y="34" font-family="'+SANS+'" font-size="16" font-weight="600" fill="'+P.ink+'">Compare like with like</text>'+
          txt(24,54,'WHO WAS TESTED AT EACH STAGE · SEPTEMBER 2026',10,P.ink3,500)+'</g>';
@@ -1748,6 +1749,48 @@ var ART = {
          '<circle cx="508" cy="382" r="4.5" fill="'+P.acc+'"/>'+txt(518,386,'CINCH',9,P.ink3,500)+
          '<circle cx="566" cy="382" r="4" fill="'+P.acc+'" fill-opacity=".45"/>'+txt(576,386,'OTHERS',9,P.ink3,500)+'</g>';
       return '<svg class="bm" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Who was tested at each stage" xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
+    }
+  },
+  auditAgents:{
+    title:'A competitor audit, run by a team of agents',
+    caption:'One run of the audit, on a journey stage with nine sites. Every agent starts fresh and they pass each other only files, so the one that looks at a site is never the one that scores it. I come in twice: before any site is opened, and at the end.',
+    alt:'A flow in two rows. First row: my questions, each with a best-in-class bar; a protocol agent turns them into one test script; a pre-mortem agent predicts where it will break; I approve the script before a site is opened. Second row: nine capture agents, one per site, recording facts only; a judge agent scores all sites one question at a time; a verifier agent checks the scores against the evidence; I rule on every cell it flags. 13 agents and 2 checkpoints for me.',
+    svg:function(){
+      var SANS='Instrument Sans, sans-serif', W=128, G=26, X0=24, H=108;
+      var rows=[
+        [['me','My questions','Each with a','best-in-class bar'],['ag','Protocol','Turns them into','one test script'],['ag','Pre-mortem','Predicts where','it will break'],['me','I approve','the script before','a site is opened']],
+        [['ag','Capture ×9','One per site,','facts only',9],['ag','Judge','All sites, one','question at a time'],['ag','Verifier','Checks scores','against evidence'],['me','I rule','on every cell','it flags']]
+      ];
+      var s=BM_CSS+'<rect x="0" y="0" width="640" height="400" fill="'+P.bg+'"/>';
+      s+='<g class="bm-a bm-fade" style="--d:0s"><text x="24" y="36" font-family="'+SANS+'" font-size="16" font-weight="600" fill="'+P.ink+'">One audit, a team of agents</text>'+
+         txt(24,56,'ONE JOURNEY STAGE · NINE SITES',9.5,P.ink3,500)+'</g>';
+      var d=.15, ys=[76,220];
+      rows.forEach(function(row,ri){
+        var y=ys[ri];
+        row.forEach(function(b,bi){
+          var x=X0+bi*(W+G), ag=b[0]==='ag';
+          s+='<g class="bm-a bm-up" style="--d:'+d.toFixed(2)+'s">'+
+             '<rect x="'+x+'" y="'+y+'" width="'+W+'" height="'+H+'" rx="12" fill="'+(ag?P.tint:P.panel)+'" stroke="'+(ag?P.acc:P.line)+'" stroke-width="1.4"'+(ag?'':' stroke-dasharray="4 4"')+'/>'+
+             txt(x+12,y+20,ag?(b[4]?'AGENTS':'AGENT'):'ME',9,ag?P.acc:P.ink3,600)+
+             '<text x="'+(x+12)+'" y="'+(y+42)+'" font-family="'+SANS+'" font-size="14" font-weight="600" fill="'+P.ink+'">'+b[1]+'</text>'+
+             txt(x+12,y+64,b[2],9.5,P.ink2)+txt(x+12,y+80,b[3],9.5,P.ink2)+'</g>';
+          if(b[4]){ for(var k=0;k<b[4];k++){ s+='<circle class="bm-a bm-pop" style="--d:'+(d+.3+k*.08).toFixed(2)+'s" cx="'+(x+16+k*12)+'" cy="'+(y+94)+'" r="4" fill="'+P.acc+'"/>'; } d+=.6; }
+          if(bi<3){
+            var ax=x+W+4, ay=y+H/2;
+            s+='<path class="bm-a bm-fade" style="--d:'+(d+.15).toFixed(2)+'s" d="M'+ax+' '+ay+' h16 m-5 -5 l5 5 l-5 5" fill="none" stroke="'+P.ink3+'" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>';
+          }
+          d+=.3;
+        });
+        if(ri===0){
+          var x4=X0+3*(W+G)+W/2, x1=X0+W/2, yb=ys[0]+H;
+          s+='<path class="bm-a bm-fade" style="--d:'+d.toFixed(2)+'s" d="M'+x4+' '+yb+' v12 H'+x1+' v'+(ys[1]-yb-12-4)+' m-5 -5 l5 5 l5 -5" fill="none" stroke="'+P.ink3+'" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>';
+          d+=.2;
+        }
+      });
+      s+='<g class="bm-a bm-up" style="--d:'+d.toFixed(2)+'s">'+
+         '<text x="24" y="368" font-family="'+SANS+'" font-size="13" font-weight="600" fill="'+P.ink+'"><tspan class="bm-count" data-to="13">13</tspan> agents · <tspan class="bm-count" data-to="2">2</tspan> checkpoints for me</text>'+
+         txt(616,368,'THE ONE THAT LOOKS NEVER SCORES',9,P.ink3,500,'end')+'</g>';
+      return '<svg class="bm" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A competitor audit, run by a team of agents" xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
     }
   },
   fcLadder:{
@@ -2531,14 +2574,14 @@ var CASES = [
     triad:{
       challenge:'A portfolio for AI-focused roles has to answer one question well: how do I use AI? A list of tools doesn’t answer it.',
       solution:'I built the site with Claude in the browser rather than in Figma, and logged every decision. I recorded what was decided, who made the call, and whether the reason was analysis or taste. Later I brought in a second model, Gemini, to reword the case studies, with Claude checking every line.',
-      impact:'More than 300 decisions logged over nearly two months of building, each showing who made it and why. Eleven of them are marked on the page itself.<br><button class="ins-btn ins-inline" type="button" data-inspect><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>Show them</span></button>'
+      impact:'More than 300 decisions logged, each showing who made it and why. Eleven of them are marked on the page itself.<br><button class="ins-btn ins-inline" type="button" data-inspect><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>Show them</span></button>'
     },
     intro:[
       {t:'p',cls:'lede',v:'This site is the worked example of how I use AI. The best way to show that is to show how the decisions were split, so I wrote them all down.'},
       {t:'p',v:'I designed and built the site with Claude, working on the real page rather than in a design file. Claude writes the code, measures it and checks it. I decide what it should be and judge how it feels.'},
       {t:'p',v:'From the first session I kept a decision log. Every entry says what was decided, whether me or Claude made the call, and whether the reason was analysis or just taste. Each new chat reads the log before we start, so nothing has to be explained twice.'},
-      {t:'p',v:'It now holds more than 300 decisions from nearly two months of building. Most are shared: I spot something, Claude finds the cause, and I judge the fix. 21 are marked as taste.'},
-      {t:'p',v:'A month in, I brought in Gemini. I found its newest model sounded more natural, so it rewords the case studies. Claude checks every line Gemini writes against my sources, and nothing that can’t be confirmed goes on the page.'},
+      {t:'p',v:'It now holds more than 300 decisions. Most are shared: I spot something, Claude finds the cause, and I judge the fix. 21 are marked as taste.'},
+      {t:'p',v:'Once the site was live, I brought in Gemini. I found its newest model sounded more natural, so it rewords the case studies. Claude checks every line Gemini writes against my sources, and nothing that can’t be confirmed goes on the page.'},
       {t:'inspect',v:'<b>See them in place.</b> The decisions behind what’s on your screen, marked on the page. Turn them on here, or any time with Decisions at the top of the page.',label:'Show the decisions on this page'}
     ],
     probes:[
@@ -2696,6 +2739,7 @@ var TOPICS = {
     probes:[
       {q:'Where has it actually saved you time?', a:[
         {t:'p',v:'The biggest one is the competitor audit. I write the questions and the rest runs as a team of agents. One turns my questions into a test script, and another predicts where it will break before a browser is opened. Then an agent captures each site, recording only what it sees, and a separate judge scores every site together, one question at a time. A third checks the scores against the evidence, and I rule on anything it flags.'},
+        {t:'cards',v:['auditAgents']},
         {t:'p',v:'I split it up so the agent that looks at a site is never the one that scores it. Scoring every site together, one question at a time, keeps a 4 on the first site meaning the same as a 4 on the ninth.'},
         {t:'p',v:'Smaller repeatable jobs are skills too. One reads real customer search terms, works out what they meant, groups them, and suggests search improvements. Another rebuilds a finished deck inside the company PowerPoint template.'}
       ]},
@@ -2715,7 +2759,7 @@ var TOPICS = {
         {t:'p',v:'The build was AI-assisted and I’m not going to pretend otherwise. Hiding it would miss the whole point of the page.'},
         {t:'p',v:'The decisions are split between me and Claude. Claude writes, measures and checks the code, and pushes it live from the chat. I decide what it should be and judge how it feels, like the progressive disclosure you’re using now, the guardrail that stops it inventing answers, and showing a compromise rather than a confidence score.'},
         {t:'p',v:'Every decision goes in a log saying who called it, why, and which ones were down to taste. Gemini rewords the copy, and Claude checks every line against the sources.'},
-        {t:'stats',v:[{n:300,suffix:'+',label:'Decisions logged'},{n:21,label:'Marked as taste'},{n:57,label:'Days of building'}],src:'From the decision log, 12 November 2026'},
+        {t:'stats',v:[{n:300,suffix:'+',label:'Decisions logged'},{n:21,label:'Marked as taste'},{n:20,label:'Rounds of changes'}],src:'From the decision log, 12 November 2026'},
         {t:'next',key:'making',v:'The whole story, and eleven of those decisions marked on the page itself.',label:'How this site was made'}
       ]}
     ],
