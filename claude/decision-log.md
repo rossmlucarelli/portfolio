@@ -3993,9 +3993,8 @@ the short typed answer and "Have you shipped an agent?". The method is
 described from the competitor-ux-audit skill: protocol, pre-mortem, one
 capture agent per site recording facts only, a judge scoring every site
 together question by question, a verifier, and Ross ruling on flagged
-cells. The reason given, that one agent looking and scoring drifted ("a 4
-on the first site wasn't a 4 on the ninth") and he corrected it by hand,
-is the skill's own account. The wording is Claude's, in Ross's voice. The
+cells. Ross confirmed he has run it. The wording is Claude's, in Ross's
+voice. The
 competitor landscape case study itself still leaves the method out.
 
 **"Have you shipped an agent?" keeps its no, and adds what he has
@@ -4007,6 +4006,17 @@ wrote the code; I designed how it behaves and made the calls"). "Watch
 one of my designs meet real use at scale" stays as the gap. The answer
 ends with a link to the case study. The prompt-for-its-predecessor and
 example-briefs lines were cut for length.
+
+**The reason is a principle, not a story.**
+*Called by: Claude (the recommendation and the wording); for Ross to read.*
+The first draft said that one agent looking and scoring in the same go had
+drifted, and that Ross corrected it by hand. That came from the audit
+skill's write-up, not from Ross, who said he hadn't thought about it. A
+past event he can't recall is the kind of line the site has been burned by
+before (the invented regrets, 9 October), so the story is cut. What stays
+is the design reason, which he can defend in a critique: the agent that
+looks is never the one that scores, and scoring every site together, one
+question at a time, keeps a 4 meaning the same on every site.
 
 **The figures, recounted.** *Counted by: Claude, from this log on
 12 November.* 337 "Called by" and "Corrected by" lines, against 291 counted
