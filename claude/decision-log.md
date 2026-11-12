@@ -4034,7 +4034,7 @@ Warcraft: Forever case study, no script errors, no sideways scroll.
 
 ### The audit as a picture, and no more days — 12 November
 
-On the branch `audit-diagram`, not on `main`.
+Built on the branch `audit-diagram`, then pushed to `main` as a fast-forward: "Yes live please".
 
 **A diagram of the agents in "Where has it actually saved you time?".**
 *Called by: Ross (the idea: show at a glance how many agents are involved,
