@@ -4067,6 +4067,80 @@ large.
 
 ---
 
+## Pass 21 — 13 November 2026
+
+### Inspect mode, taken out
+
+Pushed straight to `main`: "Yes please". The code is kept on the branch
+`archive/inspect-mode`, at the commit before the removal.
+
+**The Decisions pill and the dots on the page are gone.**
+*Called by: Ross (the call and the reasons), Claude (agreed, and what to
+keep).* Ross: with 300 decisions logged it can only ever show a curated few,
+"we talk about decisions now everywhere", it doesn't have the impact it did,
+and "no one's gonna step through all of them". Claude's view, asked for:
+agreed, though the count was never the issue, since it only showed eleven
+cards. Case study 06 tells the story, the stats row in How I use AI makes it
+checkable, and the mode asked the most of a visitor for a point the site
+already makes three times. A feature built and then removed is also the
+"knowing when to stop" story the case study tells.
+
+**What went.** The pill and its bar in the top bar, the dots, the cards, the
+amber `--ins` tokens, the "Show them" button in case study 06's impact line,
+the "See them in place" note at the end of its opener, and "inspect" as a
+typed route to it. The theme switch now pushes itself to the right of the
+top bar, which the pill used to do. On a phone the thread title gets its
+40px back.
+
+**What stayed, as content.**
+*Called by: Claude (which, and the wording); Ross had agreed to the plan.*
+"Where did Claude add something you hadn't asked for?" gains two of the
+cards as entries beside the prompt box and the glass: the icons (dealt so
+no icon sits beside its twin) and the mark (the dent under your finger),
+shortened from the card wording. Its last line no longer says the
+decisions on the page are marked. "Which decisions were just taste?" drops
+the amber, and "When did you overrule it?" drops coral against amber,
+because neither colour is on the site now. The overrule answer gains one
+sentence, Claude's in Ross's voice: "I also built a mode that marked
+decisions on the page itself, then took it out once this case study told
+the story better." How I use AI's link to the case study no longer says
+eleven decisions are marked on the page.
+
+**Verification.** Chrome at 1440 light and 390 dark: the first screen, the
+case study and the delighter follow-up render; no pill, no amber, no "Show
+them"; the theme switch sits at the right of the top bar at both widths; the
+thread title fits at 390; no script errors, no sideways scroll.
+
+**Open items this closes.** "Inspect mode at other widths", the card wording
+lines from 16 October, and "A card for the rainbow wash?" no longer apply.
+
+### A playground, parked
+
+**A breakout area for small, show-off pieces, not built yet.**
+*Called by: Ross (the idea and its shape), Claude (suggestions, not yet
+ruled on).* After watching a Claude animation video: the case studies don't
+show everything he can do with it. Ross's shape: a breakout from the chat,
+not a thread in it; very little explanation, "nothing but Claude and me
+made this"; "more showoffy"; a gallery he can look over and pinch from, "my
+own library almost"; not only animations but UI animations and other
+easily digestible snippets; content is king and it should look very
+different from the LLM part of the site; branded with an icon of its own.
+One piece would be a mini case study: Help Me Choose's options redrawn by
+Ross with Claude or Gemini and animated the way he always pictured them.
+He would design it in claude.ai and bring it here to build.
+
+Claude's suggestions, offered and not yet accepted: always dark whatever
+the theme, little or no teal, tiles of different sizes playing live and
+pausing off screen, its own URL so back works and it can be linked, a way
+in from the sidebar and from typed questions, the Sophon or the wash
+swelling into it, and one small "Back to RossLM" link out rather than
+another pill in the top bar. The redraw must start from the option ideas,
+not trace Robin's illustrations, which would still be his. The dropped
+Sophon thinking states (`sophon-fracture`, `sophon-spikes`) are candidate
+pieces.
+
+---
+
 ## Open items
 
 - [ ] **Both artifacts are private.** Sharing must be turned on before either link
