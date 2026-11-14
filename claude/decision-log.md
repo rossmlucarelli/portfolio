@@ -4139,6 +4139,16 @@ not trace Robin's illustrations, which would still be his. The dropped
 Sophon thinking states (`sophon-fracture`, `sophon-spikes`) are candidate
 pieces.
 
+**A mockup, 14 November: the concept is liked, the pieces are not settled.**
+*Called by: Ross:* "I like it a lot as a concept. Not sure I'd have all those
+specific ones on it." Claude mocked it up on a private design canvas, "RossLM
+Playground": a dark gallery at desktop and phone width, a piece opened full
+screen with View source and Open on its own, the Help Me Choose story piece
+with placeholders, the way in from the chat, and three icon directions
+(building blocks, spark, spilling Sophon). The tiles were filled with pieces
+already on the site, as stand-ins. Which pieces go in, and the icon, are
+still Ross's to choose.
+
 ---
 
 ## Open items
